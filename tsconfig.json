@@ -20,7 +20,21 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@/components*": ["./components*"],
+      "@/lib*": ["./lib*"],
+      "@/app*": ["./app*"],
+
+      "@/ui*": ["./components/ui*"],
+      "@/admin*": ["./components/admin*"],
+      "@/cards*": ["./components/cards*"],
+      "@/dashboard*": ["./components/dashboard*"],
+      "@/layout*": ["./components/layout*"],
+      "@/sections*": ["./components/sections*"],
+      "@/shared*": ["./components/shared*"],
+      "@/shop*": ["./components/shop*"],
+      "@/tutorial*": ["./components/tutorial*"],
+
     }
   },
   "include": [
