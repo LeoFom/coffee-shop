@@ -1,3 +1,4 @@
+import { Inter, Playfair_Display } from 'next/font/google';
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
@@ -19,6 +20,9 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
+const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif' });
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -26,7 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.className} antialiased`}>
+      <body className={`${geistSans.className} ${inter.variable} ${playfair.variable} font-sans antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
