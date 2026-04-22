@@ -24,6 +24,7 @@
       "@/components*": ["./components*"],
       "@/lib*": ["./lib*"],
       "@/app*": ["./app*"],
+      "@/store*": ["./store*"],
 
       "@/ui*": ["./components/ui*"],
       "@/admin*": ["./components/admin*"],
@@ -34,7 +35,7 @@
       "@/shared*": ["./components/shared*"],
       "@/shop*": ["./components/shop*"],
       "@/tutorial*": ["./components/tutorial*"],
-
+      "@/cart*": ["./components/cart*"]
     }
   },
   "include": [
