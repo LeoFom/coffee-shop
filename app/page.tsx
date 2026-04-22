@@ -12,7 +12,6 @@ import Footer from "@/layout/Footer";
 export default function Home() {
   return (
     <main className="min-h-screen bg-brand-bg font-sans text-brand-text">
-      <Header />
       <Hero />
       <Ticker />
       <RecentProducts />

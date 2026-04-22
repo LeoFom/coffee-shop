@@ -2,6 +2,8 @@ import { Inter, Playfair_Display } from 'next/font/google';
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
+import Header from "@/layout/Header";
+import StoreProvider from "@/store/StoreProvider";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -30,7 +32,14 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.className} ${inter.variable} ${playfair.variable} font-sans antialiased`}>
-        {children}
+      <StoreProvider>
+        <Header />
+        <div
+          className={'pt-[96px]'}
+        >
+          {children}
+        </div>
+      </StoreProvider>
       </body>
     </html>
   );
