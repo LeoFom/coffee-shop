@@ -3,7 +3,7 @@ import Button from '@/ui/ButtonSecond';
 
 export default function Hero() {
   return (
-    <section className="pt-32 pb-16 bg-brand-bg relative overflow-hidden min-h-[90vh] flex items-center">
+    <section className="pb-16 bg-brand-bg relative overflow-hidden min-h-[90vh] flex items-center">
       <Container className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
 
         {/* Левая колонка */}
