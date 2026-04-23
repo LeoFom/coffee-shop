@@ -46,7 +46,7 @@ export default function OrdersList() {
   if (MOCK_ORDERS.length === 0) {
     return (
       <div className="text-center py-12 bg-white rounded-2xl border border-brand-brown/10">
-        <p className="text-brand-muted mb-4">You haven't placed any orders yet.</p>
+        <p className="text-brand-muted mb-4">You haven&#39;t placed any orders yet.</p>
         <Link href="/shop" className="text-brand-brown font-medium hover:underline">
           Start shopping
         </Link>

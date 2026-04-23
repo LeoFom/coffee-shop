@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from "next/image";
 
 // Мокові дані користувача
 const MOCK_MEMBER = {
@@ -26,7 +27,7 @@ export default function MembershipCard() {
 
         <div className="bg-brand-bg p-4 rounded-2xl shadow-inner relative z-10 mb-6">
           {/* Використовуємо API для генерації QR-коду */}
-          <img
+          <Image
             src={qrCodeUrl}
             alt={`QR Code for ${uid}`}
             width={160}
@@ -76,7 +77,7 @@ export default function MembershipCard() {
 
           {coffeesBought >= totalRequired ? (
             <div className="mt-6 p-4 bg-green-50 text-green-800 rounded-xl text-sm font-medium border border-green-100 flex items-center gap-2">
-              🎉 You've earned a free coffee! Show your QR code to claim.
+              🎉 You&#39;ve earned a free coffee! Show your QR code to claim.
             </div>
           ) : (
             <p className="mt-6 text-sm text-brand-muted">

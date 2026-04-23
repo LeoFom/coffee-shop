@@ -43,7 +43,7 @@ export default function DashboardStats() {
         <div className="p-6">
           <ul className="space-y-4">
             {MOCK_RECENT_ACTIVITY.map((activity, index) => (
-              <li key={activity.id} className="flex items-center gap-4">
+              <li key={activity.id+index} className="flex items-center gap-4">
                 <div className="w-2 h-2 rounded-full bg-brand-accent flex-shrink-0" />
                 <div className="flex-grow">
                   <p className="text-brand-text text-sm">
