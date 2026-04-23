@@ -19,19 +19,20 @@ export default function Header() {
     <>
       <header className="w-full py-6 absolute top-0 z-50">
         <Container className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2">
             <div className="w-8 h-8 bg-brand-brown rounded-full"></div>
             <span className="font-serif font-bold text-2xl text-brand-brown tracking-tighter">Coffeo</span>
-          </div>
+          </Link>
 
           <nav className="hidden lg:flex items-center gap-8">
-            <Link href="#" className="text-brand-brown font-medium hover:text-opacity-70 flex items-center gap-1">
-              Product <span className="text-xs">▼</span>
+            <Link href="/products" className="text-brand-brown font-medium hover:text-opacity-70 flex items-center gap-1">
+              Products <span className="text-xs">▼</span>
             </Link>
-            <Link href="#" className="text-brand-brown font-medium hover:text-opacity-70">Special offers</Link>
-            <Link href="#" className="text-brand-brown font-medium hover:text-opacity-70">The process</Link>
-            <Link href="#" className="text-brand-brown font-medium hover:text-opacity-70">Packing</Link>
-            <Link href="#" className="text-brand-brown font-medium hover:text-opacity-70">About</Link>
+            <Link href="/shop" className="text-brand-brown font-medium hover:text-opacity-70">Shop</Link>
+            <Link href="/orders" className="text-brand-brown font-medium hover:text-opacity-70">Orders</Link>
+            <Link href="/membership" className="text-brand-brown font-medium hover:text-opacity-70">Membership</Link>
+            <Link href="/dashboard" className="text-brand-brown font-medium hover:text-opacity-70">Dashboard</Link>
+            <Link href="/profile" className="text-brand-brown font-medium hover:text-opacity-70">Profile</Link>
           </nav>
 
           <div className="flex items-center gap-4">
@@ -63,7 +64,9 @@ export default function Header() {
               ><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg></button>
             </div>
 
-            <Button variant="primary" className="hidden md:flex">Log in / Sign up</Button>
+            <Button href="/auth/login" variant="primary" className="hidden md:flex">
+              Log in / Sign up
+            </Button>
           </div>
         </Container>
       </header>
