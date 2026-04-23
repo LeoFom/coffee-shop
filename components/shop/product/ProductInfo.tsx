@@ -1,4 +1,4 @@
-import { Product } from '@/types/productsTypes';
+import { Product } from '@/types/products';
 
 export default function ProductInfo({ product }: { product: Product }) {
   const finalPrice = product.isMemberDiscount

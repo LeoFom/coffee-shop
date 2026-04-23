@@ -2,7 +2,7 @@
 
 import { useDispatch } from 'react-redux';
 import { addToCart } from '@/store/cartSlice';
-import { Product } from '@/types/productsTypes';
+import { Product } from '@/types/products';
 import { useState } from 'react';
 
 export default function ProductActions({ product }: { product: Product }) {
