@@ -1,7 +1,6 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -28,18 +27,41 @@ export function LoginForm({
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const supabase = createClient();
     setIsLoading(true);
     setError(null);
 
+    if (!password) {
+      setError("Passwords do not match");
+      setIsLoading(false);
+      return;
+    }
+
+    if(!email) {
+      setError("Email do not match");
+      setIsLoading(false);
+      return;
+    }
+
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
       if (error) throw error;
-      // Update this route to redirect to an authenticated route. The user already has an active session.
-      router.push("/protected");
+
+      const response = await fetch('/api/log-in', { // Путь к вашему POST роуту
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+      });
+
+      const data = await response.json();
+      console.log(" LOG-IN (DATA) -> ",data)
+
+      if (response.ok) {
+        console.log("Профиль загружен: data", data);
+      }
+      if (error) throw error;
+      // router.push("/protected");
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred");
     } finally {
