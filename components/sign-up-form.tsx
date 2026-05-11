@@ -39,16 +39,40 @@ export function SignUpForm({
       return;
     }
 
+    if(!email) {
+      setError("Email do not match");
+      setIsLoading(false);
+      return;
+    }
+
     try {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/protected`,
-        },
-      });
+      //
+      // const { data, error: signUpError } = await supabase.auth.signUp({
+      //   email,
+      //   password,
+      //   options: {
+      //     emailRedirectTo: `${window.location.origin}/protected`,
+      //   },
+      // });
+
       if (error) throw error;
-      router.push("/auth/sign-up-success");
+
+      const response = await fetch('/api/register', { // Путь к вашему POST роуту
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+      });
+      console.log("response",response)
+
+      if (!response.ok) {
+        console.error("Failed to create profile");
+        // Здесь можно решить: считать ли это ошибкой регистрации или нет
+      }
+
+      // router.push("/auth/sign-up-success");
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred");
     } finally {
