@@ -1,4 +1,3 @@
-import Header from '@/components/layout/Header';
 import Hero from '@/components/sections/home-page/Hero';
 import Ticker from '@/components/sections/home-page/Ticker';
 import RecentProducts from '@/components/sections/home-page/RecentProducts';
@@ -7,7 +6,6 @@ import WeekendSpecials from "@/sections/home-page/WeekendSpecials";
 import Features from "@/sections/home-page/Features";
 import Newsletter from "@/sections/home-page/Newsletter";
 import Footer from "@/layout/Footer";
-// Сюда же импортируем WeekendSpecials, Features, Newsletter, Footer
 
 export default function Home() {
   return (
