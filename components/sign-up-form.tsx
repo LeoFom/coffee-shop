@@ -53,7 +53,7 @@ export function SignUpForm({
 
       if (error) throw error;
 
-      const response = await fetch('/api/register', { // Путь к вашему POST роуту
+      const response = await fetch('/api/auth/register', { // Путь к вашему POST роуту
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -13,6 +13,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useState } from "react";
+import {setAccessToken} from "@/store/auth/authSlice";
+import {useDispatch} from "react-redux";
 
 export function LoginForm({
   className,
@@ -23,6 +25,7 @@ export function LoginForm({
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  const dispatch = useDispatch()
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -43,8 +46,9 @@ export function LoginForm({
     try {
       if (error) throw error;
 
-      const response = await fetch('/api/log-in', { // Путь к вашему POST роуту
+      const response = await fetch('/api/auth/log-in', {
         method: 'POST',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email: email,
@@ -53,13 +57,14 @@ export function LoginForm({
       });
 
       const data = await response.json();
-      console.log(" LOG-IN (DATA) -> ",data)
+      console.log("!!! LOG-IN (DATA) -> ",data)
 
-      if (response.ok) {
-        console.log("Профиль загружен: data", data);
-      }
-      if (error) throw error;
+      dispatch(setAccessToken(''))
+      // if (response.ok) {
+      //   console.log("Профиль загружен: data", data);
+      // }
       // router.push("/protected");
+      if (error) throw error;
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred");
     } finally {
@@ -94,7 +99,7 @@ export function LoginForm({
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
                   <Link
-                    href="/auth/forgot-password"
+                    href="/app/(public)/auth/forgot-password"
                     className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                   >
                     Forgot your password?
@@ -116,7 +121,7 @@ export function LoginForm({
             <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{" "}
               <Link
-                href="/auth/sign-up"
+                href="/app/(public)/auth/sign-up"
                 className="underline underline-offset-4"
               >
                 Sign up
