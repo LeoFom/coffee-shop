@@ -4,7 +4,7 @@ import {nodejsFetch} from "@/lib/nodejs/fetcher";
 export async function POST(req: NextRequest) {
   const body = await req.json();
 
-  const data = await nodejsFetch(`/profile`, {
+  const data = await nodejsFetch(`/auth/logout`, {
     method: 'POST',
     body: body,
     cache: 'no-store',
