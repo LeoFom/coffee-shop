@@ -6,7 +6,7 @@ export async function POST(req: NextRequest) {
 
   const data = await nodejsFetch(`/auth/logout`, {
     method: 'POST',
-    body: body,
+    body: body ? JSON.stringify(body) : undefined,
     cache: 'no-store',
   });
 
