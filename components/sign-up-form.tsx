@@ -36,7 +36,7 @@ export function SignUpForm({
     }
 
     if(!email) {
-      setError("Email do not match");
+      setError("Email is required");
       setIsLoading(false);
       return;
     }
@@ -51,7 +51,7 @@ export function SignUpForm({
       //   },
       // });
 
-      if (error) throw error;
+      // if (error) throw error;
 
       const response = await fetch('/api/auth/register', { // Путь к вашему POST роуту
         method: 'POST',
@@ -64,13 +64,13 @@ export function SignUpForm({
       console.log("response",response)
 
       if (!response.ok) {
-        console.error("Failed to create profile");
-        // Здесь можно решить: считать ли это ошибкой регистрации или нет
+        const data = await response.json();
+        console.log(`Failed to create profile;\nStatus - ${response.status};\nText - ${data.message};`);
+        throw new Error(data.message || 'Registration failed');
       }
-
-      // router.push("/auth/sign-up-success");
+      // router.push('/auth/sign-up-success');
     } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "An error occurred");
+      setError( error instanceof Error ? error.message : 'Something went wrong' );
     } finally {
       setIsLoading(false);
     }
