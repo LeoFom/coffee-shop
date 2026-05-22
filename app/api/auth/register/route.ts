@@ -1,14 +1,14 @@
 import { NextRequest } from 'next/server';
-import {nodejsFetch} from "lib/nodejs/fetcher";
+import {nodejsFetch} from "@/lib/nodejs/fetcher";
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
 
   const data = await nodejsFetch(`/auth/register`, {
     method: 'POST',
-    body: body,
+    body: body ? JSON.stringify(body) : undefined,
     cache: 'no-store',
   });
 
-  return Response.json(data);
+  return data;
 }
