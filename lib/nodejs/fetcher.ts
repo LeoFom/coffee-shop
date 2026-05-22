@@ -22,7 +22,8 @@ export async function nodejsFetch(
       // 3. Безопасно подмешиваем кастомные заголовки (куки, авторизацию), не ломая дефолтные
       ...customHeaders,
     },
-    body: body ? JSON.stringify(body) : undefined,
+    body: body || undefined,
+    // body: body ? JSON.stringify(body) : undefined,
     cache,
     next,
   });
