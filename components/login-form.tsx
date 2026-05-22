@@ -59,7 +59,7 @@ export function LoginForm({
       const data = await response.json();
       console.log("!!! LOG-IN (DATA) -> ",data)
 
-      dispatch(setAccessToken(''))
+       dispatch(setAccessToken(data.accessToken))
       // if (response.ok) {
       //   console.log("Профиль загружен: data", data);
       // }
@@ -99,7 +99,7 @@ export function LoginForm({
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
                   <Link
-                    href="/app/(public)/auth/forgot-password"
+                    href="/auth/forgot-password"
                     className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                   >
                     Forgot your password?
@@ -121,7 +121,7 @@ export function LoginForm({
             <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{" "}
               <Link
-                href="/app/(public)/auth/sign-up"
+                href="/auth/sign-up"
                 className="underline underline-offset-4"
               >
                 Sign up
