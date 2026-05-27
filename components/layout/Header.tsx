@@ -17,7 +17,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="w-full py-6 absolute top-0 z-50">
+      <header className="w-full py-6 absolute top-0 z-30">
         <Container className="flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <div className="w-8 h-8 bg-brand-brown rounded-full"></div>
