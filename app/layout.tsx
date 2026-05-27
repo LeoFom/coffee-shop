@@ -6,6 +6,7 @@ import Header from "@/layout/Header";
 import StoreProvider from "@/store/StoreProvider";
 import {AuthProvider} from "@/components/providers/AuthProvider";
 import {getUser} from "@/lib/auth/getUser";
+import {Toaster} from "sonner";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -53,6 +54,25 @@ export default async function RootLayout({
           >
             {children}
           </div>
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              classNames: {
+                success:
+                  "!bg-success !text-success-foreground !border-success/20",
+
+                error:
+                  "!bg-error !text-error-foreground !border-error/20",
+
+                warning:
+                  "!bg-warning !text-warning-foreground !border-warning/20",
+
+                info:
+                  "!bg-info !text-info-foreground !border-info/20",
+              },
+            }}
+            closeButton={true}
+          />
         </AuthProvider>
       </StoreProvider>
       </body>
