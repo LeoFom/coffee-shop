@@ -61,6 +61,17 @@ export default {
           "4": "hsl(var(--chart-4))",
           "5": "hsl(var(--chart-5))",
         },
+        success: "hsl(var(--success))",
+        "success-foreground": "hsl(var(--success-foreground))",
+
+        warning: "hsl(var(--warning))",
+        "warning-foreground": "hsl(var(--warning-foreground))",
+
+        error: "hsl(var(--error))",
+        "error-foreground": "hsl(var(--error-foreground))",
+
+        info: "hsl(var(--info))",
+        "info-foreground": "hsl(var(--info-foreground))",
       },
       animation: {
         'marquee': 'marquee 25s linear infinite',
