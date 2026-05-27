@@ -5,15 +5,60 @@ import DashboardInput from "@/components/dashboard/ui/DashboardInput";
 import DashboardTextarea from "@/components/dashboard/ui/DashboardTextarea";
 import DashboardSelect from "@/components/dashboard/ui/DashboardSelect";
 
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import {ProductFormValues} from "@/types/products";
+import {createProduct} from "@/lib/features/api/createProduct";
+import {handleRequestNotification} from "@/lib/handler/handleRequestNotification";
+
 interface ProductFormPanelProps {
   open: boolean;
   onClose: () => void;
 }
 
 export default function ProductFormPanel({
- open,
- onClose,
+  open,
+  onClose,
 }: ProductFormPanelProps) {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<ProductFormValues>({
+    defaultValues: {
+      name: "",
+      slug: "",
+      description: "",
+      price: 0,
+      discount: 0,
+      category: "",
+      roast: "",
+      imageUrl: "",
+    },
+  });
+
+  const onSubmit = async (data: ProductFormValues) => {
+    try {
+      onClose();
+
+      const response = await createProduct(data);
+      const result = await response.json();
+      console.log("response",response)
+
+      console.log("result",result)
+      handleRequestNotification(response, result, { successMessage: "Product created", });
+      // reset();
+      if(response.status !== 201){
+        throw {message: `Error text -> ${response.statusText}`}
+      }
+
+    } catch (error: any) {
+      console.log("CREATE PRODUCT ERROR", error);
+      toast.error(`Unexpected server error: ${error.message}`);
+    }
+  }
+
   return (
     <>
       <div
@@ -33,104 +78,148 @@ export default function ProductFormPanel({
           ${open ? "translate-x-0" : "translate-x-full"}
         `}
       >
-        <div className="px-8 py-6 border-b border-brand-brown/10 bg-white">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-2xl font-serif font-bold text-brand-brown">
-                Create Product
-              </h2>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col h-full"
+        >
+          <div className="px-8 py-6 border-b border-brand-brown/10 bg-white">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-serif font-bold text-brand-brown">
+                  Create Product
+                </h2>
 
-              <p className="text-brand-muted mt-1">
-                Add a new product to your catalog.
-              </p>
+                <p className="text-brand-muted mt-1">
+                  Add a new product to your catalog.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={onClose}
+                className="text-2xl text-brand-muted hover:text-brand-brown"
+              >
+                ×
+              </button>
             </div>
-
-            <button
-              onClick={onClose}
-              className="text-2xl text-brand-muted hover:text-brand-brown"
-            >
-              ×
-            </button>
           </div>
-        </div>
 
-        <div className="flex-1 overflow-y-auto px-8 py-8 space-y-8">
+          <div className="flex-1 overflow-y-auto px-8 py-8 space-y-8">
+            <section className="space-y-5">
+              <div>
+                <h3 className="font-serif font-bold text-brand-brown text-lg">
+                  General
+                </h3>
+              </div>
 
-          <section className="space-y-5">
-            <div>
+              <div>
+                <DashboardInput
+                  placeholder="Product Name"
+                  {...register("name", {
+                    required: "Name is required",
+                  })}
+                />
+
+                {errors.name && (
+                  <p className="text-sm text-red-500 mt-1">
+                    {errors.name.message}
+                  </p>
+                )}
+              </div>
+
+              <DashboardInput
+                placeholder="slug-name"
+                {...register("slug")}
+              />
+
+              <DashboardTextarea
+                minLength={10}
+                placeholder="Description..."
+                {...register("description")}
+              />
+            </section>
+
+            <section className="space-y-5">
               <h3 className="font-serif font-bold text-brand-brown text-lg">
-                General
+                Pricing
               </h3>
-            </div>
 
-            <DashboardInput placeholder="Product Name" />
+              <div className="grid grid-cols-2 gap-4">
+                <DashboardInput
+                  type="number"
+                  placeholder="Price"
+                  {...register("price", {
+                    valueAsNumber: true,
+                    required: "Price is required",
+                    min: {
+                      value: 0,
+                      message: "Price must be positive",
+                    },
+                  })}
+                />
 
-            <DashboardInput placeholder="slug-name" />
+                <DashboardInput
+                  type="number"
+                  placeholder="Discount %"
+                  {...register("discount", {
+                    valueAsNumber: true,
+                  })}
+                />
+              </div>
+            </section>
 
-            <DashboardTextarea placeholder="Description..." />
-          </section>
+            <section className="space-y-5">
+              <h3 className="font-serif font-bold text-brand-brown text-lg">
+                Organization
+              </h3>
 
-          <section className="space-y-5">
-            <h3 className="font-serif font-bold text-brand-brown text-lg">
-              Pricing
-            </h3>
+              <DashboardSelect
+                {...register("category", {
+                  required: "Category is required",
+                })}
+              >
+                <option value="">Select Category</option>
+                <option value="Coffee">Coffee</option>
+                <option value="Equipment">Equipment</option>
+                <option value="Merchandise">Merchandise</option>
+              </DashboardSelect>
 
-            <div className="grid grid-cols-2 gap-4">
+              <DashboardSelect {...register("roast")}>
+                <option value="">Select Roast</option>
+                <option value="Light">Light</option>
+                <option value="Medium">Medium</option>
+                <option value="Dark">Dark</option>
+              </DashboardSelect>
+            </section>
+
+            <section className="space-y-5">
+              <h3 className="font-serif font-bold text-brand-brown text-lg">
+                Media
+              </h3>
+
               <DashboardInput
-                type="number"
-                placeholder="Price"
+                placeholder="Image URL"
+                {...register("imageUrl")}
               />
-
-              <DashboardInput
-                type="number"
-                placeholder="Discount %"
-              />
-            </div>
-          </section>
-
-          <section className="space-y-5">
-            <h3 className="font-serif font-bold text-brand-brown text-lg">
-              Organization
-            </h3>
-
-            <DashboardSelect>
-              <option>Select Category</option>
-              <option>Coffee</option>
-              <option>Equipment</option>
-              <option>Merchandise</option>
-            </DashboardSelect>
-
-            <DashboardSelect>
-              <option>Select Roast</option>
-              <option>Light</option>
-              <option>Medium</option>
-              <option>Dark</option>
-            </DashboardSelect>
-          </section>
-
-          <section className="space-y-5">
-            <h3 className="font-serif font-bold text-brand-brown text-lg">
-              Media
-            </h3>
-
-            <DashboardInput placeholder="Image URL" />
-          </section>
-        </div>
-
-        <div className="sticky bottom-0 bg-white border-t border-brand-brown/10 p-6">
-          <div className="flex items-center justify-end gap-3">
-            <DashboardButton
-              variant="secondary"
-              onClick={onClose}
-            >
-              Cancel
-            </DashboardButton>
-
-            <DashboardButton>
-              Save Product
-            </DashboardButton>
+            </section>
           </div>
-        </div>
+
+          <div className="sticky bottom-0 bg-white border-t border-brand-brown/10 p-6">
+            <div className="flex items-center justify-end gap-3">
+              <DashboardButton
+                type="button"
+                variant="secondary"
+                onClick={onClose}
+              >
+                Cancel
+              </DashboardButton>
+
+              <DashboardButton type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Saving..." : "Save Product"}
+              </DashboardButton>
+            </div>
+          </div>
+        </form>
       </div>
     </>
   );
