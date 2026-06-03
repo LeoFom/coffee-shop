@@ -2,11 +2,9 @@ import {nodejsFetch} from "@/lib/nodejs/fetcher";
 import {NextRequest} from "next/server";
 
 export async function GET(){
-  const data = await nodejsFetch('/products', {
+  return await nodejsFetch('/products', {
     method: 'GET'
   })
-
-  return Response.json(data)
 }
 
 export async function POST(req: NextRequest) {
