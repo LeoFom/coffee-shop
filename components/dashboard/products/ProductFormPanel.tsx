@@ -7,57 +7,99 @@ import DashboardSelect from "@/components/dashboard/ui/DashboardSelect";
 
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import {ProductFormValues} from "@/types/products";
-import {createProduct} from "@/lib/features/api/createProduct";
+import {DashboardProductsType} from "@/types/products";
+import {createProduct} from "@/lib/features/api/products/createProduct";
+import {updateProduct} from "@/lib/features/api/products/updateProduct";
 import {handleRequestNotification} from "@/lib/handler/handleRequestNotification";
+import {Dispatch, SetStateAction, useEffect} from "react";
+import {ModealModeType} from "@/dashboard/products/ProductTab";
+import {useRouter} from "next/navigation";
 
 interface ProductFormPanelProps {
+  modalMode: ModealModeType;
+  editingProduct?: DashboardProductsType;
   open: boolean;
+  setEditingProductAction: Dispatch<SetStateAction<DashboardProductsType | undefined>>;
   onClose: () => void;
 }
 
+const EMPTY_PRODUCT: DashboardProductsType = {
+  id: '',
+  name: "",
+  slug: "",
+  description: "",
+  price: "",
+  discount: "",
+  category: "",
+  roast: "",
+  imageUrl: "",
+};
+
 export default function ProductFormPanel({
+  modalMode,
+  editingProduct,
   open,
   onClose,
 }: ProductFormPanelProps) {
+  const router = useRouter()
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<ProductFormValues>({
-    defaultValues: {
-      name: "",
-      slug: "",
-      description: "",
-      price: 0,
-      discount: 0,
-      category: "",
-      roast: "",
-      imageUrl: "",
-    },
+  } = useForm<DashboardProductsType>({
+    defaultValues: EMPTY_PRODUCT,
   });
 
-  const onSubmit = async (data: ProductFormValues) => {
+  const onSubmit = async (data: DashboardProductsType) => {
     try {
-      onClose();
+      const response =
+        modalMode === "create"
+          ? await createProduct(data)
+          : await updateProduct(data.id, data);
 
-      const response = await createProduct(data);
       const result = await response.json();
-      console.log("response",response)
 
-      console.log("result",result)
-      handleRequestNotification(response, result, { successMessage: "Product created", });
-      // reset();
-      if(response.status !== 201){
-        throw {message: `Error text -> ${response.statusText}`}
+      console.log("(onSubmit) => result",result)
+      if (!response.ok) {
+        throw new Error(
+          result?.message || response.statusText
+        );
       }
 
-    } catch (error: any) {
-      console.log("CREATE PRODUCT ERROR", error);
-      toast.error(`Unexpected server error: ${error.message}`);
+      handleRequestNotification(
+        response,
+        result,
+        {
+          successMessage:
+            modalMode === "create"
+              ? "Product created"
+              : "Product updated",
+        }
+      );
+
+      router.refresh();
+      reset();
+      onClose();
+
+    } catch (error) {
+      console.error(error);
+
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Unexpected server error"
+      );
     }
-  }
+  };
+
+  useEffect(() => {
+    if (editingProduct && modalMode === 'editing') {
+      reset(editingProduct);
+    } else {
+      reset(EMPTY_PRODUCT);
+    }
+  }, [editingProduct, modalMode, reset]);
 
   return (
     <>
