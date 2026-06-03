@@ -1,15 +1,18 @@
 "use client";
 
 import { useState } from "react";
-
 import ProductStats from "@/components/dashboard/products/ProductStats";
 import ProductToolbar from "@/components/dashboard/products/ProductToolbar";
 import ProductTable from "@/components/dashboard/products/ProductTable";
 import ProductFormPanel from "@/components/dashboard/products/ProductFormPanel";
+import {DashboardProductsType} from "@/types/products";
 
-export default function ProductPage() {
-  const [isPanelOpen, setIsPanelOpen] =
-    useState(false);
+export type ModealModeType = 'create' | 'editing' | null
+
+export default function ProductTab() {
+  const [modalMode, setModalMode] = useState<ModealModeType>(null)
+
+  const [editingProduct, setEditingProduct] = useState<DashboardProductsType | undefined>(undefined)
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -30,17 +33,28 @@ export default function ProductPage() {
         <ProductStats />
 
         <ProductToolbar
-          onCreate={() => setIsPanelOpen(true)}
+          onCreate={() => {
+            setModalMode('create')
+          }}
         />
 
         <ProductTable
-          onEdit={() => setIsPanelOpen(true)}
+          onEdit={() => {
+            setModalMode('editing')
+          }}
+          setEditingProductAction={setEditingProduct}
         />
       </div>
 
       <ProductFormPanel
-        open={isPanelOpen}
-        onClose={() => setIsPanelOpen(false)}
+        open={!!modalMode}
+        modalMode={modalMode}
+        editingProduct={editingProduct}
+        setEditingProductAction={setEditingProduct}
+        onClose={() => {
+          setEditingProduct(undefined)
+          setModalMode(null)
+        }}
       />
     </div>
   );
