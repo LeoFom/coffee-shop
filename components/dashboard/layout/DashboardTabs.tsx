@@ -1,11 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-
-export interface DashboardTab {
-  id: string;
-  label: string;
-}
+import {DashboardTab} from "@/dashboard/types/dashboardTypes";
 
 interface DashboardTabsProps {
   tabs: DashboardTab[];
