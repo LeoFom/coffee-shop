@@ -18,7 +18,7 @@ type AuthContextType = {
   >;
 };
 
-const AuthContext =
+export const AuthContext =
   createContext<AuthContextType | null>(null);
 
 export function AuthProvider({
@@ -42,14 +42,4 @@ export function AuthProvider({
       {children}
     </AuthContext.Provider>
   );
-}
-
-export function useAuth() {
-  const context = useContext(AuthContext);
-
-  if (!context) {
-    throw new Error("useAuth error");
-  }
-
-  return context;
 }
