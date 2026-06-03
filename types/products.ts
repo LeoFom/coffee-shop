@@ -20,3 +20,20 @@ export type ProductFormValues = {
   roast: string;
   imageUrl: string;
 };
+
+export type DashboardProductsType = {
+  id: string;
+  category?: string;
+  currency?: string;
+  description?: string;
+  imageUrl?: string;
+  isActive?: boolean;
+  memberDiscountPercent?: string;
+  name?: string;
+  price?: string;
+  discount?: string;
+  roast?: string;
+  slug?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
