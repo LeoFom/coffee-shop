@@ -1,3 +1,5 @@
+import {DashboardProductsType} from "@/types/products";
+
 export type ProductCategory = 'Beans' | 'Merch' | 'Equipment' | 'Instant';
 export type RoastLevel = 'Light' | 'Medium' | 'Dark';
 
@@ -42,4 +44,24 @@ export const MOCK_PRODUCTS: Product[] = [
   { id: '28', slug: 'coffee-scales', name: 'Digital Coffee Scales', price: 35, category: 'Equipment', isMemberDiscount: false },
   { id: '29', slug: 'barista-apron', name: 'Denim Barista Apron', price: 40, category: 'Merch', isMemberDiscount: true },
   { id: '30', slug: 'cold-brew-pack', name: 'Cold Brew Filter Packs', price: 18, category: 'Beans', roast: 'Medium', isMemberDiscount: false },
+];
+
+
+export const MOCK_PRODUCTS_DASHBOARD: DashboardProductsType[] = [
+  {
+    id: "1",
+    name: "Ethiopian Beans",
+    category: "Coffee",
+    price: '24.99',
+    isActive: true,
+    createdAt: "May 20, 2026",
+  },
+  {
+    id: "2",
+    name: "Premium Grinder",
+    category: "Equipment",
+    price: '89.99',
+    isActive: false,
+    createdAt: "May 18, 2026",
+  },
 ];
