@@ -1,8 +1,9 @@
-import {DashboardProductsType} from "@/types/products";
+import {DashboardProductsType as ProductsType} from "@/types/products";
+import {DashboardProductsType} from "@/components/dashboard/types/dashboardTypes";
 
 export async function updateProduct(
   id: string,
-  data: DashboardProductsType
+  data: ProductsType | DashboardProductsType
 ) {
   return fetch(`/api/products/${id}`, {
     method: "PATCH",
