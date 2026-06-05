@@ -9,8 +9,14 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/v1/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'fabrykakavy.com',
+        port: '',
+        pathname: '/wp-content/uploads**',
+      },
     ],
-    domains: ['api.qrserver.com'],
+    domains: ['api.qrserver.com', 'fabrykakavy.com'],
   },
 };
 
