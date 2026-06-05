@@ -7,13 +7,14 @@ import DashboardSelect from "@/components/dashboard/ui/DashboardSelect";
 
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import {DashboardProductsType} from "@/types/products";
+import {DashboardProductsType} from "@/components/dashboard/types/dashboardTypes";
 import {createProduct} from "@/lib/features/api/products/createProduct";
 import {updateProduct} from "@/lib/features/api/products/updateProduct";
 import {handleRequestNotification} from "@/lib/handler/handleRequestNotification";
 import {Dispatch, SetStateAction, useEffect} from "react";
 import {ModealModeType} from "@/dashboard/products/ProductTab";
 import {useRouter} from "next/navigation";
+import {EMPTY_PRODUCT} from "@/dashboard/data/dashboardData";
 
 interface ProductFormPanelProps {
   modalMode: ModealModeType;
@@ -22,18 +23,6 @@ interface ProductFormPanelProps {
   setEditingProductAction: Dispatch<SetStateAction<DashboardProductsType | undefined>>;
   onClose: () => void;
 }
-
-const EMPTY_PRODUCT: DashboardProductsType = {
-  id: '',
-  name: "",
-  slug: "",
-  description: "",
-  price: "",
-  discount: "",
-  category: "",
-  roast: "",
-  imageUrl: "",
-};
 
 export default function ProductFormPanel({
   modalMode,
