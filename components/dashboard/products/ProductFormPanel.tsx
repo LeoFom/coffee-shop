@@ -225,6 +225,175 @@ export default function ProductFormPanel({
 
             <section className="space-y-5">
               <h3 className="font-serif font-bold text-brand-brown text-lg">
+                Coffee Details
+              </h3>
+
+              <div className="grid grid-cols-2 gap-4">
+
+                <DashboardSelect {...register("coffeeType")}>
+                  <option value="">Coffee Type</option>
+                  <option value="Beans">Beans</option>
+                  <option value="Ground">Ground</option>
+                  <option value="Drip">Drip</option>
+                  <option value="Capsules">Capsules</option>
+                </DashboardSelect>
+
+                <DashboardInput
+                  placeholder="Weight (grams)"
+                  type="number"
+                  {...register("weightGrams", {
+                    valueAsNumber: true,
+                  })}
+                />
+
+                <DashboardInput
+                  placeholder="Country"
+                  {...register("originCountry")}
+                />
+
+                <DashboardInput
+                  placeholder="Region"
+                  {...register("region")}
+                />
+
+                <DashboardInput
+                  placeholder="Farm"
+                  {...register("farm")}
+                />
+
+                <DashboardInput
+                  placeholder="Processing Station"
+                  {...register("processingStation")}
+                />
+
+                <DashboardInput
+                  placeholder="Variety"
+                  {...register("variety")}
+                />
+
+                <DashboardSelect
+                  {...register("processingMethod")}
+                >
+                  <option value="">
+                    Processing Method
+                  </option>
+
+                  <option value="Washed">
+                    Washed
+                  </option>
+
+                  <option value="Natural">
+                    Natural
+                  </option>
+
+                  <option value="Honey">
+                    Honey
+                  </option>
+
+                  <option value="Anaerobic">
+                    Anaerobic
+                  </option>
+
+                  <option value="SemiWashed">
+                    Semi Washed
+                  </option>
+                </DashboardSelect>
+
+                <DashboardInput
+                  type="number"
+                  placeholder="Altitude Min"
+                  {...register("altitudeMin", {
+                    valueAsNumber: true,
+                  })}
+                />
+
+                <DashboardInput
+                  type="number"
+                  placeholder="Altitude Max"
+                  {...register("altitudeMax", {
+                    valueAsNumber: true,
+                  })}
+                />
+
+                <DashboardInput
+                  type="number"
+                  placeholder="SCA Score"
+                  {...register("scaScore", {
+                    valueAsNumber: true,
+                  })}
+                />
+              </div>
+            </section>
+
+            <section className="space-y-5">
+              <h3 className="font-serif font-bold text-brand-brown text-lg">
+                Taste Profile
+              </h3>
+
+              <div className="grid grid-cols-2 gap-4">
+
+                <DashboardInput
+                  type="number"
+                  placeholder="Acidity (1-5)"
+                  {...register("acidity", {
+                    valueAsNumber: true,
+                  })}
+                />
+
+                <DashboardInput
+                  type="number"
+                  placeholder="Sweetness (1-5)"
+                  {...register("sweetness", {
+                    valueAsNumber: true,
+                  })}
+                />
+
+                <DashboardInput
+                  type="number"
+                  placeholder="Bitterness (1-5)"
+                  {...register("bitterness", {
+                    valueAsNumber: true,
+                  })}
+                />
+
+                <DashboardInput
+                  type="number"
+                  placeholder="Body (1-5)"
+                  {...register("body", {
+                    valueAsNumber: true,
+                  })}
+                />
+
+                <DashboardInput
+                  type="number"
+                  placeholder="Arabica %"
+                  {...register("arabicaPercent", {
+                    valueAsNumber: true,
+                  })}
+                />
+
+                <DashboardInput
+                  type="number"
+                  placeholder="Robusta %"
+                  {...register("robustaPercent", {
+                    valueAsNumber: true,
+                  })}
+                />
+
+                {/*<DashboardInput*/}
+                {/*  placeholder="Chocolate, Caramel, Orange"*/}
+                {/*  {...register("flavorNotesText")}*/}
+                {/*/>*/}
+
+                {/*<DashboardInput*/}
+                {/*  placeholder="Espresso, V60, Aeropress"*/}
+                {/*  {...register("brewingMethodsText")}*/}
+                {/*/>*/}
+              </div>
+            </section>
+
+            <section className="space-y-5">
+              <h3 className="font-serif font-bold text-brand-brown text-lg">
                 Media
               </h3>
 
