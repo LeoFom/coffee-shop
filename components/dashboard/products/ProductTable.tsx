@@ -8,6 +8,7 @@ import {selectProducts} from "@/store/products/productSelectors";
 import {useSelector} from "react-redux";
 import {Dispatch, SetStateAction} from "react";
 import {Skeleton} from "@/ui/skeleton";
+import Image from "next/image";
 
 interface ProductTableProps {
   onEdit: () => void;
@@ -112,7 +113,13 @@ function ProductTable({
               >
                 <td className="p-5">
                   <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 rounded-xl bg-card-sand" />
+                    <div className="relative w-14 h-14 rounded-xl bg-card-sand">
+                      <Image
+                        src={product.imageUrl ?? ''}
+                        alt={product.name ?? `Product ${product.id}`}
+                        fill
+                      />
+                    </div>
                     <div>
                       <h4 className="font-medium text-brand-brown">{product.name}</h4>
                       <p className="text-sm text-brand-muted">Premium catalog product</p>
