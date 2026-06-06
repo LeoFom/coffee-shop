@@ -1,11 +1,57 @@
 import {nodejsFetch} from "@/lib/nodejs/fetcher";
-import {NextRequest} from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 
-export async function GET(id: string){
-  return await nodejsFetch(`/products/${id}`, {
-    method: 'GET'
-  })
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+){
+  try {
+    const { id } = await params;
+
+    // 1. Базовая валидация
+    if (!id) {
+      return NextResponse.json(
+        { error: 'Product ID is required' },
+        { status: 400 }
+      );
+    }
+
+    // 2. Выполнение запроса
+    const response = await nodejsFetch(`/products/${id}`, {
+      method: 'GET',
+    });
+
+    // 3. Обработка неуспешных статусов от внешнего API (если nodejsFetch возвращает Response)
+    if (!response.ok) {
+      return NextResponse.json(
+        { error: 'Product not found or upstream error' },
+        { status: response.status }
+      );
+    }
+
+    // 4. Парсинг и возврат успешного результата
+    const data = await response.json(); // Предполагаем, что API возвращает JSON
+    return NextResponse.json(data, { status: 200 });
+
+  } catch (error) {
+    // 5. Логирование и безопасный ответ при критической ошибке
+    // console.error(`[GET /products/${id}] Error fetching product:`, error);
+
+    return NextResponse.json(
+      { error: 'Internal Server Error' },
+      { status: 500 }
+    );
+  }
 }
+
+
+// {
+//   const { id } = await params;
+//
+//   return await nodejsFetch(`/products/${id}`, {
+//     method: 'GET'
+//   })
+// }
 
 export async function PATCH(
   req: NextRequest,
