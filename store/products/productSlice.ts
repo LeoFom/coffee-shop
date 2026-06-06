@@ -1,28 +1,27 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {DashboardProductsType} from "@/types/products";
-import {MOCK_PRODUCTS_DASHBOARD} from "@/lib/data/mockProducts";
+import {ProductsType} from "@/types/products.types";
 
 interface ProductsState {
-  items: DashboardProductsType[];
+  items: ProductsType[];
 }
 
 const initialState: ProductsState = {
-  items: MOCK_PRODUCTS_DASHBOARD,
+  items: [],
 };
 
 export const productsSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
-    setProducts: (state, action: PayloadAction<DashboardProductsType[]>) => {
+    setProducts: (state, action: PayloadAction<ProductsType[]>) => {
       state.items = action.payload;
     },
 
-    addProduct: (state, action: PayloadAction<DashboardProductsType>) => {
+    addProduct: (state, action: PayloadAction<ProductsType>) => {
       state.items.push(action.payload);
     },
 
-    updateProduct: (state, action: PayloadAction<DashboardProductsType>) => {
+    updateProduct: (state, action: PayloadAction<ProductsType>) => {
       const index = state.items.findIndex(p => p.id === action.payload.id);
       if (index !== -1) {
         state.items[index] = action.payload;
