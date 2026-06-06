@@ -1,5 +1,3 @@
-import {DashboardProductsType} from "@/types/products";
-
 export type ProductCategory = 'Beans' | 'Merch' | 'Equipment' | 'Instant';
 export type RoastLevel = 'Light' | 'Medium' | 'Dark';
 
@@ -47,7 +45,7 @@ export const MOCK_PRODUCTS: Product[] = [
 ];
 
 
-export const MOCK_PRODUCTS_DASHBOARD: DashboardProductsType[] = [
+export const MOCK_PRODUCTS_DASHBOARD = [
   {
     id: "1",
     name: "Ethiopian Beans",

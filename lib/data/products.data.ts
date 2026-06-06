@@ -1,3 +1,5 @@
+import {ProductsType} from "@/types/products.types";
+
 export const COFFEE_TYPES = [
   "Beans",
   "Ground",
@@ -122,3 +124,51 @@ export const PRODUCTS_PREVIEW = [
       "https://fabrykakavy.com/wp-content/uploads/2024/01/guji_1kg-600x600.webp",
   },
 ] as const;
+
+export const EMPTY_PRODUCT: ProductsType = {
+  id: "",
+
+  name: "",
+  slug: "",
+
+  description: "",
+  imageUrl: "",
+
+  category: 'Coffee',
+
+  price: 0,
+  discount: 0,
+
+  coffeeDetails: {
+    coffeeType: 'Beans',
+
+    roast: 'Dark',
+
+    originCountry: "",
+    region: "",
+
+    farm: "",
+    processingStation: "",
+
+    variety: "",
+
+    processingMethod: 'Anaerobic',
+
+    altitudeMin: undefined,
+    altitudeMax: undefined,
+
+    scaScore: undefined,
+
+    arabicaPercent: undefined,
+    robustaPercent: undefined,
+
+    acidity: undefined,
+    sweetness: undefined,
+    bitterness: undefined,
+    body: undefined,
+
+    caffeineLevel: undefined,
+
+    weightGrams: undefined,
+  },
+};
