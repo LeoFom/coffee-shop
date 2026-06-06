@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import {DashboardTab} from "@/dashboard/types/dashboardTypes";
+import {DashboardTab} from "@/types/dashboard.types";
 
 interface DashboardTabsProps {
   tabs: DashboardTab[];

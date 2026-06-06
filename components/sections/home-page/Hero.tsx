@@ -1,7 +1,7 @@
 'use client';
 import Container from '@/ui/Container';
 import Button from '@/ui/ButtonSecond';
-import {getTasks} from "@/components/api/tasks";
+import {getTasks} from "@/lib/features/api/tasks/getTasks";
 
 export default function Hero() {
   return (

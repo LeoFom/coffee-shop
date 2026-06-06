@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { MOCK_PRODUCTS } from '@/lib/data/mockProducts'; // Шлях до файлу з твоїми MOCK_PRODUCTS
-import { Orders } from '@/types/orders';
+import { Orders } from '@/types/orders.types';
 
 // Створюємо мокові замовлення на основі твоїх продуктів
 const MOCK_ORDERS: Orders[] = [

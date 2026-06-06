@@ -3,23 +3,23 @@
 import DashboardCard from "@/components/dashboard/ui/DashboardCard";
 import DashboardBadge from "@/components/dashboard/ui/DashboardBadge";
 import DashboardButton from "@/components/dashboard/ui/DashboardButton";
-import {DashboardProductsType} from "@/types/products";
 import {selectProducts} from "@/store/products/productSelectors";
 import {useSelector} from "react-redux";
 import {Dispatch, SetStateAction} from "react";
 import {Skeleton} from "@/ui/skeleton";
 import Image from "next/image";
+import {ProductsType} from "@/types/products.types";
 
 interface ProductTableProps {
   onEdit: () => void;
-  setEditingProductAction: Dispatch<SetStateAction<DashboardProductsType | undefined>>;
+  setEditingProductAction: Dispatch<SetStateAction<ProductsType | undefined>>;
 }
 
 function ProductTable({
   onEdit,
   setEditingProductAction,
 }: ProductTableProps) {
-  const products: DashboardProductsType[] = useSelector(selectProducts)
+  const products: ProductsType[] = useSelector(selectProducts)
   const isLoading = !products
 
   const skeletonRows = Array.from({ length: 5 });
@@ -130,11 +130,18 @@ function ProductTable({
                 <td className="p-5 font-medium text-brand-brown">${product.price}</td>
                 <td className="p-5">{'0%'}</td>
                 <td className="p-5">
-                  <DashboardBadge variant={product.isActive ? "success" : "inactive"}>
-                    {product.isActive ? "Active" : "Inactive"}
+                  <DashboardBadge variant={"success"}>
+                    {"Active"}
                   </DashboardBadge>
+
+                  {/*<DashboardBadge variant={product.isActive ? "success" : "inactive"}>*/}
+                  {/*  {product.isActive ? "Active" : "Inactive"}*/}
+                  {/*</DashboardBadge>*/}
                 </td>
-                <td className="p-5 text-brand-muted">{product.createdAt}</td>
+                <td className="p-5 text-brand-muted">
+                  2026.04.06
+                  {/*{product.createdAt}*/}
+                </td>
                 <td className="p-5">
                   <div className="flex justify-end gap-2">
                     <DashboardButton

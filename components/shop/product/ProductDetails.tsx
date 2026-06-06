@@ -27,7 +27,7 @@ export default function ProductDetails({ slug }: Props) {
             {product.category}
           </span>
 
-          {product.isMemberDiscount && (
+          {product.discount && (
             <div className="absolute top-4 left-4 bg-brand-brown text-white text-xs px-3 py-1 rounded-full font-bold">
               Member Perk
             </div>

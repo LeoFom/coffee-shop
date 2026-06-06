@@ -2,14 +2,14 @@
 
 import { useDispatch } from 'react-redux';
 import { addToCart } from '@/store/cartSlice';
-import { Product } from '@/types/products';
 import { useState } from 'react';
+import {ProductsType} from "@/types/products.types";
 
-export default function ProductActions({ product }: { product: Product }) {
+export default function ProductActions({ product }: { product: ProductsType }) {
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
 
-  const finalPrice = product.isMemberDiscount
+  const finalPrice = product.discount
     ? product.price * 0.85
     : product.price;
 

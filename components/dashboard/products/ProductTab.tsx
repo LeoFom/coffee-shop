@@ -5,14 +5,14 @@ import ProductStats from "@/components/dashboard/products/ProductStats";
 import ProductToolbar from "@/components/dashboard/products/ProductToolbar";
 import ProductTable from "@/components/dashboard/products/ProductTable";
 import ProductFormPanel from "@/components/dashboard/products/ProductFormPanel";
-import {DashboardProductsType} from "@/types/products";
+import {ProductsType} from "@/types/products.types";
 
 export type ModealModeType = 'create' | 'editing' | null
 
 export default function ProductTab() {
   const [modalMode, setModalMode] = useState<ModealModeType>(null)
 
-  const [editingProduct, setEditingProduct] = useState<DashboardProductsType | undefined>(undefined)
+  const [editingProduct, setEditingProduct] = useState<ProductsType | undefined>(undefined)
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">

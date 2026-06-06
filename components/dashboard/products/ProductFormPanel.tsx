@@ -7,20 +7,20 @@ import DashboardSelect from "@/components/dashboard/ui/DashboardSelect";
 
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import {DashboardProductsType} from "@/components/dashboard/types/dashboardTypes";
 import {createProduct} from "@/lib/features/api/products/createProduct";
 import {updateProduct} from "@/lib/features/api/products/updateProduct";
 import {handleRequestNotification} from "@/lib/handler/handleRequestNotification";
 import {Dispatch, SetStateAction, useEffect} from "react";
 import {ModealModeType} from "@/dashboard/products/ProductTab";
 import {useRouter} from "next/navigation";
-import {EMPTY_PRODUCT} from "@/dashboard/data/dashboardData";
+import {ProductsType} from "@/types/products.types";
+import {EMPTY_PRODUCT} from "@/lib/data/products.data";
 
 interface ProductFormPanelProps {
   modalMode: ModealModeType;
-  editingProduct?: DashboardProductsType;
+  editingProduct?: ProductsType;
   open: boolean;
-  setEditingProductAction: Dispatch<SetStateAction<DashboardProductsType | undefined>>;
+  setEditingProductAction: Dispatch<SetStateAction<ProductsType | undefined>>;
   onClose: () => void;
 }
 
@@ -36,11 +36,11 @@ export default function ProductFormPanel({
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<DashboardProductsType>({
+  } = useForm<ProductsType>({
     defaultValues: EMPTY_PRODUCT,
   });
 
-  const onSubmit = async (data: DashboardProductsType) => {
+  const onSubmit = async (data: ProductsType) => {
     try {
       const response =
         modalMode === "create"
@@ -215,7 +215,7 @@ export default function ProductFormPanel({
                 <option value="Merchandise">Merchandise</option>
               </DashboardSelect>
 
-              <DashboardSelect {...register("roast")}>
+              <DashboardSelect {...register("coffeeDetails.roast")}>
                 <option value="">Select Roast</option>
                 <option value="Light">Light</option>
                 <option value="Medium">Medium</option>
@@ -230,7 +230,7 @@ export default function ProductFormPanel({
 
               <div className="grid grid-cols-2 gap-4">
 
-                <DashboardSelect {...register("coffeeType")}>
+                <DashboardSelect {...register("coffeeDetails.coffeeType")}>
                   <option value="">Coffee Type</option>
                   <option value="Beans">Beans</option>
                   <option value="Ground">Ground</option>
@@ -241,38 +241,38 @@ export default function ProductFormPanel({
                 <DashboardInput
                   placeholder="Weight (grams)"
                   type="number"
-                  {...register("weightGrams", {
+                  {...register("coffeeDetails.weightGrams", {
                     valueAsNumber: true,
                   })}
                 />
 
                 <DashboardInput
                   placeholder="Country"
-                  {...register("originCountry")}
+                  {...register("coffeeDetails.originCountry")}
                 />
 
                 <DashboardInput
                   placeholder="Region"
-                  {...register("region")}
+                  {...register("coffeeDetails.region")}
                 />
 
                 <DashboardInput
                   placeholder="Farm"
-                  {...register("farm")}
+                  {...register("coffeeDetails.farm")}
                 />
 
                 <DashboardInput
                   placeholder="Processing Station"
-                  {...register("processingStation")}
+                  {...register("coffeeDetails.processingStation")}
                 />
 
                 <DashboardInput
                   placeholder="Variety"
-                  {...register("variety")}
+                  {...register("coffeeDetails.variety")}
                 />
 
                 <DashboardSelect
-                  {...register("processingMethod")}
+                  {...register("coffeeDetails.processingMethod")}
                 >
                   <option value="">
                     Processing Method
@@ -302,7 +302,7 @@ export default function ProductFormPanel({
                 <DashboardInput
                   type="number"
                   placeholder="Altitude Min"
-                  {...register("altitudeMin", {
+                  {...register("coffeeDetails.altitudeMin", {
                     valueAsNumber: true,
                   })}
                 />
@@ -310,7 +310,7 @@ export default function ProductFormPanel({
                 <DashboardInput
                   type="number"
                   placeholder="Altitude Max"
-                  {...register("altitudeMax", {
+                  {...register("coffeeDetails.altitudeMax", {
                     valueAsNumber: true,
                   })}
                 />
@@ -318,7 +318,7 @@ export default function ProductFormPanel({
                 <DashboardInput
                   type="number"
                   placeholder="SCA Score"
-                  {...register("scaScore", {
+                  {...register("coffeeDetails.scaScore", {
                     valueAsNumber: true,
                   })}
                 />
@@ -335,7 +335,7 @@ export default function ProductFormPanel({
                 <DashboardInput
                   type="number"
                   placeholder="Acidity (1-5)"
-                  {...register("acidity", {
+                  {...register("coffeeDetails.acidity", {
                     valueAsNumber: true,
                   })}
                 />
@@ -343,7 +343,7 @@ export default function ProductFormPanel({
                 <DashboardInput
                   type="number"
                   placeholder="Sweetness (1-5)"
-                  {...register("sweetness", {
+                  {...register("coffeeDetails.sweetness", {
                     valueAsNumber: true,
                   })}
                 />
@@ -351,7 +351,7 @@ export default function ProductFormPanel({
                 <DashboardInput
                   type="number"
                   placeholder="Bitterness (1-5)"
-                  {...register("bitterness", {
+                  {...register("coffeeDetails.bitterness", {
                     valueAsNumber: true,
                   })}
                 />
@@ -359,7 +359,7 @@ export default function ProductFormPanel({
                 <DashboardInput
                   type="number"
                   placeholder="Body (1-5)"
-                  {...register("body", {
+                  {...register("coffeeDetails.body", {
                     valueAsNumber: true,
                   })}
                 />
@@ -367,7 +367,7 @@ export default function ProductFormPanel({
                 <DashboardInput
                   type="number"
                   placeholder="Arabica %"
-                  {...register("arabicaPercent", {
+                  {...register("coffeeDetails.arabicaPercent", {
                     valueAsNumber: true,
                   })}
                 />
@@ -375,19 +375,19 @@ export default function ProductFormPanel({
                 <DashboardInput
                   type="number"
                   placeholder="Robusta %"
-                  {...register("robustaPercent", {
+                  {...register("coffeeDetails.robustaPercent", {
                     valueAsNumber: true,
                   })}
                 />
 
                 {/*<DashboardInput*/}
                 {/*  placeholder="Chocolate, Caramel, Orange"*/}
-                {/*  {...register("flavorNotesText")}*/}
+                {/*  {...register("coffeeDetails.flavorNotesText")}*/}
                 {/*/>*/}
 
                 {/*<DashboardInput*/}
                 {/*  placeholder="Espresso, V60, Aeropress"*/}
-                {/*  {...register("brewingMethodsText")}*/}
+                {/*  {...register("coffeeDetails.brewingMethodsText")}*/}
                 {/*/>*/}
               </div>
             </section>

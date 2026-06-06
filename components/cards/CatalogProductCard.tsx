@@ -2,49 +2,58 @@
 import Link from 'next/link';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '@/store/cartSlice';
-import { Product } from '@/lib/data/mockProducts';
+import {ProductsType} from "@/types/products.types";
+import Image from "next/image";
 
 interface CatalogProductCardProps {
-  product: Product;
+  product: ProductsType;
 }
 
 export default function CatalogProductCard({ product }: CatalogProductCardProps) {
   const dispatch = useDispatch();
 
-  const finalPrice = product.isMemberDiscount ? product.price * 0.85 : product.price;
+  const finalPrice = Number(product.discount) ? Number(product.price) * Number(product.discount) : Number(product.price);
 
   const handleAddToCart = (e: React.MouseEvent) => {
     console.log("handleAddToCart CLICK")
     e.preventDefault();
-    dispatch(addToCart({ product, price: finalPrice }));
+    dispatch(addToCart({ product, price: 1000 }));
   };
 
   return (
     <Link href={`/shop/${product.slug}`} className="group border border-brand-brown/10 rounded-2xl overflow-hidden hover:shadow-lg transition-shadow bg-white flex flex-col h-full">
-      <div className="bg-card-sand w-full h-56 flex items-center justify-center relative">
+      <div className="relative bg-card-sand w-full h-56 flex items-center justify-center">
         <span className="text-brand-brown/40 font-serif font-medium">{product.category}</span>
-        {product.isMemberDiscount && (
-          <div className="absolute top-3 left-3 bg-brand-brown text-white text-xs px-2 py-1 rounded-full font-bold">
-            Member Perk
-          </div>
-        )}
+
+        <Image
+          src={product.imageUrl ?? ''}
+          alt={product.name ?? `Product ${product.id}`}
+          loading="eager"
+          sizes={'1'}
+          fill
+        />
+        {/*{product.isMemberDiscount && (*/}
+        {/*  <div className="absolute top-3 left-3 bg-brand-brown text-white text-xs px-2 py-1 rounded-full font-bold">*/}
+        {/*    Member Perk*/}
+        {/*  </div>*/}
+        {/*)}*/}
       </div>
 
       <div className="p-5 flex flex-col flex-grow">
         <div className="mb-2">
-          <p className="text-xs text-brand-muted mb-1">{product.category} {product.roast && `• ${product.roast} Roast`}</p>
+          <p className="text-xs text-brand-muted mb-1">{product.category} {product?.coffeeDetails?.roast && `• ${product?.coffeeDetails?.roast} Roast`}</p>
           <h3 className="font-serif font-bold text-brand-brown text-lg leading-tight">{product.name}</h3>
         </div>
 
         <div className="mt-auto pt-4 flex items-center justify-between">
           <div className="flex items-end gap-2">
-            {product.isMemberDiscount ? (
+            {Number(product?.discount) ? (
               <>
                 <span className="text-2xl font-bold text-brand-brown">${finalPrice.toFixed(2)}</span>
-                <span className="text-sm text-brand-muted line-through mb-1">${product.price.toFixed(2)}</span>
+                <span className="text-sm text-brand-muted line-through mb-1">${Number(product?.price)?.toFixed(2)}</span>
               </>
             ) : (
-              <span className="text-2xl font-bold text-brand-brown">${product.price.toFixed(2)}</span>
+              <span className="text-2xl font-bold text-brand-brown">${Number(product?.price).toFixed(2)}</span>
             )}
           </div>
 

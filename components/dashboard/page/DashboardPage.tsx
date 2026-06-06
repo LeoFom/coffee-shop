@@ -6,15 +6,14 @@ import ProductTab from "@/components/dashboard/products/ProductTab";
 import DashboardStats from "@/components/dashboard/DashboardStats";
 
 import DashboardTabs from "@/components/dashboard/layout/DashboardTabs";
-import DashboardButton from "@/dashboard/ui/DashboardButton";
 import {AuthContext} from "@/components/providers/AuthProvider";
-import {DASHBOARD_TABS} from "@/dashboard/data/dashboardData";
 import {useDispatch} from "react-redux";
 import {setProducts} from "@/store/products/productSlice";
-import {DashboardProductsType} from "@/types/products";
+import {ProductsType} from "@/types/products.types";
+import {DASHBOARD_TABS} from "@/lib/data/dashboard.data";
 
 interface DashboardPageInterface {
-  productsData: DashboardProductsType[];
+  productsData: ProductsType[];
 }
 
 export default function DashboardPage({productsData}: DashboardPageInterface) {
@@ -26,20 +25,6 @@ export default function DashboardPage({productsData}: DashboardPageInterface) {
 
   const [activeTab, setActiveTab] =
     useState("overview");
-
-  const handleFetchProducts = async () => {
-    try{
-      const res = await fetch('/api/products',{
-        method: "GET",
-      })
-      const data = await res.json()
-      console.log("[DashboardPage] fetch - res",res)
-      console.log("[DashboardPage] fetch - data",data)
-    } catch (error) {
-      console.log(error)
-      console.error(error)
-    }
-  }
 
   useEffect(() => {
     dispatch(setProducts(productsData));
@@ -58,10 +43,6 @@ export default function DashboardPage({productsData}: DashboardPageInterface) {
           Manage products, orders, customers and analytics.
         </p>
       </div>
-
-      <DashboardButton onClick={handleFetchProducts}>
-        + Add Product
-      </DashboardButton>
 
       {/* Tabs */}
       <DashboardTabs
