@@ -3,17 +3,35 @@
 import Link from 'next/link';
 import Container from '@/ui/Container';
 import Button from '@/ui/ButtonSecond';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store/store';
+import {useDispatch, useSelector} from 'react-redux';
 import CartModal from '@/cart/CartModal';
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {cartSelectors} from "@/store/cart/cartSelectors";
+import {getCartItems} from "@/lib/features/api/cart/getCartItems";
+import {setCartItems} from "@/store/cart/cartSlice";
 
 export default function Header() {
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const dispatch = useDispatch();
 
-  const cartItemsCount = useSelector((state: RootState) =>
-    state.cart.items.reduce((total, item) => total + item.quantity, 0)
-  );
+  const cartItemsCount = useSelector(cartSelectors.getCartItemsCount);
+
+  useEffect(() => {
+    const initCart = async () => {
+      try {
+        const data = await getCartItems();
+        // console.log(" ...useEffect - [Header] - Loaded data: ", data);
+
+        if (data?.success) {
+          dispatch(setCartItems(data.cartItems));
+        }
+      } catch (error) {
+        console.error("Error fetching cart items:", error);
+      }
+    };
+
+    initCart();
+  }, [dispatch]);
 
   return (
     <>
