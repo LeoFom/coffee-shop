@@ -1,9 +1,11 @@
 'use client';
 import Link from 'next/link';
 import { useDispatch } from 'react-redux';
-import { addToCart } from '@/store/cartSlice';
+import { addToCart } from '@/store/cart/cartSlice';
 import {ProductsType} from "@/types/products.types";
 import Image from "next/image";
+import {useContext} from "react";
+import {AuthContext} from "@/components/providers/AuthProvider";
 
 interface CatalogProductCardProps {
   product: ProductsType;
@@ -11,13 +13,30 @@ interface CatalogProductCardProps {
 
 export default function CatalogProductCard({ product }: CatalogProductCardProps) {
   const dispatch = useDispatch();
+  const authData = useContext(AuthContext);
+  const user = authData?.user ?? null
 
   const finalPrice = Number(product.discount) ? Number(product.price) * Number(product.discount) : Number(product.price);
 
-  const handleAddToCart = (e: React.MouseEvent) => {
+  const handleAddToCart = async (e: React.MouseEvent) => {
     console.log("handleAddToCart CLICK")
     e.preventDefault();
     dispatch(addToCart({ product, price: 1000 }));
+
+    const response = await fetch('/api/cart',{
+      method: 'POST',
+      body: JSON.stringify({
+        userId: user?.id ?? '',
+        productId: product.id,
+        quantity: 1,
+        priceAtAdding: 1.2,
+      })
+    })
+
+    // console.log("response", await response.json())
+
+
+    // setTimeout(()=>{}, 100)
   };
 
   return (
