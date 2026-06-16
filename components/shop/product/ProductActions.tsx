@@ -1,7 +1,7 @@
 'use client';
 
 import { useDispatch } from 'react-redux';
-import { addToCart } from '@/store/cartSlice';
+import { addToCart } from '@/store/cart/cartSlice';
 import { useState } from 'react';
 import {ProductsType} from "@/types/products.types";
 
