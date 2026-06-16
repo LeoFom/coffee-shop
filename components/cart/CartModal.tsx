@@ -1,8 +1,8 @@
 'use client';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '@/store/store';
 import { removeFromCart, updateQuantity } from '@/store/cartSlice';
 import Button from '@/ui/ButtonSecond';
+import {cartSelectors} from "@/store/cart/cartSelectors";
 
 interface CartModalProps {
   isOpen: boolean;
@@ -10,7 +10,7 @@ interface CartModalProps {
 }
 
 export default function CartModal({ isOpen, onClose }: CartModalProps) {
-  const cartItems = useSelector((state: RootState) => state.cart.items);
+  const cartItems = useSelector(cartSelectors.getCartItems);
   const dispatch = useDispatch();
 
   const totalPrice = cartItems.reduce((acc, item) => acc + item.priceAtAdding * item.quantity, 0);
