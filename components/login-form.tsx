@@ -12,10 +12,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { useState } from "react";
+import {useContext, useState} from "react";
 import {setIsAuthenticated} from "@/store/auth/authSlice";
 import {useDispatch} from "react-redux";
 import {useRouter} from "next/navigation";
+import {AuthContext} from "@/components/providers/AuthProvider";
 
 export function LoginForm({
   className,
@@ -25,6 +26,8 @@ export function LoginForm({
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const authUser = useContext(AuthContext)
 
   const router = useRouter();
   const dispatch = useDispatch()
@@ -59,7 +62,17 @@ export function LoginForm({
       });
 
       const data = await response.json();
-      console.log("!!! LOG-IN (DATA) -> ",data)
+      // console.log("!!! LOG-IN (DATA) -> ",data)
+
+      if(data?.user?.id) {
+        const userObj = {
+          id: data.user.id ?? '',
+          email: data.user.email ?? '',
+        }
+        // console.log(" if YES! -> userObj",userObj)
+
+        authUser?.setUser(userObj)
+      }
 
       dispatch(setIsAuthenticated(true));
       await router.push("/protected");
