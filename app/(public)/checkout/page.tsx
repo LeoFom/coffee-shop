@@ -1,6 +1,6 @@
 import OrderSummary from "@/components/checkout/OrderSummary";
 import CheckoutForm from "@/components/checkout/CheckoutForm";
-import Container from '@/ui/Container';
+import Container from '@/components/ui/Container';
 
 export default function CheckoutPage() {
   return (

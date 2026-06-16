@@ -14,7 +14,7 @@ export default function TaskApi() {
       //   method: 'GET',
       //   // headers: { 'Content-Type': 'application/json' },
       // })
-      console.log("response",response)
+      // console.log("response",response)
 
     } catch (error)
     {
