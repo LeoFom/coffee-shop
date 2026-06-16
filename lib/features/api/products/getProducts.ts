@@ -2,17 +2,17 @@ import {NextResponse} from "next/server";
 
 export async function getProducts(){
   try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL
+    const apiUrl = process.env.NEXT_PUBLIC_URL
 
     if(!apiUrl) {
-      throw {message: 'Failed env NEXT_PUBLIC_API_URL'}
+      throw {message: 'Failed env NEXT_PUBLIC_URL'}
     }
 
     const response = await fetch(`${apiUrl}/api/products`, {
       method: 'GET',
     })
 
-    console.log("response",response)
+    // console.log("response",response)
     if(response.ok){
       return response.json()
     }
@@ -31,7 +31,7 @@ export const getProducts2 = async () => {
     const response = await fetch(`/api/products`, {
       method: 'GET',
     });
-    console.log("response",response)
+    // console.log("response",response)
 
     if (!response.ok) {
       const errorText = await response.text();
