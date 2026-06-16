@@ -2,11 +2,10 @@
 
 import {
   createContext,
-  useContext,
   useState,
 } from "react";
 
-type User = {
+export type User = {
   id: string;
   email: string;
 };
