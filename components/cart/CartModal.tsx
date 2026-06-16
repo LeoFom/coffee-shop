@@ -1,6 +1,6 @@
 'use client';
 import { useSelector, useDispatch } from 'react-redux';
-import { removeFromCart, updateQuantity } from '@/store/cartSlice';
+import { removeFromCart, updateQuantity } from '@/store/cart/cartSlice';
 import Button from '@/ui/ButtonSecond';
 import {cartSelectors} from "@/store/cart/cartSelectors";
 
@@ -13,7 +13,7 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
   const cartItems = useSelector(cartSelectors.getCartItems);
   const dispatch = useDispatch();
 
-  const totalPrice = cartItems.reduce((acc, item) => acc + item.priceAtAdding * item.quantity, 0);
+  const totalPrice = cartItems.reduce((acc, item) => acc + Number(item?.product?.price ?? 0) * item.quantity, 0);
 
   if (!isOpen) return null;
 
@@ -45,7 +45,7 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
 
                 <div className="flex-1">
                   <h4 className="font-bold text-brand-brown leading-tight mb-1">{item.product.name}</h4>
-                  <p className="text-brand-muted text-sm mb-2">${item.priceAtAdding.toFixed(2)}</p>
+                  <p className="text-brand-muted text-sm mb-2">${Number(item?.product?.price ?? 0).toFixed(2)}</p>
 
                   <div className="flex items-center gap-3">
                     <button
@@ -61,7 +61,7 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
                 </div>
 
                 <div className="flex flex-col items-end justify-between h-full py-1">
-                  <p className="font-bold text-brand-brown">${(item.priceAtAdding * item.quantity).toFixed(2)}</p>
+                  <p className="font-bold text-brand-brown">${(Number(item?.product?.price ?? 0) * item.quantity).toFixed(2)}</p>
                   <button
                     onClick={() => dispatch(removeFromCart(item.product.id))}
                     className="text-sm text-red-400 hover:text-red-600 underline mt-3"
