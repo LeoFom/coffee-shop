@@ -30,6 +30,7 @@ export default function Header() {
             </Link>
             <Link href="/shop" className="text-brand-brown font-medium hover:text-opacity-70">Shop</Link>
             <Link href="/orders" className="text-brand-brown font-medium hover:text-opacity-70">Orders</Link>
+            <Link href="/checkout" className="text-brand-brown font-medium hover:text-opacity-70">Checkout</Link>
             <Link href="/membership" className="text-brand-brown font-medium hover:text-opacity-70">Membership</Link>
             <Link href="/dashboard" className="text-brand-brown font-medium hover:text-opacity-70">Dashboard</Link>
             <Link href="/profile" className="text-brand-brown font-medium hover:text-opacity-70">Profile</Link>
