@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import Container from '@/ui/Container';
+import MyContainer from '@/ui/MyContainer';
 import Button from '@/ui/ButtonSecond';
 import {useDispatch, useSelector} from 'react-redux';
 import CartModal from '@/cart/CartModal';
@@ -36,7 +36,7 @@ export default function Header() {
   return (
     <>
       <header className="w-full py-6 absolute top-0 z-30">
-        <Container className="flex items-center justify-between">
+        <MyContainer className="flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <div className="w-8 h-8 bg-brand-brown rounded-full"></div>
             <span className="font-serif font-bold text-2xl text-brand-brown tracking-tighter">Coffeo</span>
@@ -87,7 +87,7 @@ export default function Header() {
               Log in / Sign up
             </Button>
           </div>
-        </Container>
+        </MyContainer>
       </header>
       <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </>

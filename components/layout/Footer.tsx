@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Container from '@/ui/Container';
+import MyContainer from "@/ui/MyContainer";
 
 const FOOTER_LINKS = {
   Privacy: [
@@ -27,7 +27,7 @@ const FOOTER_LINKS = {
 export default function Footer() {
   return (
     <footer className="bg-brand-brown pt-20 pb-8 text-white">
-      <Container>
+      <MyContainer>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-10 mb-16">
 
           {/* Динамический рендер колонок со ссылками */}
@@ -72,7 +72,7 @@ export default function Footer() {
             <Link href="#" className="hover:text-white">Blog</Link>
           </div>
         </div>
-      </Container>
+      </MyContainer>
     </footer>
   );
 }
