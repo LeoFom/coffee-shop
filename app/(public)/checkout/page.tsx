@@ -1,11 +1,11 @@
 import OrderSummary from "@/components/checkout/OrderSummary";
 import CheckoutForm from "@/components/checkout/CheckoutForm";
-import Container from '@/components/ui/Container';
+import MyContainer from '@/components/ui/MyContainer';
 
 export default function CheckoutPage() {
   return (
     <main className="w-full bg-brand-bg min-h-screen pt-20 pb-20">
-      <Container>
+      <MyContainer>
         <div className="mb-10">
           <h1 className="font-serif text-5xl font-bold text-brand-brown">
             Checkout
@@ -20,7 +20,7 @@ export default function CheckoutPage() {
           <CheckoutForm />
           <OrderSummary />
         </div>
-      </Container>
+      </MyContainer>
     </main>
   );
 }
