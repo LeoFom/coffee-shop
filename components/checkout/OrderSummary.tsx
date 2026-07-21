@@ -1,7 +1,12 @@
-import {mockCartItems} from "@/lib/data/checkout.data";
+'use client'
 import Image from "next/image";
+import {useSelector} from "react-redux";
+import {cartSelectors} from "@/store/cart/cartSelectors";
 
 export default function OrderSummary() {
+  const cartItems = useSelector(cartSelectors.getCartItems);
+  const totalPrice = cartItems.reduce((acc, item) => acc + Number(item?.product?.price ?? 0) * item.quantity, 0);
+
   return (
     <aside className="h-fit sticky top-28">
       <div className="bg-white rounded-3xl p-6 shadow-sm">
@@ -10,7 +15,7 @@ export default function OrderSummary() {
         </h2>
 
         <div className="space-y-4 mb-6">
-          {mockCartItems.map((item) => (
+          {cartItems.map((item) => (
             <div
               key={item.product.id}
               className="flex gap-4"
@@ -52,7 +57,7 @@ export default function OrderSummary() {
         <div className="border-t pt-5 space-y-3">
           <div className="flex justify-between">
             <span>Subtotal</span>
-            <span>$54.97</span>
+            <span>${totalPrice}</span>
           </div>
 
           <div className="flex justify-between">
@@ -67,7 +72,7 @@ export default function OrderSummary() {
 
           <div className="flex justify-between text-xl font-bold border-t pt-4">
             <span>Total</span>
-            <span>$55.47</span>
+            <span>${totalPrice}</span>
           </div>
         </div>
 
