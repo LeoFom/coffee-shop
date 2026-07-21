@@ -10,11 +10,9 @@ export async function GET(){
 export async function POST(req: NextRequest) {
   const body = await req.json();
 
-  const newBody= body ? JSON.stringify(body) : JSON.stringify({})
-
   const response = await nodejsFetch('/products', {
     method: 'POST',
-    body: newBody,
+    body: body,
     cache: 'no-store',
   });
 
