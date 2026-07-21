@@ -1,30 +1,33 @@
-'use client';
-
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store/store';
 import ProductActions from './ProductActions';
 import ProductInfo from './ProductInfo';
+import {getProductsBySlug} from "@/lib/features/api/products/getProductsBySlug";
+import Image from "next/image";
+import MyContainer from "@/ui/MyContainer";
 
 interface Props {
   slug: string;
 }
 
-export default function ProductDetails({ slug }: Props) {
-  const product = useSelector((state: RootState) =>
-    state.products.items.find(p => p.slug === slug)
-  );
+export default async function ProductDetails({ slug }: Props) {
+  const product = await getProductsBySlug(slug)
 
   if (!product) {
-    return <div className="p-10">Product not found</div>;
+    return <div className="p-10">{`Product not found ${slug}`}</div>;
   }
 
   return (
-    <div className="bg-brand-bg min-h-screen px-6 py-10">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
-
-        <div className="bg-card-sand rounded-3xl h-[500px] flex items-center justify-center relative">
+    <div className="bg-brand-bg min-h-screen px-6 pt-20 pb-10">
+      <MyContainer className="flex items-center justify-between gap-20">
+        <div className="relative bg-card-sand rounded-3xl h-[450px] w-[500px] flex items-center justify-center">
           <span className="text-brand-brown/40 font-serif text-xl">
-            {product.category}
+            {product?.imageUrl &&
+              <Image
+                src={product?.imageUrl ?? '/'}
+                alt={product?.name ??  ""}
+                fill
+                objectFit={'cover'}
+              />
+            }
           </span>
 
           {product.discount && (
@@ -38,8 +41,7 @@ export default function ProductDetails({ slug }: Props) {
           <ProductInfo product={product} />
           <ProductActions product={product} />
         </div>
-
-      </div>
+      </MyContainer>
     </div>
   );
 }
