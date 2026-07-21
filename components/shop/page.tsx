@@ -1,7 +1,7 @@
 'use client'; // Используем клиентский компонент для работы useState
 
 import { useState } from 'react';
-import Container from '@/components/ui/Container';
+import MyContainer from '@/components/ui/MyContainer';
 import FilterSidebar from '@/components/shop/FilterSidebar';
 import CatalogProductCard from '@/components/cards/CatalogProductCard';
 import {ProductsType} from "@/types/products.types";
@@ -30,7 +30,7 @@ export default function ShopPage({productsData}: ShopPageInterface) {
 
   return (
     <div className="min-h-screen bg-brand-bg pt-32 pb-24">
-      <Container>
+      <MyContainer>
         {/* Хедер каталога */}
         <div className="mb-12 border-b border-brand-brown/10 pb-8">
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-brand-brown mb-4">Shop</h1>
@@ -91,7 +91,7 @@ export default function ShopPage({productsData}: ShopPageInterface) {
             )}
           </div>
         </div>
-      </Container>
+      </MyContainer>
     </div>
   );
 }
