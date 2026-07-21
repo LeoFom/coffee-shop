@@ -15,6 +15,7 @@ import {ModealModeType} from "@/dashboard/products/ProductTab";
 import {useRouter} from "next/navigation";
 import {ProductsType} from "@/types/products.types";
 import {EMPTY_PRODUCT} from "@/lib/data/products.data";
+import {addIfNotEmpty} from "@/utils/addIfNotEmpty";
 
 interface ProductFormPanelProps {
   modalMode: ModealModeType;
@@ -42,6 +43,41 @@ export default function ProductFormPanel({
 
   const onSubmit = async (data: ProductsType) => {
     try {
+      const coffeeDetails = {
+        ...addIfNotEmpty('coffeeType', data?.coffeeDetails?.coffeeType),
+        ...addIfNotEmpty('roast', data?.coffeeDetails?.roast),
+        ...addIfNotEmpty('originCountry', data?.coffeeDetails?.originCountry),
+        ...addIfNotEmpty('region', data?.coffeeDetails?.region),
+        ...addIfNotEmpty('farm', data?.coffeeDetails?.farm),
+
+        ...addIfNotEmpty('processingStation', data?.coffeeDetails?.processingStation),
+        ...addIfNotEmpty('variety', data?.coffeeDetails?.variety),
+        ...addIfNotEmpty('processingMethod', data?.coffeeDetails?.processingMethod),
+        ...addIfNotEmpty('altitudeMin', data?.coffeeDetails?.altitudeMin),
+        ...addIfNotEmpty('altitudeMax', data?.coffeeDetails?.altitudeMax),
+
+        ...addIfNotEmpty('scaScore', data?.coffeeDetails?.scaScore),
+        ...addIfNotEmpty('arabicaPercent', data?.coffeeDetails?.arabicaPercent),
+        ...addIfNotEmpty('robustaPercent', data?.coffeeDetails?.robustaPercent),
+        ...addIfNotEmpty('acidity', data?.coffeeDetails?.acidity),
+
+        ...addIfNotEmpty('sweetness', data?.coffeeDetails?.sweetness),
+        ...addIfNotEmpty('bitterness', data?.coffeeDetails?.bitterness),
+        ...addIfNotEmpty('body', data?.coffeeDetails?.body),
+        ...addIfNotEmpty('caffeineLevel', data?.coffeeDetails?.caffeineLevel),
+        // ...addIfNotEmpty('weightGrams', data?.coffeeDetails?.weightGrams),
+      };
+
+      const dataObj = {
+        ...addIfNotEmpty('coffeeDetails', coffeeDetails),
+        ...addIfNotEmpty('price', data?.price),
+        ...addIfNotEmpty('brandId', data?.brandId),
+        ...addIfNotEmpty('category', data?.category),
+        ...addIfNotEmpty('description', data?.description),
+        ...addIfNotEmpty('imageUrl', data?.imageUrl),
+        ...addIfNotEmpty('name', data?.name),
+      }
+
       const response =
         modalMode === "create"
           ? await createProduct(data)
@@ -158,10 +194,10 @@ export default function ProductFormPanel({
                 )}
               </div>
 
-              <DashboardInput
-                placeholder="slug-name"
-                {...register("slug")}
-              />
+              {/*<DashboardInput*/}
+              {/*  placeholder="slug-name"*/}
+              {/*  {...register("slug")}*/}
+              {/*/>*/}
 
               <DashboardTextarea
                 minLength={10}
