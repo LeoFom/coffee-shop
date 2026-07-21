@@ -1,4 +1,4 @@
-import Container from '@/ui/Container';
+import MyContainer from '@/ui/MyContainer';
 import Button from '@/ui/ButtonSecond';
 
 const FEATURES_DATA = [
@@ -35,7 +35,7 @@ const FEATURES_DATA = [
 export default function Features() {
   return (
     <section className="py-24 bg-white overflow-hidden">
-      <Container className="flex flex-col lg:flex-row gap-16 items-center">
+      <MyContainer className="flex flex-col lg:flex-row gap-16 items-center">
 
         {/* Левая часть - Изображение с отзывом */}
         <div className="w-full lg:w-1/2 relative">
@@ -82,7 +82,7 @@ export default function Features() {
           <Button>Explore our products →</Button>
         </div>
 
-      </Container>
+      </MyContainer>
     </section>
   );
 }

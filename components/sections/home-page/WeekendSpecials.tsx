@@ -1,6 +1,6 @@
 'use client'; // Директива для работы стейта (табов) на клиенте
 import { useState } from 'react';
-import Container from '@/ui/Container';
+import MyContainer from '@/ui/MyContainer';
 import SpecialProductCard from '@/components/cards/SpecialProductCard';
 
 const TABS = ['Accessories', 'Coffee beans', 'Apparel', 'Instant Coffee', 'Boundle'];
@@ -16,7 +16,7 @@ export default function WeekendSpecials() {
 
   return (
     <section className="py-24 bg-brand-bg">
-      <Container>
+      <MyContainer>
         <div className="text-center mb-12">
           <h2 className="text-4xl font-serif font-bold text-brand-brown mb-4">Weekend special products</h2>
           <p className="text-brand-muted">Check out our daily special product that you can get with +%20 OFF!</p>
@@ -46,7 +46,7 @@ export default function WeekendSpecials() {
             <SpecialProductCard key={product.id} {...product} />
           ))}
         </div>
-      </Container>
+      </MyContainer>
     </section>
   );
 }

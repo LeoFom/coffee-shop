@@ -1,10 +1,10 @@
-import Container from '@/ui/Container';
+import MyContainer from '@/ui/MyContainer';
 import Button from '@/ui/ButtonSecond';
 
 export default function PromoBanner() {
   return (
     <section className="py-12 bg-white">
-      <Container>
+      <MyContainer>
         <div className="bg-[#F6E6E6] rounded-3xl p-12 flex flex-col md:flex-row items-center justify-between relative">
           <div className="max-w-md relative z-10">
             <h2 className="text-4xl font-serif font-bold text-brand-brown mb-6 leading-tight">
@@ -22,7 +22,7 @@ export default function PromoBanner() {
             </div>
           </div>
         </div>
-      </Container>
+      </MyContainer>
     </section>
   );
 }

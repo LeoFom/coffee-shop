@@ -1,4 +1,4 @@
-import Container from '@/ui/Container';
+import MyContainer from '@/ui/MyContainer';
 import ProductCard from '@/cards/ProductCard';
 
 const DUMMY_PRODUCTS = [
@@ -11,7 +11,7 @@ const DUMMY_PRODUCTS = [
 export default function RecentProducts() {
   return (
     <section className="py-24 bg-white">
-      <Container>
+      <MyContainer>
         <div className="text-center mb-16">
           <h2 className="text-4xl font-serif font-bold text-brand-brown mb-4">Explore the recent products</h2>
           <p className="text-brand-muted max-w-2xl mx-auto">
@@ -24,7 +24,7 @@ export default function RecentProducts() {
             <ProductCard key={product.id} {...product} />
           ))}
         </div>
-      </Container>
+      </MyContainer>
     </section>
   );
 }

@@ -1,12 +1,12 @@
 'use client';
-import Container from '@/ui/Container';
+import MyContainer from '@/ui/MyContainer';
 import Button from '@/ui/ButtonSecond';
 import {getTasks} from "@/lib/features/api/tasks/getTasks";
 
 export default function Hero() {
   return (
     <section className="pb-16 bg-brand-bg relative overflow-hidden min-h-[90vh] flex items-center">
-      <Container className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+      <MyContainer className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
 
         {/* Левая колонка */}
         <div className="max-w-xl">
@@ -54,7 +54,7 @@ export default function Hero() {
           </div>
         </div>
 
-      </Container>
+      </MyContainer>
     </section>
   );
 }

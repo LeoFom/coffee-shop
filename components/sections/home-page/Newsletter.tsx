@@ -1,10 +1,10 @@
-import Container from '@/ui/Container';
+import MyContainer from '@/ui/MyContainer';
 import Button from '@/ui/ButtonSecond';
 
 export default function Newsletter() {
   return (
     <section className="py-24 bg-white">
-      <Container>
+      <MyContainer>
         <div className="bg-card-pink rounded-3xl p-10 md:p-16 relative overflow-hidden flex justify-end">
 
           {/* Декоративное изображение чашки слева */}
@@ -42,7 +42,7 @@ export default function Newsletter() {
           </div>
 
         </div>
-      </Container>
+      </MyContainer>
     </section>
   );
 }
