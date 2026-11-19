@@ -14,8 +14,9 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Next.js and Supabase Starter Kit",
-  description: "The fastest way to build apps with Next.js and Supabase",
+  title: "Coffeo — online coffee store",
+  description:
+    "Freshly roasted coffee, brewing equipment, and merchandise. Order online with Nova Poshta delivery.",
 };
 
 const geistSans = Geist({
@@ -32,14 +33,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  let user = await getUser();
-
-  if (!user) {
-    user = {
-      id: undefined,
-      name: undefined,
-    }
-  }
+  const user = await getUser();
 
   return (
     <html lang="en" suppressHydrationWarning>

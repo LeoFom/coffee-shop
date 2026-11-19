@@ -6,6 +6,7 @@ export async function updateProduct(
 ) {
   return fetch(`/api/products/${id}`, {
     method: "PATCH",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },

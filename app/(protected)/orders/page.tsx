@@ -1,4 +1,5 @@
 import OrdersList from '@/components/dashboard/OrdersList';
+import { getOrders } from '@/lib/features/api/orders/getOrders';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -6,7 +7,9 @@ export const metadata: Metadata = {
   description: 'View your Coffeo order history',
 };
 
-export default function OrdersPage() {
+export default async function OrdersPage() {
+  const orders = await getOrders();
+
   return (
     <div className="max-w-4xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
       <div className="mb-8">
@@ -14,7 +17,7 @@ export default function OrdersPage() {
         <p className="text-brand-muted">Check the status of your recent orders or view past purchases.</p>
       </div>
 
-      <OrdersList />
+      <OrdersList orders={orders} />
     </div>
   );
 }

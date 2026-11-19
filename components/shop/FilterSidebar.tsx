@@ -1,16 +1,17 @@
-import { ProductCategory, RoastLevel } from '@/lib/data/mockProducts';
+import {
+  PRODUCT_CATEGORIES,
+  ROAST_TYPES,
+} from '@/lib/data/products.data';
+import type { CategoryType, RoastType } from '@/types/products.types';
 
 interface FilterSidebarProps {
-  selectedCategories: string[];
-  setSelectedCategories: (val: string[]) => void;
-  selectedRoasts: string[];
-  setSelectedRoasts: (val: string[]) => void;
+  selectedCategories: CategoryType[];
+  setSelectedCategories: (val: CategoryType[]) => void;
+  selectedRoasts: RoastType[];
+  setSelectedRoasts: (val: RoastType[]) => void;
   onlyMemberPerks: boolean;
   setOnlyMemberPerks: (val: boolean) => void;
 }
-
-const CATEGORIES: ProductCategory[] = ['Beans', 'Merch', 'Equipment', 'Instant'];
-const ROASTS: RoastLevel[] = ['Light', 'Medium', 'Dark'];
 
 export default function FilterSidebar({
   selectedCategories,
@@ -18,31 +19,30 @@ export default function FilterSidebar({
   selectedRoasts,
   setSelectedRoasts,
   onlyMemberPerks,
-  setOnlyMemberPerks
+  setOnlyMemberPerks,
 }: FilterSidebarProps) {
-
-  const handleCategoryToggle = (category: string) => {
+  const handleCategoryToggle = (category: CategoryType) => {
     setSelectedCategories(
       selectedCategories.includes(category)
-        ? selectedCategories.filter(c => c !== category)
+        ? selectedCategories.filter((item) => item !== category)
         : [...selectedCategories, category]
     );
   };
 
-  const handleRoastToggle = (roast: string) => {
+  const handleRoastToggle = (roast: RoastType) => {
     setSelectedRoasts(
       selectedRoasts.includes(roast)
-        ? selectedRoasts.filter(r => r !== roast)
+        ? selectedRoasts.filter((item) => item !== roast)
         : [...selectedRoasts, roast]
     );
   };
 
   return (
-    <div className="w-full lg:w-64 flex-shrink-0 space-y-8">
+    <aside className="w-full lg:w-64 flex-shrink-0 space-y-8">
       <div>
         <h4 className="font-serif font-bold text-brand-brown text-lg mb-4">Categories</h4>
         <div className="space-y-3">
-          {CATEGORIES.map(category => (
+          {PRODUCT_CATEGORIES.map((category) => (
             <label key={category} className="flex items-center gap-3 cursor-pointer group">
               <input
                 type="checkbox"
@@ -50,7 +50,9 @@ export default function FilterSidebar({
                 onChange={() => handleCategoryToggle(category)}
                 className="w-5 h-5 rounded border-brand-brown/20 text-brand-brown focus:ring-brand-brown cursor-pointer"
               />
-              <span className="text-brand-text group-hover:text-brand-brown transition-colors">{category}</span>
+              <span className="text-brand-text group-hover:text-brand-brown transition-colors">
+                {category}
+              </span>
             </label>
           ))}
         </div>
@@ -59,7 +61,7 @@ export default function FilterSidebar({
       <div>
         <h4 className="font-serif font-bold text-brand-brown text-lg mb-4">Roast Level</h4>
         <div className="space-y-3">
-          {ROASTS.map(roast => (
+          {ROAST_TYPES.map((roast) => (
             <label key={roast} className="flex items-center gap-3 cursor-pointer group">
               <input
                 type="checkbox"
@@ -67,7 +69,9 @@ export default function FilterSidebar({
                 onChange={() => handleRoastToggle(roast)}
                 className="w-5 h-5 rounded border-brand-brown/20 text-brand-brown focus:ring-brand-brown cursor-pointer"
               />
-              <span className="text-brand-text group-hover:text-brand-brown transition-colors">{roast}</span>
+              <span className="text-brand-text group-hover:text-brand-brown transition-colors">
+                {roast}
+              </span>
             </label>
           ))}
         </div>
@@ -84,6 +88,6 @@ export default function FilterSidebar({
           <span className="font-bold text-brand-brown">Member Perks Only</span>
         </label>
       </div>
-    </div>
+    </aside>
   );
 }

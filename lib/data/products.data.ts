@@ -1,5 +1,11 @@
 import {ProductsType} from "@/types/products.types";
 
+export const PRODUCT_CATEGORIES = [
+  'Coffee',
+  'Equipment',
+  'Merchandise',
+] as const;
+
 export const COFFEE_TYPES = [
   "Beans",
   "Ground",

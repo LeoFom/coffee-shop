@@ -1,28 +1,35 @@
 'use client';
 
 import { useDispatch } from 'react-redux';
-import { addToCart } from '@/store/cart/cartSlice';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import {ProductsType} from "@/types/products.types";
+import { ProductsType } from "@/types/products.types";
+import { setCartItems } from '@/store/cart/cartSlice';
+import { addProductToCart } from '@/utils/addProductToCart';
+import { getCartItems } from '@/lib/features/api/cart/getCartItems';
 
 export default function ProductActions({ product }: { product: ProductsType }) {
   const dispatch = useDispatch();
+  const router = useRouter();
   const [quantity, setQuantity] = useState(1);
 
-  const finalPrice = product.discount
-    ? product.price * 0.85
-    : product.price;
+  const handleAddToCart = async (e: React.MouseEvent) => {
+    e.preventDefault();
 
-  const handleAdd = () => {
-    for (let i = 0; i < quantity; i++) {
-      dispatch(addToCart({ product, price: finalPrice }));
+    const result = await addProductToCart(product, quantity);
+
+    if (result === 'unauthenticated') {
+      router.push('/auth/login');
+      return;
+    }
+
+    if (result === 'ok') {
+      dispatch(setCartItems(await getCartItems()));
     }
   };
 
   return (
     <div className="mt-auto">
-
-      {/* Quantity */}
       <div className="flex items-center gap-4 mb-6">
         <button
           onClick={() => setQuantity(q => Math.max(1, q - 1))}
@@ -41,9 +48,8 @@ export default function ProductActions({ product }: { product: ProductsType }) {
         </button>
       </div>
 
-      {/* Add to cart */}
       <button
-        onClick={handleAdd}
+        onClick={handleAddToCart}
         className="w-full bg-brand-brown text-white py-4 rounded-2xl font-semibold hover:opacity-90 transition"
       >
         Add to Cart

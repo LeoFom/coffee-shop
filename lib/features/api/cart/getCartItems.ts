@@ -1,34 +1,29 @@
-export async function getCartItems() {
+import { CartItem } from "@/types/checkout.types";
+import { mapCartItem } from "@/utils/addProductToCart";
+
+export async function getCartItems(): Promise<CartItem[]> {
   try {
-    const response = await fetch(`/api/cart`, {
+    const response = await fetch('/api/cart', {
       method: 'GET',
-    })
+      credentials: 'include',
+    });
 
     if (!response.ok) {
-      const errorBody = await response.json().catch(() => ({}));
-      const errorMessage = errorBody.text || 'Щось пішло не так';
-
-      console.error(`Код помилки: ${response.status}. Повідомлення: ${errorMessage}`);
-
-      return new Response(
-        JSON.stringify({
-          success: false,
-          cartItems: [],
-          error: errorMessage
-        }),
-        {
-          status: response.status,
-          headers: { 'Content-Type': 'application/json' }
-        }
-      )
+      return [];
     }
 
-    const data = await response.json()
+    const data = await response.json();
+    if (!Array.isArray(data)) {
+      return [];
+    }
+
     return data
-  }
-  catch (error) {
-    if(process.env.NEXT_PUBLIC_MODE === 'dev'){
-      console.log('[GET] /api/cart error:', error)
+      .map(mapCartItem)
+      .filter((item): item is CartItem => item !== null);
+  } catch (error) {
+    if (process.env.NEXT_PUBLIC_MODE === 'dev') {
+      console.log('[GET] /api/cart error:', error);
     }
+    return [];
   }
 }

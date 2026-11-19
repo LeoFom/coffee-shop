@@ -1,26 +1,23 @@
-import { cookies } from "next/headers";
+import { nodejsFetch } from "@/lib/nodejs/fetcher";
+import type { User } from "@/lib/auth/user";
+import { parseUserRole } from "@/lib/auth/user";
 
-const BASE_URL = process.env.NEXT_PUBLIC_URL || "http://localhost:3000";
-
-export async function getUser() {
-
-  const cookieStore =
-    await cookies()
-
-  const res = await fetch(
-    `${BASE_URL}/api/auth/me`,
-    {
-      headers: {
-        cookie: cookieStore.toString(),
-      },
-
-      cache: 'no-store',
-    }
-  )
+export async function getUser(): Promise<User | null> {
+  const res = await nodejsFetch('/auth/me');
 
   if (!res.ok) {
-    return null
+    return null;
   }
 
-  return res.json()
+  const data = await res.json();
+
+  if (typeof data?.id !== "string" || typeof data?.email !== "string") {
+    return null;
+  }
+
+  return {
+    id: data.id,
+    email: data.email,
+    role: parseUserRole(data.role),
+  };
 }

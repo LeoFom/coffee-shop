@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export function SignUpForm({
@@ -23,6 +24,7 @@ export function SignUpForm({
   const [repeatPassword, setRepeatPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,18 +44,7 @@ export function SignUpForm({
     }
 
     try {
-      //
-      // const { data, error: signUpError } = await supabase.auth.signUp({
-      //   email,
-      //   password,
-      //   options: {
-      //     emailRedirectTo: `${window.location.origin}/protected`,
-      //   },
-      // });
-
-      // if (error) throw error;
-
-      const response = await fetch('/api/auth/register', { // Путь к вашему POST роуту
+      const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -61,14 +52,13 @@ export function SignUpForm({
           password: password,
         }),
       });
-      console.log("response",response)
 
       if (!response.ok) {
         const data = await response.json();
-        console.log(`Failed to create profile;\nStatus - ${response.status};\nText - ${data.message};`);
         throw new Error(data.message || 'Registration failed');
       }
-      // router.push('/auth/sign-up-success');
+
+      router.push('/auth/login');
     } catch (error: unknown) {
       setError( error instanceof Error ? error.message : 'Something went wrong' );
     } finally {

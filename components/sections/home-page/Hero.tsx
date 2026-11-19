@@ -1,7 +1,5 @@
-'use client';
 import MyContainer from '@/ui/MyContainer';
 import Button from '@/ui/ButtonSecond';
-import {getTasks} from "@/lib/features/api/tasks/getTasks";
 
 export default function Hero() {
   return (
@@ -21,10 +19,8 @@ export default function Hero() {
           </p>
 
           <div className="flex flex-wrap items-center gap-4 mb-16">
-            <Button
-              onClick={getTasks}
-            >Explore our products →</Button>
-            <Button variant="outline">Log in / sign up</Button>
+            <Button href="/shop">Explore our products →</Button>
+            <Button href="/auth/login" variant="outline">Log in / sign up</Button>
           </div>
 
           {/* Статистика */}

@@ -49,8 +49,6 @@ export function LoginForm({
     }
 
     try {
-      if (error) throw error;
-
       const response = await fetch('/api/auth/log-in', {
         method: 'POST',
         credentials: 'include',
@@ -61,26 +59,26 @@ export function LoginForm({
         }),
       });
 
-      const data = await response.json();
-      // console.log("!!! LOG-IN (DATA) -> ",data)
+      const data = await response.json().catch(() => null);
 
-      if(data?.user?.id) {
-        const userObj = {
-          id: data.user.id ?? '',
-          email: data.user.email ?? '',
-        }
-        // console.log(" if YES! -> userObj",userObj)
+      if (!response.ok) {
+        const message =
+          (data && (data.message || data.error)) ||
+          "Invalid credentials";
+        setError(typeof message === "string" ? message : "Invalid credentials");
+        return;
+      }
 
-        authUser?.setUser(userObj)
+      if (data?.user?.id) {
+        authUser?.setUser({
+          id: data.user.id,
+          email: data.user.email,
+          role: data.user.role === 'Admin' ? 'Admin' : 'Customer',
+        });
       }
 
       dispatch(setIsAuthenticated(true));
-      await router.push("/protected");
-      // if (response.ok) {
-      //   console.log("Профиль загружен: data", data);
-      // }
-      // router.push("/protected");
-      if (error) throw error;
+      await router.push("/dashboard");
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred");
     } finally {
@@ -112,15 +110,7 @@ export function LoginForm({
                 />
               </div>
               <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                  <Link
-                    href="/auth/forgot-password"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </Link>
-                </div>
+                <Label htmlFor="password">Password</Label>
                 <Input
                   id="password"
                   type="password"

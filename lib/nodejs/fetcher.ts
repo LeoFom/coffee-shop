@@ -1,9 +1,17 @@
 import { cookies } from 'next/headers';
 
+export function getBackendUrl() {
+  return (
+    process.env.API_URL ??
+    process.env.NEXT_PUBLIC_API_URL ??
+    'http://127.0.0.1:3001'
+  );
+}
+
 type FetchOptions = {
   method?: 'GET' | 'POST' | 'PATCH' | 'DELETE';
-  body?: any;
-  headers?: any;
+  body?: object;
+  headers?: Record<string, string>;
   cache?: RequestCache;
   next?: { revalidate?: number };
 };
@@ -16,28 +24,52 @@ export async function nodejsFetch(
 
   const cookieStore = await cookies();
   const cookieHeader = cookieStore.toString();
+  const url = `${getBackendUrl()}${path}`;
 
-  // const cleanCookieHeader = cookieStore.getAll()
-  //   .map(cookie => `${cookie.name}=${cookie.value}`)
-  //   .join('; ');
-  //
-  // console.log("--- NODEJS FETCH SENDS CLEAN COOKIE ---");
-  // console.log(cleanCookieHeader);
-  // console.log("---------------------------------------");
+  const headers: Record<string, string> = {
+    Cookie: cookieHeader,
+    ...customHeaders,
+  };
 
   const isGetOrDelete = method === 'GET' || method === 'DELETE';
 
-  const res = await fetch(`http://127.0.0.1:3001${path}`, {
+  if (!isGetOrDelete && body !== undefined) {
+    headers['Content-Type'] = 'application/json';
+  }
+
+  const res = await fetch(url, {
     method,
-    headers: {
-      'Content-Type': 'application/json',
-      ...customHeaders,
-      'Cookie': cookieHeader,
-    },
-    body: !isGetOrDelete && body ? JSON.stringify(body) : undefined,
+    headers,
+    body: body !== undefined && !isGetOrDelete
+      ? JSON.stringify(body)
+      : undefined,
     cache,
     next,
   });
 
   return res;
+}
+
+export async function proxyToBackend(
+  path: string,
+  options: FetchOptions = {}
+) {
+  const backendRes = await nodejsFetch(path, options);
+  const text = await backendRes.text();
+  const headers = new Headers();
+  const contentType = backendRes.headers.get('content-type');
+
+  if (contentType) {
+    headers.set('content-type', contentType);
+  }
+
+  const setCookie = backendRes.headers.get('set-cookie');
+  if (setCookie) {
+    headers.set('set-cookie', setCookie);
+  }
+
+  return new Response(text, {
+    status: backendRes.status,
+    headers,
+  });
 }

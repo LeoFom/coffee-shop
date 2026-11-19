@@ -1,4 +1,6 @@
 import ProfileForm from '@/components/dashboard/ProfileForm';
+import { getUser } from '@/lib/auth/getUser';
+import { getProfile } from '@/lib/features/api/profile/getProfile';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -6,7 +8,9 @@ export const metadata: Metadata = {
   description: 'Manage your Coffeo account details',
 };
 
-export default function ProfilePage() {
+export default async function ProfilePage() {
+  const [user, profile] = await Promise.all([getUser(), getProfile()]);
+
   return (
     <div className="max-w-4xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
       <div className="mb-8">
@@ -14,7 +18,7 @@ export default function ProfilePage() {
         <p className="text-brand-muted">Welcome back! Here you can manage your account settings.</p>
       </div>
 
-      <ProfileForm />
+      <ProfileForm profile={profile} email={user?.email ?? ''} />
     </div>
   );
 }

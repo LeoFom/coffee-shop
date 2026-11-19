@@ -34,7 +34,6 @@
       "@/sections*": ["./components/sections*"],
       "@/shared*": ["./components/shared*"],
       "@/shop*": ["./components/shop*"],
-      "@/tutorial*": ["./components/tutorial*"],
       "@/cart*": ["./components/cart*"]
     }
   },

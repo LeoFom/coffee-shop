@@ -1,11 +1,12 @@
 'use client';
 import Link from 'next/link';
 import { useDispatch } from 'react-redux';
-import { addToCart } from '@/store/cart/cartSlice';
-import {ProductsType} from "@/types/products.types";
+import { useRouter } from 'next/navigation';
+import { ProductsType } from "@/types/products.types";
 import Image from "next/image";
-import {useContext} from "react";
-import {AuthContext} from "@/components/providers/AuthProvider";
+import { setCartItems } from '@/store/cart/cartSlice';
+import { addProductToCart, cartPriceAtAdding } from '@/utils/addProductToCart';
+import { getCartItems } from '@/lib/features/api/cart/getCartItems';
 
 interface CatalogProductCardProps {
   product: ProductsType;
@@ -13,30 +14,25 @@ interface CatalogProductCardProps {
 
 export default function CatalogProductCard({ product }: CatalogProductCardProps) {
   const dispatch = useDispatch();
-  const authData = useContext(AuthContext);
-  const user = authData?.user ?? null
-
-  const finalPrice = Number(product.discount) ? Number(product.price) * Number(product.discount) : Number(product.price);
+  const router = useRouter();
+  const unitPrice = cartPriceAtAdding(product);
+  const listPrice = Number(product.price);
+  const hasDiscount = unitPrice < listPrice;
 
   const handleAddToCart = async (e: React.MouseEvent) => {
-    console.log("handleAddToCart CLICK")
     e.preventDefault();
-    dispatch(addToCart({ product, price: 1000 }));
+    e.stopPropagation();
 
-    const response = await fetch('/api/cart',{
-      method: 'POST',
-      body: JSON.stringify({
-        userId: user?.id ?? '',
-        productId: product.id,
-        quantity: 1,
-        priceAtAdding: 1.2,
-      })
-    })
+    const result = await addProductToCart(product, 1);
 
-    // console.log("response", await response.json())
+    if (result === 'unauthenticated') {
+      router.push('/auth/login');
+      return;
+    }
 
-
-    // setTimeout(()=>{}, 100)
+    if (result === 'ok') {
+      dispatch(setCartItems(await getCartItems()));
+    }
   };
 
   return (
@@ -51,11 +47,6 @@ export default function CatalogProductCard({ product }: CatalogProductCardProps)
           sizes={'1'}
           fill
         />
-        {/*{product.isMemberDiscount && (*/}
-        {/*  <div className="absolute top-3 left-3 bg-brand-brown text-white text-xs px-2 py-1 rounded-full font-bold">*/}
-        {/*    Member Perk*/}
-        {/*  </div>*/}
-        {/*)}*/}
       </div>
 
       <div className="p-5 flex flex-col flex-grow">
@@ -66,17 +57,16 @@ export default function CatalogProductCard({ product }: CatalogProductCardProps)
 
         <div className="mt-auto pt-4 flex items-center justify-between">
           <div className="flex items-end gap-2">
-            {Number(product?.discount) ? (
+            {hasDiscount ? (
               <>
-                <span className="text-2xl font-bold text-brand-brown">${finalPrice.toFixed(2)}</span>
-                <span className="text-sm text-brand-muted line-through mb-1">${Number(product?.price)?.toFixed(2)}</span>
+                <span className="text-2xl font-bold text-brand-brown">${unitPrice.toFixed(2)}</span>
+                <span className="text-sm text-brand-muted line-through mb-1">${listPrice.toFixed(2)}</span>
               </>
             ) : (
-              <span className="text-2xl font-bold text-brand-brown">${Number(product?.price).toFixed(2)}</span>
+              <span className="text-2xl font-bold text-brand-brown">${listPrice.toFixed(2)}</span>
             )}
           </div>
 
-          {/* Кнопка добавления в корзину */}
           <button
             onClick={handleAddToCart}
             className="w-10 h-10 rounded-full bg-brand-brown/5 text-brand-brown hover:bg-brand-brown hover:text-white transition-colors flex items-center justify-center"

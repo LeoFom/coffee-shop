@@ -1,18 +1,5 @@
-import {ProductCategory, RoastLevel} from "@/lib/data/mockProducts";
-
-export interface Product {
-  id: string;
-  slug: string;
-  name: string;
-  price: number;
-  category: ProductCategory;
-  roast?: RoastLevel;
-  isMemberDiscount: boolean;
-}
-
-
-export type CategoryType =  'Coffee' | 'Equipment' | 'Merchandise';
-export type RoastType = "Light" | "Medium" | "Dark";
+export type CategoryType = 'Coffee' | 'Equipment' | 'Merchandise';
+export type RoastType = 'Light' | 'Medium' | 'Dark';
 export type CoffeeType = 'Beans' | 'Ground' | 'Drip' | 'Capsules';
 export type ProcessingMethod = 'Washed' | 'Natural' | 'Honey' | 'Anaerobic' | 'SemiWashed';
 

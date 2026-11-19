@@ -1,39 +1,75 @@
 "use client";
 
-import {useContext, useEffect, useState} from "react";
-
+import { useContext, useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import ProductTab from "@/components/dashboard/products/ProductTab";
-import DashboardStats from "@/components/dashboard/DashboardStats";
-
+import DashboardStats, {
+  DashboardOverviewStats,
+} from "@/components/dashboard/DashboardStats";
 import DashboardTabs from "@/components/dashboard/layout/DashboardTabs";
-import {AuthContext} from "@/components/providers/AuthProvider";
-import {useDispatch} from "react-redux";
-import {setProducts} from "@/store/products/productSlice";
-import {ProductsType} from "@/types/products.types";
-import {DASHBOARD_TABS} from "@/lib/data/dashboard.data";
+import OrdersList from "@/components/dashboard/OrdersList";
+import { AuthContext } from "@/components/providers/AuthProvider";
+import { useDispatch } from "react-redux";
+import { setProducts } from "@/store/products/productSlice";
+import { ProductsType } from "@/types/products.types";
+import { Order } from "@/types/orders.types";
+import { DASHBOARD_TABS } from "@/lib/data/dashboard.data";
+
+const EMPTY_OVERVIEW: DashboardOverviewStats = {
+  totalSpent: 0,
+  totalOrders: 0,
+  cartItemCount: 0,
+  recentOrders: [],
+};
 
 interface DashboardPageInterface {
   productsData: ProductsType[];
+  isAdmin: boolean;
+  initialTab?: string;
+  overview?: DashboardOverviewStats;
+  orders?: Order[];
 }
 
-export default function DashboardPage({productsData}: DashboardPageInterface) {
+export default function DashboardPage({
+  productsData,
+  isAdmin,
+  initialTab = "overview",
+  overview = EMPTY_OVERVIEW,
+  orders = [],
+}: DashboardPageInterface) {
   const dispatch = useDispatch();
+  const router = useRouter();
+  const pathname = usePathname();
   const authData = useContext(AuthContext);
-  const user = authData?.user ?? null
+  const user = authData?.user ?? null;
+  const admin = isAdmin || user?.role === "Admin";
 
-  console.log("(DashboardPage) -> user",user)
-
-  const [activeTab, setActiveTab] =
-    useState("overview");
+  const [activeTab, setActiveTab] = useState(initialTab);
 
   useEffect(() => {
     dispatch(setProducts(productsData));
   }, [productsData, dispatch]);
 
+  useEffect(() => {
+    setActiveTab(initialTab);
+  }, [initialTab]);
+
+  const tabs = DASHBOARD_TABS.filter((tab) => tab.id !== "products" || admin);
+
+  const handleTabChange = (tabId: string) => {
+    if (tabId === "products") {
+      router.push("/dashboard/products");
+      return;
+    }
+    if (pathname === "/dashboard/products") {
+      router.push("/dashboard");
+      return;
+    }
+    setActiveTab(tabId);
+  };
+
   return (
     <div className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
-
-      {/* Header */}
       <div className="mb-8">
         <h1 className="text-4xl font-serif font-bold text-brand-brown mb-2">
           Dashboard
@@ -44,35 +80,18 @@ export default function DashboardPage({productsData}: DashboardPageInterface) {
         </p>
       </div>
 
-      {/* Tabs */}
       <DashboardTabs
-        tabs={DASHBOARD_TABS}
+        tabs={tabs}
         activeTab={activeTab}
-        onChange={setActiveTab}
+        onChange={handleTabChange}
       />
 
-      {/* Content */}
       <div className="min-h-[400px]">
+        {activeTab === "overview" && <DashboardStats {...overview} />}
 
-        {activeTab === "overview" && (
-          <DashboardStats />
-        )}
+        {activeTab === "products" && admin && <ProductTab />}
 
-        {activeTab === "products" && (
-          <ProductTab/>
-        )}
-
-        {activeTab === "orders" && (
-          <div className="bg-white rounded-2xl border border-brand-brown/10 p-10">
-            <h2 className="text-2xl font-serif font-bold text-brand-brown mb-2">
-              Orders
-            </h2>
-
-            <p className="text-brand-muted">
-              Orders management coming soon.
-            </p>
-          </div>
-        )}
+        {activeTab === "orders" && <OrdersList orders={orders} />}
 
         {activeTab === "customers" && (
           <div className="bg-white rounded-2xl border border-brand-brown/10 p-10">
@@ -97,7 +116,6 @@ export default function DashboardPage({productsData}: DashboardPageInterface) {
             </p>
           </div>
         )}
-
       </div>
     </div>
   );

@@ -1,0 +1,22 @@
+---
+description: Browser talks only to Next BFF, never to Fastify directly
+globs: "{app,components,lib,hooks,store,utils}/**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# BFF only
+
+The browser origin is Next (`:3000`). Fastify (`:3001`) is reached only from Route Handlers via `nodejsFetch` / `proxyToBackend`.
+
+- Client and RSC UI: `fetch('/api/...')` with `credentials: 'include'`. Never `fetch('http://127.0.0.1:3001/...')` or `NEXT_PUBLIC_API_URL` from the browser.
+- New APIs: add `app/api/<resource>/route.ts` that proxies to Fastify, then call that path from the UI.
+- Do not import `lib/nodejs/fetcher.ts` in `'use client'` files (`next/headers` cookies).
+- Identity comes from the JWT cookie the BFF forwards, not from `userId` in the request body.
+
+```ts
+// BAD — cookies stay on :3000, Fastify never sees the session
+await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders`)
+
+// GOOD
+await fetch('/api/orders', { credentials: 'include' })
+```

@@ -2,6 +2,7 @@ import {CartItem} from "@/types/checkout.types";
 
 export const mockCartItems: CartItem[] = [
   {
+    id: '0',
     quantity: 2,
     product: {
       id: "1",
@@ -20,8 +21,10 @@ export const mockCartItems: CartItem[] = [
         weightGrams: 250,
       },
     },
+    priceAtAdding: 13.49,
   },
   {
+    id: '1',
     quantity: 1,
     product: {
       id: "2",
@@ -34,5 +37,6 @@ export const mockCartItems: CartItem[] = [
       price: 24.99,
       discount: 0,
     },
+    priceAtAdding: 24.99,
   },
 ];

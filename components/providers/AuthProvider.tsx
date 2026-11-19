@@ -4,11 +4,9 @@ import {
   createContext,
   useState,
 } from "react";
+import type { User } from "@/lib/auth/user";
 
-export type User = {
-  id: string;
-  email: string;
-};
+export type { User };
 
 type AuthContextType = {
   user: User | null;
@@ -25,7 +23,7 @@ export function AuthProvider({
                                initialUser,
                              }: {
   children: React.ReactNode;
-  initialUser: User;
+  initialUser: User | null;
 }) {
 
   const [user, setUser] =

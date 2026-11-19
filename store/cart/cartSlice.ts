@@ -1,11 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {ProductsType} from "@/types/products.types";
-
-export interface CartItem {
-  product: ProductsType;
-  quantity: number;
-  priceAtAdding: number;
-}
+import { CartItem } from "@/types/checkout.types";
 
 interface CartState {
   items: CartItem[];
@@ -19,29 +13,21 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    setCartItems: (state, action: PayloadAction<any[]>) => {
+    setCartItems: (state, action: PayloadAction<CartItem[]>) => {
       state.items = action.payload;
     },
-    addToCart: (state, action: PayloadAction<{ product: ProductsType; price: number }>) => {
-      const { product, price } = action.payload;
-      const existingItem = state.items.find(item => item.product.id === product.id);
-
-      if (existingItem) {
-        existingItem.quantity += 1;
-      } else {
-        state.items.push({ product, quantity: 1, priceAtAdding: price });
-      }
-    },
     removeFromCart: (state, action: PayloadAction<string>) => {
-      state.items = state.items.filter(item => item.product.id !== action.payload);
+      state.items = state.items.filter(item => item.id !== action.payload);
     },
-    updateQuantity: (state, action: PayloadAction<{ id: string; amount: number }>) => {
-      const item = state.items.find(item => item.product.id === action.payload.id);
-      if (item) {
-        item.quantity += action.payload.amount;
-        if (item.quantity <= 0) {
-          state.items = state.items.filter(i => i.product.id !== action.payload.id);
-        }
+    updateQuantity: (state, action: PayloadAction<{ id: string; quantity: number }>) => {
+      const item = state.items.find(item => item.id === action.payload.id);
+      if (!item) {
+        return;
+      }
+      if (action.payload.quantity <= 0) {
+        state.items = state.items.filter(i => i.id !== action.payload.id);
+      } else {
+        item.quantity = action.payload.quantity;
       }
     },
   },
@@ -49,7 +35,6 @@ const cartSlice = createSlice({
 
 export const {
   setCartItems,
-  addToCart,
   removeFromCart,
   updateQuantity,
 } = cartSlice.actions;

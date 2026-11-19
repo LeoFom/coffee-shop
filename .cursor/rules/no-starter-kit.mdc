@@ -1,0 +1,14 @@
+---
+description: Do not restore Next.js/Supabase starter or tutorial leftovers
+alwaysApply: true
+---
+
+# No starter kit
+
+Coffeo is no longer the Vercel Supabase starter. Auth is Fastify JWT + BFF.
+
+- Do not add `@supabase/ssr`, `@supabase/supabase-js`, `lib/supabase`, or `NEXT_PUBLIC_SUPABASE_*`.
+- Do not recreate tutorial UI, `/admin` starter, `/protected` demo, `/task-api`, `app/api/tasks`, or `lib/nodejs/proxy.ts`.
+- Do not point login at `/protected`. After login go to `/dashboard` or `/shop`.
+- Do not put starter metadata or README copy back. Title and docs stay Coffeo.
+- Forgot/reset password pages stay gone until BFF + Fastify + email exist. Do not add a dead form or a login link to `/auth/forgot-password`.

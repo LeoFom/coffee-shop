@@ -1,14 +1,26 @@
 import { NextRequest } from 'next/server';
-import {nodejsFetch} from "@/lib/nodejs/fetcher";
+import { proxyToBackend } from "@/lib/nodejs/fetcher";
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
 
-  const data = await nodejsFetch(`/profile`, {
+  return proxyToBackend('/profile', {
     method: 'POST',
-    body: body ? JSON.stringify(body) : undefined,
-    cache: 'no-store',
+    body,
   });
+}
 
-  return Response.json(data);
+export async function PATCH(req: NextRequest) {
+  const body = await req.json();
+
+  return proxyToBackend('/profile', {
+    method: 'PATCH',
+    body,
+  });
+}
+
+export async function DELETE() {
+  return proxyToBackend('/profile', {
+    method: 'DELETE',
+  });
 }

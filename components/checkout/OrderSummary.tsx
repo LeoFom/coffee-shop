@@ -1,89 +1,48 @@
-'use client'
-import Image from "next/image";
-import {useSelector} from "react-redux";
-import {cartSelectors} from "@/store/cart/cartSelectors";
+interface CartItem {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+}
 
-export default function OrderSummary() {
-  const cartItems = useSelector(cartSelectors.getCartItems);
-  const totalPrice = cartItems.reduce((acc, item) => acc + Number(item?.product?.price ?? 0) * item.quantity, 0);
+interface Props {
+  items: CartItem[];
+  onSubmit: () => void;
+  isSubmitting: boolean;
+}
+
+export default function OrderSummary({ items, onSubmit, isSubmitting }: Props) {
+  const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   return (
-    <aside className="h-fit sticky top-28">
-      <div className="bg-white rounded-3xl p-6 shadow-sm">
-        <h2 className="font-semibold text-2xl text-brand-brown mb-6">
-          Order Summary
-        </h2>
+    <div className="border border-brand-brown/10 rounded-2xl bg-white p-6 md:p-8 sticky top-32">
+      <h2 className="text-xl font-serif font-bold text-brand-brown mb-6">Ваше замовлення</h2>
 
-        <div className="space-y-4 mb-6">
-          {cartItems.map((item) => (
-            <div
-              key={item.product.id}
-              className="flex gap-4"
-            >
-              <div className="relative w-20 h-20 rounded-xl overflow-hidden bg-brand-bg">
-                <Image
-                  fill
-                  src={item.product.imageUrl}
-                  alt={item.product.name}
-                  className="object-cover"
-                />
-              </div>
-
-              <div className="flex-1">
-                <h3 className="font-medium text-brand-brown">
-                  {item.product.name}
-                </h3>
-
-                <p className="text-sm text-brand-muted">
-                  Qty: {item.quantity}
-                </p>
-
-                <p className="text-sm text-brand-muted">
-                  {item.product.coffeeDetails?.roast}
-                </p>
-              </div>
-
-              <div className="font-semibold">
-                $
-                {(
-                  item.product.price *
-                  item.quantity
-                ).toFixed(2)}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="border-t pt-5 space-y-3">
-          <div className="flex justify-between">
-            <span>Subtotal</span>
-            <span>${totalPrice}</span>
+      <div className="flex flex-col gap-4 mb-6 max-h-80 overflow-y-auto">
+        {items.map((item) => (
+          <div key={item.id} className="flex justify-between text-sm">
+            <span className="text-brand-text">
+              {item.name} <span className="text-brand-muted">× {item.quantity}</span>
+            </span>
+            <span className="font-medium text-brand-brown">
+              ${(item.price * item.quantity).toFixed(2)}
+            </span>
           </div>
-
-          <div className="flex justify-between">
-            <span>Shipping</span>
-            <span>$5.00</span>
-          </div>
-
-          <div className="flex justify-between text-green-600">
-            <span>Discount</span>
-            <span>-$4.50</span>
-          </div>
-
-          <div className="flex justify-between text-xl font-bold border-t pt-4">
-            <span>Total</span>
-            <span>${totalPrice}</span>
-          </div>
-        </div>
-
-        <button className="w-full mt-6 bg-brand-brown text-white rounded-2xl py-4 font-semibold hover:opacity-90 transition">
-          Place Order
-        </button>
-
-        <div className="mt-4 text-center text-sm text-brand-muted">
-          🔒 Secure checkout
-        </div>
+        ))}
       </div>
-    </aside>
+
+      <div className="border-t border-brand-brown/10 pt-4 flex justify-between items-center mb-6">
+        <span className="font-serif font-bold text-brand-brown">Разом</span>
+        <span className="text-2xl font-bold text-brand-brown">${total.toFixed(2)}</span>
+      </div>
+
+      <button
+        onClick={onSubmit}
+        disabled={isSubmitting || items.length === 0}
+        className="w-full bg-brand-brown text-white rounded-xl py-3.5 font-medium hover:bg-brand-brown/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        {isSubmitting ? 'Оформлення...' : 'Підтвердити замовлення'}
+      </button>
+    </div>
   );
 }

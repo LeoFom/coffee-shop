@@ -20,11 +20,7 @@ export default function Header() {
     const initCart = async () => {
       try {
         const data = await getCartItems();
-        // console.log(" ...useEffect - [Header] - Loaded data: ", data);
-
-        if (data?.success) {
-          dispatch(setCartItems(data.cartItems));
-        }
+        dispatch(setCartItems(data));
       } catch (error) {
         console.error("Error fetching cart items:", error);
       }
@@ -43,10 +39,9 @@ export default function Header() {
           </Link>
 
           <nav className="hidden lg:flex items-center gap-8">
-            <Link href="/products" className="text-brand-brown font-medium hover:text-opacity-70 flex items-center gap-1">
-              Products <span className="text-xs">▼</span>
+            <Link href="/shop" className="text-brand-brown font-medium hover:text-opacity-70">
+              Shop
             </Link>
-            <Link href="/shop" className="text-brand-brown font-medium hover:text-opacity-70">Shop</Link>
             <Link href="/orders" className="text-brand-brown font-medium hover:text-opacity-70">Orders</Link>
             <Link href="/checkout" className="text-brand-brown font-medium hover:text-opacity-70">Checkout</Link>
             <Link href="/membership" className="text-brand-brown font-medium hover:text-opacity-70">Membership</Link>
