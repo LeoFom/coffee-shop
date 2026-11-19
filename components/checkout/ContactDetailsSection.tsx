@@ -17,7 +17,7 @@ export default function ContactDetailsSection({ data, onChange, errors }: Props)
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-xs text-brand-muted mb-1.5">Ім'я *</label>
+          <label className="block text-xs text-brand-muted mb-1.5">Ім&apos;я *</label>
           <input
             type="text"
             value={data.firstName}

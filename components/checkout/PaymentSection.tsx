@@ -1,4 +1,4 @@
-import { CheckoutFormState, PaymentMethod } from '@/types/checkout.types';
+import { PaymentMethod } from '@/types/checkout.types';
 
 interface Props {
   value: PaymentMethod;

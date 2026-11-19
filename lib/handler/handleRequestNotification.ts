@@ -6,9 +6,11 @@ type NotifyOptions = {
 
 export function handleRequestNotification(
   response: Response,
-  result: any,
+  payload: unknown,
   options?: NotifyOptions
 ) {
+  const result = payload && typeof payload === 'object' ? payload as { message?: string; fields?: Record<string, string> } : undefined;
+
   // SUCCESS
   if (response.ok) {
     toast.success(

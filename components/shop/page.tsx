@@ -24,7 +24,7 @@ export default function ShopPage({ productsData }: ShopPageInterface) {
   const [onlyMemberPerks, setOnlyMemberPerks] = useState(false);
   const [sort, setSort] = useState<SortOption>('featured');
 
-  const catalog = productsData ?? [];
+  const catalog = productsData;
 
   const filteredProducts = useMemo(() => {
     const list = catalog.filter((product) => {
