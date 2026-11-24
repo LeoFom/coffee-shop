@@ -36,3 +36,7 @@ npm audit --audit-level=high
 ```
 
 Форматування працює поступово: нові та змінені файли проходять Prettier; незмінений борг має baseline за хешем вмісту. `test:tooling` перевіряє цей механізм, а не весь магазин. Порядок і межі перевірок описані у [C0.4](docs/C0_4_RULES_AND_CI_UA.md).
+
+## Release baseline
+
+[Зафіксовані версії](docs/releases/2026-11-24-baseline.json) · [порядок релізу й відкату](docs/RELEASE_AND_ROLLBACK_UA.md) · [результати C0.5](docs/C0_5_RELEASE_BASELINE_UA.md).

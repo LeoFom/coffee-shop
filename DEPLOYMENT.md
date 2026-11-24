@@ -28,3 +28,7 @@ npm run dev
 Smoke-check the actual frontend origin: home/shop, register/login, profile, adding/updating/removing cart items, checkout with cash on delivery, order history, logout, and 403 for a customer trying to mutate products. Nova Poshta lookup needs its separate server key. Create the first admin through the Render bootstrap variables documented in the API repository, then add real products. No production demo users/products are silently inserted.
 
 The existing loyalty/newsletter sections and online-payment UI do not imply those integrations are implemented. Deployment does not enable a payment processor or send email. Free-tier availability and quota limits are documented in the API repository.
+
+## Release baseline and rollback
+
+See the [C0.5 baseline](docs/releases/2026-11-24-baseline.json), [release/rollback runbook](docs/RELEASE_AND_ROLLBACK_UA.md), and [verification report](docs/C0_5_RELEASE_BASELINE_UA.md). The manifest separates observed production from dev/preview; it is not a deployment authorization. Production-linked dev, missing persistent staging, and the test branch migration-ledger gap are explicitly recorded. Do not run write smoke tests against an unverified preview target.
