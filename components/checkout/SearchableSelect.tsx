@@ -26,42 +26,37 @@ export default function SearchableSelect({
   minChars = 2,
 }: SearchableSelectProps) {
   const [query, setQuery] = useState('');
-  const [options, setOptions] = useState<SearchableOption[]>([]);
+  const [result, setResult] = useState<{
+    query: string;
+    fetchOptions: SearchableSelectProps['fetchOptions'];
+    options: SearchableOption[];
+  } | null>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const debouncedQuery = useDebounce(query, 350);
+  const canSearch = !disabled && debouncedQuery.length >= minChars;
+  const currentResult =
+    result?.query === debouncedQuery && result.fetchOptions === fetchOptions ? result : null;
+  const options = canSearch ? currentResult?.options ?? [] : [];
+  const loading = canSearch && currentResult === null;
 
   useEffect(() => {
-    if (disabled) {
-      setOptions([]);
-      setLoading(false);
-      return;
-    }
-
-    if (debouncedQuery.length < minChars) {
-      setOptions([]);
-      return;
-    }
+    if (!canSearch) return;
 
     let active = true;
-    setLoading(true);
 
     fetchOptions(debouncedQuery)
-      .then((result) => {
-        if (active) setOptions(Array.isArray(result) ? result : []);
+      .then((options) => {
+        if (active) setResult({ query: debouncedQuery, fetchOptions, options: Array.isArray(options) ? options : [] });
       })
       .catch(() => {
-        if (active) setOptions([]);
-      })
-      .finally(() => {
-        if (active) setLoading(false);
+        if (active) setResult({ query: debouncedQuery, fetchOptions, options: [] });
       });
 
     return () => {
       active = false;
     };
-  }, [debouncedQuery, fetchOptions, minChars, disabled]);
+  }, [debouncedQuery, fetchOptions, canSearch]);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {

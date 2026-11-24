@@ -30,7 +30,11 @@ interface DashboardPageInterface {
   orders?: Order[];
 }
 
-export default function DashboardPage({
+export default function DashboardPage(props: DashboardPageInterface) {
+  return <DashboardPageContent key={props.initialTab ?? "overview"} {...props} />;
+}
+
+function DashboardPageContent({
   productsData,
   isAdmin,
   initialTab = "overview",
@@ -49,10 +53,6 @@ export default function DashboardPage({
   useEffect(() => {
     dispatch(setProducts(productsData));
   }, [productsData, dispatch]);
-
-  useEffect(() => {
-    setActiveTab(initialTab);
-  }, [initialTab]);
 
   const tabs = DASHBOARD_TABS.filter((tab) => tab.id !== "products" || admin);
 

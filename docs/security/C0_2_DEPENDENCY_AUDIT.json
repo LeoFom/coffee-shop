@@ -1,0 +1,919 @@
+{
+  "date": "2026-11-24",
+  "command": "npm audit --json",
+  "scope": "all dependencies including dev",
+  "before": {
+    "info": 0,
+    "low": 0,
+    "moderate": 8,
+    "high": 8,
+    "critical": 1,
+    "total": 17
+  },
+  "after": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0,
+    "total": 0
+  },
+  "note": "Package-level aggregates are not independent exploit counts. A zero result is a registry snapshot, not a guarantee against all vulnerabilities.",
+  "findings": [
+    {
+      "package": "@typescript-eslint/eslint-plugin",
+      "severity": "moderate",
+      "direct": false,
+      "affectedPaths": [
+        "node_modules/@typescript-eslint/eslint-plugin"
+      ],
+      "before": [
+        {
+          "path": "node_modules/@typescript-eslint/eslint-plugin",
+          "version": "8.59.0"
+        }
+      ],
+      "after": [
+        {
+          "path": "node_modules/@typescript-eslint/eslint-plugin",
+          "version": "8.74.0"
+        }
+      ],
+      "assessment": "Build/lint/browser-targeting dependency. No application route accepts arbitrary CSS, lint configuration or source maps. Updated within compatible ranges.",
+      "mitigation": "Patched dependency/lockfile; final full npm audit contains no findings.",
+      "upstreamAggregates": [
+        "@typescript-eslint/type-utils",
+        "@typescript-eslint/utils"
+      ],
+      "advisories": []
+    },
+    {
+      "package": "@typescript-eslint/parser",
+      "severity": "moderate",
+      "direct": false,
+      "affectedPaths": [
+        "node_modules/@typescript-eslint/parser"
+      ],
+      "before": [
+        {
+          "path": "node_modules/@typescript-eslint/parser",
+          "version": "8.59.0"
+        }
+      ],
+      "after": [
+        {
+          "path": "node_modules/@typescript-eslint/parser",
+          "version": "8.74.0"
+        }
+      ],
+      "assessment": "Build/lint/browser-targeting dependency. No application route accepts arbitrary CSS, lint configuration or source maps. Updated within compatible ranges.",
+      "mitigation": "Patched dependency/lockfile; final full npm audit contains no findings.",
+      "upstreamAggregates": [
+        "@typescript-eslint/typescript-estree"
+      ],
+      "advisories": []
+    },
+    {
+      "package": "@typescript-eslint/type-utils",
+      "severity": "moderate",
+      "direct": false,
+      "affectedPaths": [
+        "node_modules/@typescript-eslint/type-utils"
+      ],
+      "before": [
+        {
+          "path": "node_modules/@typescript-eslint/type-utils",
+          "version": "8.59.0"
+        }
+      ],
+      "after": [
+        {
+          "path": "node_modules/@typescript-eslint/type-utils",
+          "version": "8.74.0"
+        }
+      ],
+      "assessment": "Build/lint/browser-targeting dependency. No application route accepts arbitrary CSS, lint configuration or source maps. Updated within compatible ranges.",
+      "mitigation": "Patched dependency/lockfile; final full npm audit contains no findings.",
+      "upstreamAggregates": [
+        "@typescript-eslint/typescript-estree",
+        "@typescript-eslint/utils"
+      ],
+      "advisories": []
+    },
+    {
+      "package": "@typescript-eslint/typescript-estree",
+      "severity": "moderate",
+      "direct": false,
+      "affectedPaths": [
+        "node_modules/@typescript-eslint/typescript-estree"
+      ],
+      "before": [
+        {
+          "path": "node_modules/@typescript-eslint/typescript-estree",
+          "version": "8.59.0"
+        }
+      ],
+      "after": [
+        {
+          "path": "node_modules/@typescript-eslint/typescript-estree",
+          "version": "8.74.0"
+        }
+      ],
+      "assessment": "Build/lint/browser-targeting dependency. No application route accepts arbitrary CSS, lint configuration or source maps. Updated within compatible ranges.",
+      "mitigation": "Patched dependency/lockfile; final full npm audit contains no findings.",
+      "upstreamAggregates": [
+        "minimatch"
+      ],
+      "advisories": []
+    },
+    {
+      "package": "@typescript-eslint/utils",
+      "severity": "moderate",
+      "direct": false,
+      "affectedPaths": [
+        "node_modules/@typescript-eslint/utils"
+      ],
+      "before": [
+        {
+          "path": "node_modules/@typescript-eslint/utils",
+          "version": "8.59.0"
+        }
+      ],
+      "after": [
+        {
+          "path": "node_modules/@typescript-eslint/utils",
+          "version": "8.74.0"
+        }
+      ],
+      "assessment": "Build/lint/browser-targeting dependency. No application route accepts arbitrary CSS, lint configuration or source maps. Updated within compatible ranges.",
+      "mitigation": "Patched dependency/lockfile; final full npm audit contains no findings.",
+      "upstreamAggregates": [
+        "@typescript-eslint/typescript-estree"
+      ],
+      "advisories": []
+    },
+    {
+      "package": "baseline-browser-mapping",
+      "severity": "moderate",
+      "direct": false,
+      "affectedPaths": [
+        "node_modules/baseline-browser-mapping"
+      ],
+      "before": [
+        {
+          "path": "node_modules/baseline-browser-mapping",
+          "version": "2.10.20"
+        }
+      ],
+      "after": [
+        {
+          "path": "node_modules/baseline-browser-mapping",
+          "version": "2.11.39"
+        }
+      ],
+      "assessment": "Build/lint/browser-targeting dependency. No application route accepts arbitrary CSS, lint configuration or source maps. Updated within compatible ranges.",
+      "mitigation": "Patched dependency/lockfile; final full npm audit contains no findings.",
+      "upstreamAggregates": [],
+      "advisories": [
+        {
+          "title": "baseline-browser-mapping process termination on invalid input causes denial of service",
+          "url": "https://github.com/advisories/GHSA-w5vr-8v7q-w6rv",
+          "affectedRange": ">=2.0.0 <2.11.0",
+          "severity": "moderate"
+        }
+      ]
+    },
+    {
+      "package": "brace-expansion",
+      "severity": "high",
+      "direct": false,
+      "affectedPaths": [
+        "node_modules/@typescript-eslint/typescript-estree/node_modules/brace-expansion",
+        "node_modules/brace-expansion"
+      ],
+      "before": [
+        {
+          "path": "node_modules/@typescript-eslint/typescript-estree/node_modules/brace-expansion",
+          "version": "5.0.5"
+        },
+        {
+          "path": "node_modules/brace-expansion",
+          "version": "1.1.14"
+        }
+      ],
+      "after": [
+        {
+          "path": "node_modules/@typescript-eslint/typescript-estree/node_modules/brace-expansion",
+          "version": "5.1.0"
+        },
+        {
+          "path": "node_modules/brace-expansion",
+          "version": "1.1.22"
+        }
+      ],
+      "assessment": "Build/lint/browser-targeting dependency. No application route accepts arbitrary CSS, lint configuration or source maps. Updated within compatible ranges.",
+      "mitigation": "Patched dependency/lockfile; final full npm audit contains no findings.",
+      "upstreamAggregates": [],
+      "advisories": [
+        {
+          "title": "brace-expansion: Large numeric range defeats documented `max` DoS protection",
+          "url": "https://github.com/advisories/GHSA-jxxr-4gwj-5jf2",
+          "affectedRange": ">=5.0.0 <5.0.6",
+          "severity": "moderate"
+        },
+        {
+          "title": "brace-expansion: DoS via exponential-time expansion of consecutive non-expanding {} groups",
+          "url": "https://github.com/advisories/GHSA-3jxr-9vmj-r5cp",
+          "affectedRange": "<1.1.16",
+          "severity": "high"
+        },
+        {
+          "title": "brace-expansion: DoS via exponential-time expansion of consecutive non-expanding {} groups",
+          "url": "https://github.com/advisories/GHSA-3jxr-9vmj-r5cp",
+          "affectedRange": ">=3.0.0 <5.0.7",
+          "severity": "high"
+        },
+        {
+          "title": "brace-expansion: DoS via unbounded expansion length causing an out-of-memory process crash",
+          "url": "https://github.com/advisories/GHSA-mh99-v99m-4gvg",
+          "affectedRange": "<1.1.17",
+          "severity": "high"
+        },
+        {
+          "title": "brace-expansion: DoS via unbounded expansion length causing an out-of-memory process crash",
+          "url": "https://github.com/advisories/GHSA-mh99-v99m-4gvg",
+          "affectedRange": ">=4.0.0 <5.0.8",
+          "severity": "high"
+        },
+        {
+          "title": "brace-expansion: DoS via unbounded intermediate arrays, bypassing the CVE-2026-14257 mitigation",
+          "url": "https://github.com/advisories/GHSA-rgw5-rvv9-x895",
+          "affectedRange": ">=4.0.0 <5.0.9",
+          "severity": "high"
+        },
+        {
+          "title": "brace-expansion: DoS via unbounded intermediate arrays, bypassing the CVE-2026-14257 mitigation",
+          "url": "https://github.com/advisories/GHSA-rgw5-rvv9-x895",
+          "affectedRange": "<1.1.18",
+          "severity": "high"
+        },
+        {
+          "title": "brace-expansion: Quadratic-time expansion of the `{a},b}` rewrite causes CPU denial of service",
+          "url": "https://github.com/advisories/GHSA-q2hr-2g5m-vwhr",
+          "affectedRange": "<1.1.21",
+          "severity": "moderate"
+        },
+        {
+          "title": "brace-expansion: Quadratic-time expansion of the `{a},b}` rewrite causes CPU denial of service",
+          "url": "https://github.com/advisories/GHSA-q2hr-2g5m-vwhr",
+          "affectedRange": ">=4.0.0 <5.0.12",
+          "severity": "moderate"
+        },
+        {
+          "title": "brace-expansion: DoS via uncontrolled recursion on nested brace groups causing stack exhaustion",
+          "url": "https://github.com/advisories/GHSA-qhr7-859c-m2p7",
+          "affectedRange": "<1.1.20",
+          "severity": "high"
+        },
+        {
+          "title": "brace-expansion: DoS via uncontrolled recursion on nested brace groups causing stack exhaustion",
+          "url": "https://github.com/advisories/GHSA-qhr7-859c-m2p7",
+          "affectedRange": ">=4.0.0 <5.0.11",
+          "severity": "high"
+        },
+        {
+          "title": "brace-expansion: DoS via uncontrolled recursion in parseCommaParts causing stack exhaustion",
+          "url": "https://github.com/advisories/GHSA-6j4f-fj2g-mc7p",
+          "affectedRange": "<1.1.19",
+          "severity": "high"
+        },
+        {
+          "title": "brace-expansion: DoS via uncontrolled recursion in parseCommaParts causing stack exhaustion",
+          "url": "https://github.com/advisories/GHSA-6j4f-fj2g-mc7p",
+          "affectedRange": ">=4.0.0 <5.0.10",
+          "severity": "high"
+        }
+      ]
+    },
+    {
+      "package": "browserslist",
+      "severity": "high",
+      "direct": false,
+      "affectedPaths": [
+        "node_modules/browserslist"
+      ],
+      "before": [
+        {
+          "path": "node_modules/browserslist",
+          "version": "4.28.2"
+        }
+      ],
+      "after": [
+        {
+          "path": "node_modules/browserslist",
+          "version": "4.29.6"
+        }
+      ],
+      "assessment": "Build/lint/browser-targeting dependency. No application route accepts arbitrary CSS, lint configuration or source maps. Updated within compatible ranges.",
+      "mitigation": "Patched dependency/lockfile; final full npm audit contains no findings.",
+      "upstreamAggregates": [],
+      "advisories": [
+        {
+          "title": "Browserslist: Unbounded memory growth (no cache eviction) via distinct query results, leading to eventual OOM",
+          "url": "https://github.com/advisories/GHSA-c83g-rgw3-j3cx",
+          "affectedRange": "<=4.28.6",
+          "severity": "high"
+        },
+        {
+          "title": "Browserslist: Uncaught crash / prototype write via untrusted browserslist-stats.json custom stats (normalizeStats)",
+          "url": "https://github.com/advisories/GHSA-73wf-gq98-2v4g",
+          "affectedRange": "<=4.28.6",
+          "severity": "high"
+        }
+      ]
+    },
+    {
+      "package": "js-yaml",
+      "severity": "high",
+      "direct": false,
+      "affectedPaths": [
+        "node_modules/js-yaml"
+      ],
+      "before": [
+        {
+          "path": "node_modules/js-yaml",
+          "version": "4.1.1"
+        }
+      ],
+      "after": [
+        {
+          "path": "node_modules/js-yaml",
+          "version": "4.3.2"
+        }
+      ],
+      "assessment": "Build/lint/browser-targeting dependency. No application route accepts arbitrary CSS, lint configuration or source maps. Updated within compatible ranges.",
+      "mitigation": "Patched dependency/lockfile; final full npm audit contains no findings.",
+      "upstreamAggregates": [],
+      "advisories": [
+        {
+          "title": "JS-YAML: Quadratic-complexity DoS in merge key handling via repeated aliases",
+          "url": "https://github.com/advisories/GHSA-h67p-54hq-rp68",
+          "affectedRange": ">=4.0.0 <=4.1.1",
+          "severity": "moderate"
+        },
+        {
+          "title": "js-yaml: YAML merge-key chains can force quadratic CPU consumption",
+          "url": "https://github.com/advisories/GHSA-52cp-r559-cp3m",
+          "affectedRange": ">=4.0.0 <4.3.0",
+          "severity": "high"
+        },
+        {
+          "title": "JS-YAML: Quadratic CPU consumption in !!omap resolution (3.x and 4.x) — CVE-2026-59870 fix not backported",
+          "url": "https://github.com/advisories/GHSA-5p4m-2wfm-xmqj",
+          "affectedRange": ">=4.0.0 <4.3.1",
+          "severity": "high"
+        },
+        {
+          "title": "js-yaml: maxTotalMergeKeys does not limit CPU use for empty merge sources",
+          "url": "https://github.com/advisories/GHSA-2883-xcg3-v3hh",
+          "affectedRange": ">=4.0.0 <4.3.2",
+          "severity": "high"
+        }
+      ]
+    },
+    {
+      "package": "minimatch",
+      "severity": "moderate",
+      "direct": false,
+      "affectedPaths": [
+        "node_modules/@typescript-eslint/typescript-estree/node_modules/minimatch"
+      ],
+      "before": [
+        {
+          "path": "node_modules/@typescript-eslint/typescript-estree/node_modules/minimatch",
+          "version": "10.2.5"
+        },
+        {
+          "path": "node_modules/minimatch",
+          "version": "3.1.5"
+        }
+      ],
+      "after": [
+        {
+          "path": "node_modules/@typescript-eslint/typescript-estree/node_modules/minimatch",
+          "version": "11.0.9"
+        },
+        {
+          "path": "node_modules/minimatch",
+          "version": "3.1.5"
+        }
+      ],
+      "assessment": "Build/lint/browser-targeting dependency. No application route accepts arbitrary CSS, lint configuration or source maps. Updated within compatible ranges.",
+      "mitigation": "Patched dependency/lockfile; final full npm audit contains no findings.",
+      "upstreamAggregates": [],
+      "advisories": [
+        {
+          "title": "minimatch has potential denial of service via globparts amplification",
+          "url": "https://github.com/advisories/GHSA-g3hv-75wg-m249",
+          "affectedRange": ">=7.0.0 <11.0.1",
+          "severity": "moderate"
+        }
+      ]
+    },
+    {
+      "package": "nanoid",
+      "severity": "high",
+      "direct": false,
+      "affectedPaths": [
+        "node_modules/nanoid"
+      ],
+      "before": [
+        {
+          "path": "node_modules/nanoid",
+          "version": "3.3.11"
+        }
+      ],
+      "after": [
+        {
+          "path": "node_modules/nanoid",
+          "version": "3.3.20"
+        }
+      ],
+      "assessment": "Build/lint/browser-targeting dependency. No application route accepts arbitrary CSS, lint configuration or source maps. Updated within compatible ranges.",
+      "mitigation": "Patched dependency/lockfile; final full npm audit contains no findings.",
+      "upstreamAggregates": [],
+      "advisories": [
+        {
+          "title": "nanoid: non-secure generators can loop indefinitely with negative size",
+          "url": "https://github.com/advisories/GHSA-28wg-ghj8-5hjv",
+          "affectedRange": "<3.3.16",
+          "severity": "high"
+        },
+        {
+          "title": "nanoid: custom generators can loop indefinitely when size is zero",
+          "url": "https://github.com/advisories/GHSA-2v37-7h3g-55p8",
+          "affectedRange": "<3.3.18",
+          "severity": "high"
+        },
+        {
+          "title": "nanoid: Integer Overflow or Wraparound",
+          "url": "https://github.com/advisories/GHSA-xwg4-73v4-xw9w",
+          "affectedRange": "<3.3.12",
+          "severity": "high"
+        }
+      ]
+    },
+    {
+      "package": "next",
+      "severity": "critical",
+      "direct": true,
+      "affectedPaths": [
+        "node_modules/next"
+      ],
+      "before": [
+        {
+          "path": "node_modules/next",
+          "version": "16.2.4"
+        }
+      ],
+      "after": [
+        {
+          "path": "node_modules/next",
+          "version": "16.4.6"
+        }
+      ],
+      "assessment": "Public Next server/image surface. Advisory-specific prerequisites differ: Vercel is Linux; next/og and CSP nonces are not used. No exploit was performed.",
+      "mitigation": "Patched dependency/lockfile; final full npm audit contains no findings.",
+      "upstreamAggregates": [
+        "postcss",
+        "sharp"
+      ],
+      "advisories": [
+        {
+          "title": "Next.js Vulnerable to Denial of Service with Server Components",
+          "url": "https://github.com/advisories/GHSA-8h8q-6873-q5fj",
+          "affectedRange": ">=16.0.0 <16.2.5",
+          "severity": "high"
+        },
+        {
+          "title": "Next.js's Middleware / Proxy redirects can be cache-poisoned",
+          "url": "https://github.com/advisories/GHSA-3g8h-86w9-wvmq",
+          "affectedRange": ">=16.0.0 <16.2.5",
+          "severity": "low"
+        },
+        {
+          "title": "Next.js vulnerable to cross-site scripting in App Router applications using CSP nonces",
+          "url": "https://github.com/advisories/GHSA-ffhc-5mcf-pf4q",
+          "affectedRange": ">=16.0.0 <16.2.5",
+          "severity": "moderate"
+        },
+        {
+          "title": "Next.js vulnerable to cache poisoning via collisions in React Server Component cache-busting",
+          "url": "https://github.com/advisories/GHSA-vfv6-92ff-j949",
+          "affectedRange": ">=16.0.0 <16.2.5",
+          "severity": "low"
+        },
+        {
+          "title": "Next.js has cross-site scripting in beforeInteractive scripts with untrusted input",
+          "url": "https://github.com/advisories/GHSA-gx5p-jg67-6x7h",
+          "affectedRange": ">=16.0.0 <16.2.5",
+          "severity": "moderate"
+        },
+        {
+          "title": "Next.js vulnerable to Denial of Service via connection exhaustion in applications using Cache Components",
+          "url": "https://github.com/advisories/GHSA-mg66-mrh9-m8jx",
+          "affectedRange": ">=16.0.0 <16.2.5",
+          "severity": "high"
+        },
+        {
+          "title": "Next.js has a Denial of Service in the Image Optimization API",
+          "url": "https://github.com/advisories/GHSA-h64f-5h5j-jqjh",
+          "affectedRange": ">=16.0.0 <16.2.5",
+          "severity": "moderate"
+        },
+        {
+          "title": "Next.js vulnerable to server-side request forgery in applications using WebSocket upgrades",
+          "url": "https://github.com/advisories/GHSA-c4j6-fc7j-m34r",
+          "affectedRange": ">=16.0.0 <16.2.5",
+          "severity": "high"
+        },
+        {
+          "title": "Next.js has a Middleware / Proxy bypass through dynamic route parameter injection",
+          "url": "https://github.com/advisories/GHSA-492v-c6pp-mqqv",
+          "affectedRange": ">=16.0.0 <16.2.5",
+          "severity": "high"
+        },
+        {
+          "title": "Next.js vulnerable to cache poisoning in React Server Component responses",
+          "url": "https://github.com/advisories/GHSA-wfc6-r584-vfw7",
+          "affectedRange": ">=16.0.0 <16.2.5",
+          "severity": "moderate"
+        },
+        {
+          "title": "Next.js has a Middleware / Proxy bypass in App Router applications via segment-prefetch routes",
+          "url": "https://github.com/advisories/GHSA-267c-6grr-h53f",
+          "affectedRange": ">=16.0.0 <16.2.5",
+          "severity": "high"
+        },
+        {
+          "title": "Next.js has a Middleware / Proxy bypass in Pages Router applications using i18n",
+          "url": "https://github.com/advisories/GHSA-36qx-fr4f-26g5",
+          "affectedRange": ">=16.0.0 <16.2.5",
+          "severity": "high"
+        },
+        {
+          "title": "Next.js: Middleware / Proxy bypass in App Router applications using Turbopack and single locale",
+          "url": "https://github.com/advisories/GHSA-6gpp-xcg3-4w24",
+          "affectedRange": ">=16.0.0 <16.2.11",
+          "severity": "high"
+        },
+        {
+          "title": "Next.js: Denial of Service in App Router using Server Actions",
+          "url": "https://github.com/advisories/GHSA-m99w-x7hq-7vfj",
+          "affectedRange": ">=16.0.0 <16.2.11",
+          "severity": "high"
+        },
+        {
+          "title": "Next.js: Server-Side Request Forgery in Server Actions on custom servers",
+          "url": "https://github.com/advisories/GHSA-89xv-2m56-2m9x",
+          "affectedRange": ">=16.0.0 <16.2.11",
+          "severity": "high"
+        },
+        {
+          "title": "Next.js: Cache confusion of response bodies for requests with bodies",
+          "url": "https://github.com/advisories/GHSA-68g3-v927-f742",
+          "affectedRange": ">=16.0.0 <16.2.11",
+          "severity": "moderate"
+        },
+        {
+          "title": "Next.js: Cache confusion of response bodies for requests with bodies containing invalid UTF-8 byte sequences",
+          "url": "https://github.com/advisories/GHSA-4633-3j49-mh5q",
+          "affectedRange": ">=16.0.0 <16.2.11",
+          "severity": "moderate"
+        },
+        {
+          "title": "Next.js: Unbounded Server Action payload in Edge runtime",
+          "url": "https://github.com/advisories/GHSA-4c39-4ccg-62r3",
+          "affectedRange": ">=16.0.0 <16.2.11",
+          "severity": "moderate"
+        },
+        {
+          "title": "Next.js: Server-Side Request Forgery in rewrites via attacker-controlled destination hostname",
+          "url": "https://github.com/advisories/GHSA-p9j2-gv94-2wf4",
+          "affectedRange": ">=16.0.0 <16.2.11",
+          "severity": "high"
+        },
+        {
+          "title": "Next.js: Denial of Service in the Image Optimization API using SVGs",
+          "url": "https://github.com/advisories/GHSA-q8wf-6r8g-63ch",
+          "affectedRange": ">=16.0.0 <16.2.11",
+          "severity": "moderate"
+        },
+        {
+          "title": "Next.js: Unauthenticated disclosure of internal Server Function endpoints",
+          "url": "https://github.com/advisories/GHSA-955p-x3mx-jcvp",
+          "affectedRange": ">=16.0.0 <16.2.11",
+          "severity": "moderate"
+        },
+        {
+          "title": "Next.js: Unauthenticated Remote Code Execution on windows-hosted servers",
+          "url": "https://github.com/advisories/GHSA-p293-qw3h-jr36",
+          "affectedRange": ">=16.0.0 <16.3.3",
+          "severity": "critical"
+        },
+        {
+          "title": "Next.js: Unauthenticated Remote Code Execution in Image Optimization API when AVIF files are used",
+          "url": "https://github.com/advisories/GHSA-2xp9-vwfh-vxw4",
+          "affectedRange": ">=16.0.0 <16.3.3",
+          "severity": "critical"
+        },
+        {
+          "title": "Next.js: Remote Code Execution in next/og ImageResponse",
+          "url": "https://github.com/advisories/GHSA-vcvr-r3jv-pc5j",
+          "affectedRange": ">=16.2.0 <16.3.6",
+          "severity": "critical"
+        },
+        {
+          "title": "Next.js has cache poisoning of SSG and ISR pages in self-hosted applications",
+          "url": "https://github.com/advisories/GHSA-4jqv-mc3x-m676",
+          "affectedRange": ">=16.0.0 <16.3.8",
+          "severity": "moderate"
+        },
+        {
+          "title": "Next.js has information disclosure in development server's Model Context Protocol endpoint",
+          "url": "https://github.com/advisories/GHSA-39w2-rjm5-chcv",
+          "affectedRange": ">=16.0.0 <16.3.8",
+          "severity": "low"
+        },
+        {
+          "title": "Next.js has information disclosure in App Router metadata image routes via dynamicParams bypass",
+          "url": "https://github.com/advisories/GHSA-f87g-xv8r-7p7x",
+          "affectedRange": ">=16.0.0 <16.3.8",
+          "severity": "moderate"
+        },
+        {
+          "title": "Next.js has cache poisoning in SSG/ISR rendering that leads to cross-user content substitution and persistent denial of service",
+          "url": "https://github.com/advisories/GHSA-mcj8-r9mp-w47p",
+          "affectedRange": ">=16.0.0 <16.3.8",
+          "severity": "moderate"
+        },
+        {
+          "title": "Next.js has Server-Side Request Forgery in Image Optimization",
+          "url": "https://github.com/advisories/GHSA-cjq9-62q9-8jv4",
+          "affectedRange": ">=16.0.0 <16.3.8",
+          "severity": "high"
+        },
+        {
+          "title": "Next.js: Unauthenticated Remote Code Execution in Image Optimization API when SVG files are used",
+          "url": "https://github.com/advisories/GHSA-2464-fhr4-w9xw",
+          "affectedRange": ">=16.0.0 <=16.4.0",
+          "severity": "critical"
+        },
+        {
+          "title": "Next.js: Denial of Service in App Router using Server Actions",
+          "url": "https://github.com/advisories/GHSA-p3m5-59mp-jv5r",
+          "affectedRange": ">=16.0.0 <=16.4.0",
+          "severity": "high"
+        },
+        {
+          "title": "Next.js: Unauthenticated Remote Code Execution in `use cache` functions returning typed arrays",
+          "url": "https://github.com/advisories/GHSA-673q-mjm6-r5xr",
+          "affectedRange": ">=16.0.0 <=16.4.0",
+          "severity": "critical"
+        },
+        {
+          "title": "Next.js has a Middleware / Proxy bypass in App Router applications via segment-prefetch routes - Incomplete Fix Follow-Up",
+          "url": "https://github.com/advisories/GHSA-26hh-7cqf-hhc6",
+          "affectedRange": ">=16.0.0 <16.2.6",
+          "severity": "high"
+        },
+        {
+          "title": "Next.js: Cache leak across root param values in nested 'use cache' functions via delayed inner stream metadata",
+          "url": "https://github.com/advisories/GHSA-vc7v-qv4w-wrv8",
+          "affectedRange": ">=16.2.0 <=16.4.4",
+          "severity": "moderate"
+        },
+        {
+          "title": "Next.js: SVG rejection bypass in the image optimization",
+          "url": "https://github.com/advisories/GHSA-7qx7-33qx-rqx2",
+          "affectedRange": ">=16.0.0 <=16.4.4",
+          "severity": "moderate"
+        },
+        {
+          "title": "Next.js: HttpOnly cookie exposure through internal response header on Next.js Edge runtime routes",
+          "url": "https://github.com/advisories/GHSA-f3mh-rxg3-f5g2",
+          "affectedRange": ">=16.0.0 <=16.4.4",
+          "severity": "moderate"
+        },
+        {
+          "title": "Next.js: Cross-client response injection and disclosure in self-hosted Next.js applications forwarding fetched responses",
+          "url": "https://github.com/advisories/GHSA-pc58-hwjq-p385",
+          "affectedRange": ">=16.0.0 <=16.4.4",
+          "severity": "moderate"
+        },
+        {
+          "title": "Next.js: Cross-user cache disclosure and poisoning in Next.js use cache with binary arguments",
+          "url": "https://github.com/advisories/GHSA-rhh4-g77r-r9qj",
+          "affectedRange": ">=16.0.0 <=16.4.4",
+          "severity": "moderate"
+        }
+      ]
+    },
+    {
+      "package": "postcss",
+      "severity": "high",
+      "direct": true,
+      "affectedPaths": [
+        "node_modules/next/node_modules/postcss",
+        "node_modules/postcss"
+      ],
+      "before": [
+        {
+          "path": "node_modules/next/node_modules/postcss",
+          "version": "8.4.31"
+        },
+        {
+          "path": "node_modules/postcss",
+          "version": "8.5.10"
+        }
+      ],
+      "after": [
+        {
+          "path": "node_modules/postcss",
+          "version": "8.5.23"
+        }
+      ],
+      "assessment": "Build/lint/browser-targeting dependency. No application route accepts arbitrary CSS, lint configuration or source maps. Updated within compatible ranges.",
+      "mitigation": "Patched dependency/lockfile; final full npm audit contains no findings.",
+      "upstreamAggregates": [],
+      "advisories": [
+        {
+          "title": "PostCSS has XSS via Unescaped </style> in its CSS Stringify Output",
+          "url": "https://github.com/advisories/GHSA-qx2v-qp2m-jg93",
+          "affectedRange": "<8.5.10",
+          "severity": "moderate"
+        },
+        {
+          "title": "PostCSS: Arbitrary file read and information disclosure via attacker-controlled sourceMappingURL in CSS comments",
+          "url": "https://github.com/advisories/GHSA-6g55-p6wh-862q",
+          "affectedRange": "<=8.5.11",
+          "severity": "high"
+        },
+        {
+          "title": "PostCSS: incomplete fix of GHSA-6g55-p6wh-862q — attacker-controlled sourceMappingURL reads arbitrary .map files when `from` is unset",
+          "url": "https://github.com/advisories/GHSA-fxqj-rqcc-2cmp",
+          "affectedRange": "<=8.5.22",
+          "severity": "moderate"
+        },
+        {
+          "title": "PostCSS: Path Traversal in Previous Source Map Auto-Loading (sourceMappingURL) leads to Arbitrary .map File Disclosure",
+          "url": "https://github.com/advisories/GHSA-r28c-9q8g-f849",
+          "affectedRange": "<=8.5.17",
+          "severity": "high"
+        }
+      ]
+    },
+    {
+      "package": "postcss-selector-parser",
+      "severity": "moderate",
+      "direct": false,
+      "affectedPaths": [
+        "node_modules/postcss-selector-parser"
+      ],
+      "before": [
+        {
+          "path": "node_modules/postcss-selector-parser",
+          "version": "6.1.2"
+        }
+      ],
+      "after": [
+        {
+          "path": "node_modules/postcss-selector-parser",
+          "version": "6.1.6"
+        }
+      ],
+      "assessment": "Build/lint/browser-targeting dependency. No application route accepts arbitrary CSS, lint configuration or source maps. Updated within compatible ranges.",
+      "mitigation": "Patched dependency/lockfile; final full npm audit contains no findings.",
+      "upstreamAggregates": [],
+      "advisories": [
+        {
+          "title": "postcss-selector-parser allows denial of service through uncontrolled AST recursion",
+          "url": "https://github.com/advisories/GHSA-w9m9-85wc-3x92",
+          "affectedRange": ">=6.1.0 <6.1.3",
+          "severity": "low"
+        },
+        {
+          "title": "PostCSS: Quadratic complexity in flat selector parsing allows CPU exhaustion",
+          "url": "https://github.com/advisories/GHSA-rj75-hqrm-r3gf",
+          "affectedRange": "<6.1.5",
+          "severity": "moderate"
+        }
+      ]
+    },
+    {
+      "package": "sharp",
+      "severity": "high",
+      "direct": false,
+      "affectedPaths": [
+        "node_modules/sharp"
+      ],
+      "before": [
+        {
+          "path": "node_modules/sharp",
+          "version": "0.34.5"
+        }
+      ],
+      "after": [
+        {
+          "path": "node_modules/sharp",
+          "version": "0.35.5"
+        }
+      ],
+      "assessment": "Public Next server/image surface. Advisory-specific prerequisites differ: Vercel is Linux; next/og and CSP nonces are not used. No exploit was performed.",
+      "mitigation": "Patched dependency/lockfile; final full npm audit contains no findings.",
+      "upstreamAggregates": [],
+      "advisories": [
+        {
+          "title": "sharp inherited vulnerabilities in libvips: CVE-2026-33327, CVE-2026-33328, CVE-2026-35590, CVE-2026-35591",
+          "url": "https://github.com/advisories/GHSA-f88m-g3jw-g9cj",
+          "affectedRange": "<0.35.0",
+          "severity": "high"
+        },
+        {
+          "title": "sharp: Vulnerabilities in libheif: GHSA-g89c-p67h-r497 and GHSA-2jg2-4ch7-h545",
+          "url": "https://github.com/advisories/GHSA-rgj7-g3m4-5g8c",
+          "affectedRange": "<0.35.4",
+          "severity": "high"
+        },
+        {
+          "title": "sharp : Vulnerability in librsvg dependency CVE-2026-96889",
+          "url": "https://github.com/advisories/GHSA-wq5f-xc86-pv6w",
+          "affectedRange": "<0.35.5",
+          "severity": "high"
+        }
+      ]
+    },
+    {
+      "package": "source-map-js",
+      "severity": "high",
+      "direct": false,
+      "affectedPaths": [
+        "node_modules/source-map-js"
+      ],
+      "before": [
+        {
+          "path": "node_modules/source-map-js",
+          "version": "1.2.1"
+        }
+      ],
+      "after": [
+        {
+          "path": "node_modules/source-map-js",
+          "version": "1.2.4"
+        }
+      ],
+      "assessment": "Build/lint/browser-targeting dependency. No application route accepts arbitrary CSS, lint configuration or source maps. Updated within compatible ranges.",
+      "mitigation": "Patched dependency/lockfile; final full npm audit contains no findings.",
+      "upstreamAggregates": [],
+      "advisories": [
+        {
+          "title": "source-map-js allows event-loop denial of service through indexed source-map section offsets",
+          "url": "https://github.com/advisories/GHSA-68fv-2mgg-jv7q",
+          "affectedRange": ">=1.0.0 <1.2.2",
+          "severity": "high"
+        }
+      ]
+    },
+    {
+      "package": "zod",
+      "severity": "high",
+      "direct": true,
+      "affectedPaths": [
+        "node_modules/zod"
+      ],
+      "before": [
+        {
+          "path": "node_modules/zod",
+          "version": "4.3.6"
+        }
+      ],
+      "after": [
+        {
+          "path": "node_modules/zod",
+          "version": "4.6.7"
+        }
+      ],
+      "assessment": "Application validation dependency; upgraded rather than assuming every vulnerable parsing path is reachable.",
+      "mitigation": "Patched dependency/lockfile; final full npm audit contains no findings.",
+      "upstreamAggregates": [],
+      "advisories": [
+        {
+          "title": "Zod can exhaust memory while validating oversized constrained collections",
+          "url": "https://github.com/advisories/GHSA-mrhx-c7xc-m3w5",
+          "affectedRange": "<4.6.6",
+          "severity": "high"
+        }
+      ]
+    }
+  ]
+}
