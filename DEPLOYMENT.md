@@ -6,10 +6,10 @@ Vercel settings: Next.js, repository root, Node 24.x, install `npm ci`, build `n
 
 Set these server-only variables in Vercel:
 
-| Name | Value |
-| --- | --- |
-| `API_URL` | HTTPS origin of the new Coffeo Render service |
-| `INTERNAL_API_KEY` | Same random value as the new Render service |
+| Name               | Value                                         |
+| ------------------ | --------------------------------------------- |
+| `API_URL`          | HTTPS origin of the new Coffeo Render service |
+| `INTERNAL_API_KEY` | Same random value as the new Render service   |
 
 No Supabase keys, database password or public API secret is needed in this repository. Do not use the old `NEXT_PUBLIC_API_URL` setting for authentication. Browser requests use `/api/*`; route handlers forward only auth cookies and the internal server key to Render. Multiple `Set-Cookie` headers remain separate. Cross-origin mutations to the BFF are rejected; responses are not cached. Server-rendered catalog reads use the same backend helper without a self-request to a hardcoded frontend URL.
 

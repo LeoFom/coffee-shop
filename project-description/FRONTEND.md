@@ -1,3 +1,6 @@
+> **HISTORICAL — не поточний стан Coffeo (позначено 24.11.2026).**
+> Цей документ описує попередню версію. API вже має orders, auth/role guards і виправлення публічної реєстрації; наведені нижче твердження про їхню відсутність застаріли. Актуальні [аудит](../docs/PROJECT_AUDIT_UA.md), [план](../docs/IMPLEMENTATION_PLAN_UA.md) і [правила](../AGENTS.md) мають пріоритет. Старі списки фаз та інструкції скілів нижче не є поточним дорученням.
+
 # Фронтенд — coffee-shop
 
 Next.js-приложение в этой папке. UI магазина Coffeo + тонкий BFF к Fastify.
@@ -8,16 +11,16 @@ Next.js-приложение в этой папке. UI магазина Coffeo 
 
 ## Стек
 
-| Слой | Технология |
-|---|---|
-| Фреймворк | Next.js (App Router), React 19 |
-| Стили | Tailwind CSS 3, shadcn/ui (Radix), lucide-react |
-| Формы | react-hook-form, Zod |
-| Состояние | Redux Toolkit (`cart`, `products`, `auth`) + React Context (`AuthProvider`) |
-| Тосты | sonner |
-| Auth (живой) | Fastify JWT через BFF, HttpOnly cookies |
+| Слой           | Технология                                                                                      |
+| -------------- | ----------------------------------------------------------------------------------------------- |
+| Фреймворк      | Next.js (App Router), React 19                                                                  |
+| Стили          | Tailwind CSS 3, shadcn/ui (Radix), lucide-react                                                 |
+| Формы          | react-hook-form, Zod                                                                            |
+| Состояние      | Redux Toolkit (`cart`, `products`, `auth`) + React Context (`AuthProvider`)                     |
+| Тосты          | sonner                                                                                          |
+| Auth (живой)   | Fastify JWT через BFF, HttpOnly cookies                                                         |
 | Auth (мёртвый) | `@supabase/ssr`, `@supabase/supabase-js` — пакеты и клиенты есть, в боевых флоу не используются |
-| Шрифты | Geist, Inter, Playfair Display |
+| Шрифты         | Geist, Inter, Playfair Display                                                                  |
 
 Скрипты: `npm run dev` / `build` / `start` / `lint`. Тестов нет.
 
@@ -53,20 +56,20 @@ utils/
 
 ### Публичные
 
-| URL | Файл | Статус |
-|---|---|---|
-| `/` | `app/page.tsx` | Главная Coffeo |
-| `/shop` | `app/(public)/shop/page.tsx` | Каталог, реальный API |
-| `/shop/[slug]` | `app/(public)/shop/[slug]/page.tsx` | Карточка товара |
-| `/checkout` | `app/(public)/checkout/page.tsx` | UI готов, submit бьёт в несуществующий `/api/orders` |
-| `/auth/login` | `app/(public)/auth/login/page.tsx` | Fastify login |
-| `/auth/sign-up` | `app/(public)/auth/sign-up/page.tsx` | Форма есть, BFF register сломан |
-| `/auth/sign-up-success` | `.../sign-up-success/page.tsx` | Leftover Supabase |
-| `/auth/forgot-password` | `.../forgot-password/page.tsx` | Сломан (см. BUGS) |
-| `/auth/update-password` | `.../update-password/page.tsx` | Сломан |
-| `/auth/error` | `.../error/page.tsx` | Leftover |
-| `/admin` | `app/(public)/admin/page.tsx` | Starter-kit, не админка магазина |
-| `/task-api` | `app/(public)/task-api/page.tsx` | Dev-кнопка на `/api/tasks` |
+| URL                     | Файл                                 | Статус                                               |
+| ----------------------- | ------------------------------------ | ---------------------------------------------------- |
+| `/`                     | `app/page.tsx`                       | Главная Coffeo                                       |
+| `/shop`                 | `app/(public)/shop/page.tsx`         | Каталог, реальный API                                |
+| `/shop/[slug]`          | `app/(public)/shop/[slug]/page.tsx`  | Карточка товара                                      |
+| `/checkout`             | `app/(public)/checkout/page.tsx`     | UI готов, submit бьёт в несуществующий `/api/orders` |
+| `/auth/login`           | `app/(public)/auth/login/page.tsx`   | Fastify login                                        |
+| `/auth/sign-up`         | `app/(public)/auth/sign-up/page.tsx` | Форма есть, BFF register сломан                      |
+| `/auth/sign-up-success` | `.../sign-up-success/page.tsx`       | Leftover Supabase                                    |
+| `/auth/forgot-password` | `.../forgot-password/page.tsx`       | Сломан (см. BUGS)                                    |
+| `/auth/update-password` | `.../update-password/page.tsx`       | Сломан                                               |
+| `/auth/error`           | `.../error/page.tsx`                 | Leftover                                             |
+| `/admin`                | `app/(public)/admin/page.tsx`        | Starter-kit, не админка магазина                     |
+| `/task-api`             | `app/(public)/task-api/page.tsx`     | Dev-кнопка на `/api/tasks`                           |
 
 Хедер ссылается на `/products` — такой страницы нет (404). Каталог живёт на `/shop`.
 
@@ -74,13 +77,13 @@ utils/
 
 `app/(protected)/layout.tsx` вызывает `getUser()`. Нет пользователя → редирект на `/auth/login`.
 
-| URL | Файл | Данные |
-|---|---|---|
-| `/dashboard` | `app/(protected)/dashboard/page.tsx` | Товары — API; остальное мок/заглушка |
-| `/orders` | `app/(protected)/orders/page.tsx` | Мок `MOCK_ORDERS` |
-| `/membership` | `app/(protected)/membership/page.tsx` | Мок `MOCK_MEMBER` |
-| `/profile` | `app/(protected)/profile/page.tsx` | Захардкожен «Oleksandr Developer»; `GET /api/profile/me` не вызывается |
-| `/protected` | `app/(protected)/protected/page.tsx` | Starter demo |
+| URL           | Файл                                  | Данные                                                                 |
+| ------------- | ------------------------------------- | ---------------------------------------------------------------------- |
+| `/dashboard`  | `app/(protected)/dashboard/page.tsx`  | Товары — API; остальное мок/заглушка                                   |
+| `/orders`     | `app/(protected)/orders/page.tsx`     | Мок `MOCK_ORDERS`                                                      |
+| `/membership` | `app/(protected)/membership/page.tsx` | Мок `MOCK_MEMBER`                                                      |
+| `/profile`    | `app/(protected)/profile/page.tsx`    | Захардкожен «Oleksandr Developer»; `GET /api/profile/me` не вызывается |
+| `/protected`  | `app/(protected)/protected/page.tsx`  | Starter demo                                                           |
 
 ### Конфликт маршрута `/`
 
@@ -105,23 +108,23 @@ const url = `http://127.0.0.1:3001${path}`
 
 Login — единственный хендлер, который смотрит на `NEXT_PUBLIC_API_URL`. Остальные игнорируют env.
 
-| BFF | Методы | Fastify | Заметки |
-|---|---|---|---|
-| `/api/auth/log-in` | POST | `/auth/log-in` | Форвардит `Set-Cookie` |
-| `/api/auth/register` | POST | `/auth/register` | Сломан: double stringify + сырой `Response` |
-| `/api/auth/logout` | POST | `/auth/logout` | Форвардит cookie; URL бэка захардкожен |
-| `/api/auth/me` | GET | `/auth/me` | Ок |
-| `/api/auth/refresh` | POST | `/auth/refresh` | На бэке маршрут закомментирован |
-| `/api/cart` | GET, POST, PATCH | `/cart` | POST/PATCH форвардят cookie |
-| `/api/cart/[id]` | GET, DELETE | GET → **`/products/:id`** (баг); DELETE → `/cart/:id` | |
-| `/api/products` | GET, POST | `/products` | GET иногда отдаёт сырой Response |
-| `/api/products/[id]` | GET, PATCH | `/products/:id` | Ок |
-| `/api/products/slug/[slug]` | GET, PATCH | slug GET ок; PATCH путает `id`/`slug` | |
-| `/api/profile` | POST | `/profile` | `Response.json(Response)` |
-| `/api/profile/me` | GET | `/profile/me` | Ок, UI профиля не использует |
-| `/api/nova-poshta/cities` | GET | `/nova-poshta/cities` | Ок |
-| `/api/nova-poshta/warehouses` | GET | `/nova-poshta/warehouses` | Ок |
-| `/api/tasks` | GET, PATCH | `/tasks` | Leftover, хендлер кривой |
+| BFF                           | Методы           | Fastify                                               | Заметки                                     |
+| ----------------------------- | ---------------- | ----------------------------------------------------- | ------------------------------------------- |
+| `/api/auth/log-in`            | POST             | `/auth/log-in`                                        | Форвардит `Set-Cookie`                      |
+| `/api/auth/register`          | POST             | `/auth/register`                                      | Сломан: double stringify + сырой `Response` |
+| `/api/auth/logout`            | POST             | `/auth/logout`                                        | Форвардит cookie; URL бэка захардкожен      |
+| `/api/auth/me`                | GET              | `/auth/me`                                            | Ок                                          |
+| `/api/auth/refresh`           | POST             | `/auth/refresh`                                       | На бэке маршрут закомментирован             |
+| `/api/cart`                   | GET, POST, PATCH | `/cart`                                               | POST/PATCH форвардят cookie                 |
+| `/api/cart/[id]`              | GET, DELETE      | GET → **`/products/:id`** (баг); DELETE → `/cart/:id` |                                             |
+| `/api/products`               | GET, POST        | `/products`                                           | GET иногда отдаёт сырой Response            |
+| `/api/products/[id]`          | GET, PATCH       | `/products/:id`                                       | Ок                                          |
+| `/api/products/slug/[slug]`   | GET, PATCH       | slug GET ок; PATCH путает `id`/`slug`                 |                                             |
+| `/api/profile`                | POST             | `/profile`                                            | `Response.json(Response)`                   |
+| `/api/profile/me`             | GET              | `/profile/me`                                         | Ок, UI профиля не использует                |
+| `/api/nova-poshta/cities`     | GET              | `/nova-poshta/cities`                                 | Ок                                          |
+| `/api/nova-poshta/warehouses` | GET              | `/nova-poshta/warehouses`                             | Ок                                          |
+| `/api/tasks`                  | GET, PATCH       | `/tasks`                                              | Leftover, хендлер кривой                    |
 
 **Нет, но UI ждёт:**
 
@@ -138,11 +141,11 @@ Login — единственный хендлер, который смотрит
 
 ### Redux — `store/store.ts`
 
-| Слайс | Файл | Поля | Кто читает |
-|---|---|---|---|
-| `cart` | `store/cart/cartSlice.ts` | `items: CartItem[]` | CartModal, Header, checkout |
-| `products` | `store/products/productSlice.ts` | `items` | Таблица товаров в dashboard |
-| `auth` | `store/auth/authSlice.ts` | `isAuthenticated: boolean` | Ставится при логине; logout не сбрасывает |
+| Слайс      | Файл                             | Поля                       | Кто читает                                |
+| ---------- | -------------------------------- | -------------------------- | ----------------------------------------- |
+| `cart`     | `store/cart/cartSlice.ts`        | `items: CartItem[]`        | CartModal, Header, checkout               |
+| `products` | `store/products/productSlice.ts` | `items`                    | Таблица товаров в dashboard               |
+| `auth`     | `store/auth/authSlice.ts`        | `isAuthenticated: boolean` | Ставится при логине; logout не сбрасывает |
 
 `CartItem` в слайсе:
 
@@ -197,13 +200,13 @@ Login — единственный хендлер, который смотрит
 
 Секции:
 
-| Компонент | Назначение |
-|---|---|
-| `ContactDetailsSection` | Имя, фамилия, телефон; валидация `+380` |
-| `DeliverySection` | Nova Poshta (город + отделение) или курьер |
-| `PaymentSection` | UI способа оплаты, платёжного шлюза нет |
-| `CommentSection` | Комментарий |
-| `OrderSummary` | Итог + submit |
+| Компонент               | Назначение                                 |
+| ----------------------- | ------------------------------------------ |
+| `ContactDetailsSection` | Имя, фамилия, телефон; валидация `+380`    |
+| `DeliverySection`       | Nova Poshta (город + отделение) или курьер |
+| `PaymentSection`        | UI способа оплаты, платёжного шлюза нет    |
+| `CommentSection`        | Комментарий                                |
+| `OrderSummary`          | Итог + submit                              |
 
 Nova Poshta: `/api/nova-poshta/cities` и `/warehouses`, `SearchableSelect` + `useDebounce`. Постомат/отделение фильтруются на клиенте по `categoryOfWarehouse`.
 
@@ -225,12 +228,12 @@ fetch('/api/orders', { method: 'POST', ... items: cartItems.map(item => ({
 
 `components/dashboard/page/DashboardPage.tsx`, вкладки из `lib/data/dashboard.data.ts`.
 
-| Вкладка | Статус |
-|---|---|
-| Overview | Хардкод цифр (`DashboardStats`) |
-| Products | Живой CRUD: таблица, форма (`react-hook-form`), create/update через API |
-| Orders / Customers / Analytics | «Coming soon» |
-| Activity / Newsletter / Settings | Вкладки объявлены, контента нет |
+| Вкладка                          | Статус                                                                  |
+| -------------------------------- | ----------------------------------------------------------------------- |
+| Overview                         | Хардкод цифр (`DashboardStats`)                                         |
+| Products                         | Живой CRUD: таблица, форма (`react-hook-form`), create/update через API |
+| Orders / Customers / Analytics   | «Coming soon»                                                           |
+| Activity / Newsletter / Settings | Вкладки объявлены, контента нет                                         |
 
 `ProductStats` показывает выдуманные числа (124 товара и т.д.), не выборку из API.
 
@@ -244,12 +247,12 @@ fetch('/api/orders', { method: 'POST', ... items: cartItems.map(item => ({
 
 ## Auth на клиенте
 
-| Действие | Компонент | Куда |
-|---|---|---|
-| Login | `components/login-form.tsx` | `POST /api/auth/log-in` |
-| Register | `components/sign-up-form.tsx` | `POST /api/auth/register` |
-| Logout | `components/logout-button.tsx` | хардкод `http://localhost:3000/api/auth/logout` |
-| Me | `lib/auth/getUser.ts` | `GET /api/auth/me` |
+| Действие | Компонент                      | Куда                                            |
+| -------- | ------------------------------ | ----------------------------------------------- |
+| Login    | `components/login-form.tsx`    | `POST /api/auth/log-in`                         |
+| Register | `components/sign-up-form.tsx`  | `POST /api/auth/register`                       |
+| Logout   | `components/logout-button.tsx` | хардкод `http://localhost:3000/api/auth/logout` |
+| Me       | `lib/auth/getUser.ts`          | `GET /api/auth/me`                              |
 
 Login не проверяет `response.ok` до `json()`. Forgot/reset — клиентские компоненты импортируют `nodejsFetch` (`next/headers`) и зовут несуществующие `/api/auth/forgot-password` и `/reset-password`.
 
@@ -259,13 +262,13 @@ Login не проверяет `response.ok` до `json()`. Forgot/reset — кл
 
 Два мира, они не сведены.
 
-| Тема | Файлы | Расхождение |
-|---|---|---|
-| Товар | `types/products.types.ts` vs `lib/data/mockProducts.ts` | Другие категории, другая форма |
-| Корзина | `cartSlice.CartItem` vs `types/checkout.types.ts` | В checkout-типе нет `priceAtAdding` |
-| Checkout | старый `CheckoutForm` vs `CheckoutFormState` | Старый не используется новой страницей |
-| Заказы | `types/orders.types.ts` | Завязан на мок-`Product` |
-| User | AuthProvider vs `getUser()` vs layout fallback | `email` vs `name` vs `undefined` |
+| Тема     | Файлы                                                   | Расхождение                            |
+| -------- | ------------------------------------------------------- | -------------------------------------- |
+| Товар    | `types/products.types.ts` vs `lib/data/mockProducts.ts` | Другие категории, другая форма         |
+| Корзина  | `cartSlice.CartItem` vs `types/checkout.types.ts`       | В checkout-типе нет `priceAtAdding`    |
+| Checkout | старый `CheckoutForm` vs `CheckoutFormState`            | Старый не используется новой страницей |
+| Заказы   | `types/orders.types.ts`                                 | Завязан на мок-`Product`               |
+| User     | AuthProvider vs `getUser()` vs layout fallback          | `email` vs `name` vs `undefined`       |
 
 ---
 
@@ -277,10 +280,10 @@ Login не проверяет `response.ok` до `json()`. Forgot/reset — кл
 
 ## Env фронта
 
-| Переменная | Где нужна |
-|---|---|
-| `NEXT_PUBLIC_URL` | `getUser`, запросы шопа к своему BFF |
-| `NEXT_PUBLIC_API_URL` | Только login BFF; остальной прокси игнорирует |
-| `NEXT_PUBLIC_SUPABASE_*` | Starter, в живых флоу не нужны |
+| Переменная               | Где нужна                                     |
+| ------------------------ | --------------------------------------------- |
+| `NEXT_PUBLIC_URL`        | `getUser`, запросы шопа к своему BFF          |
+| `NEXT_PUBLIC_API_URL`    | Только login BFF; остальной прокси игнорирует |
+| `NEXT_PUBLIC_SUPABASE_*` | Starter, в живых флоу не нужны                |
 
 Не класть service-role ключ в `NEXT_PUBLIC_*` (`lib/supabase/fetcher.ts` так назван).

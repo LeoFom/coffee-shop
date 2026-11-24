@@ -32,7 +32,8 @@ We choose **Option A**.
 - JWT access payload stays `{ userId, email }` (ADR-001). Role is **not** in the token so a demotion takes effect on the next request
 - `adminMiddleware` runs **after** `authMiddleware` and reads `role` from the database
 - `GET /auth/me`, login, and refresh return `{ id, email, role }` for the UI
-- One mailbox in `ADMIN_EMAIL` is promoted to `Admin` (on register if the emails match, and on API start for an existing user)
+- Public registration always creates `Customer`; it accepts only email/password and rejects additional fields. `ADMIN_EMAIL` has no effect.
+- Initial admin creation uses the separate `ADMIN_BOOTSTRAP_EMAIL` / `ADMIN_BOOTSTRAP_PASSWORD` startup operation. It does not promote an existing unverified registration. See the [2026-11-24 security amendment](https://github.com/LeoFom/fastify-prisma-app/blob/dev/docs/adr/003-public-registration-role.md).
 
 ## Consequences
 

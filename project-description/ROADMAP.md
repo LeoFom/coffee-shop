@@ -1,3 +1,6 @@
+> **HISTORICAL — не поточний стан Coffeo (позначено 24.11.2026).**
+> Цей документ описує попередню версію. API вже має orders, auth/role guards і виправлення публічної реєстрації; наведені нижче твердження про їхню відсутність застаріли. Актуальні [аудит](../docs/PROJECT_AUDIT_UA.md), [план](../docs/IMPLEMENTATION_PLAN_UA.md) і [правила](../AGENTS.md) мають пріоритет. Старі списки фаз та інструкції скілів нижче не є поточним дорученням.
+
 # План работ
 
 Последовательность шагов. Не прыгать через фазы: каждая опирается на предыдущую.
@@ -19,12 +22,12 @@
 
 ### Скилы
 
-| Когда | Скил | Зачем |
-|---|---|---|
-| До правок | `auditing-security` | Найти все захардкоженные секреты, `NEXT_PUBLIC_*` с service-role, tracked `.env` |
-| Если `git grep` что-то нашёл, а файл «не тот» | `parallel-exploring` | Параллельно прочесать фронт и `fastify-todo-api` |
-| После удаления `env.ts` | `auto-type-checking` | Убедиться, что никто не импортировал файл |
-| Конец фазы | `saving-workspace-context` | Записать: какие ключи ротировали, что осталось в `.env.example` |
+| Когда                                         | Скил                       | Зачем                                                                            |
+| --------------------------------------------- | -------------------------- | -------------------------------------------------------------------------------- |
+| До правок                                     | `auditing-security`        | Найти все захардкоженные секреты, `NEXT_PUBLIC_*` с service-role, tracked `.env` |
+| Если `git grep` что-то нашёл, а файл «не тот» | `parallel-exploring`       | Параллельно прочесать фронт и `fastify-todo-api`                                 |
+| После удаления `env.ts`                       | `auto-type-checking`       | Убедиться, что никто не импортировал файл                                        |
+| Конец фазы                                    | `saving-workspace-context` | Записать: какие ключи ротировали, что осталось в `.env.example`                  |
 
 Не использовать `incident-response` — это не прод-инцидент, это гигиена репо. Секреты в чат и в коммит не класть.
 
@@ -42,15 +45,15 @@
 
 ### Скилы
 
-| Когда | Скил | Зачем |
-|---|---|---|
-| Старт | `parallel-exploring` | Одновременно: `auth.service`, `auth.ts` middleware, `fastify.d.ts`, BFF `/api/auth/*`, `AuthProvider` |
-| Если refresh «почти работает» | `systematic-debugging` | Воспроизвести: протухший access + живой refresh. Гипотеза: сырой токен vs `hashToken` |
-| После смены payload | `auto-type-checking` | Оба репо: `userId` vs `id` |
-| Проверка флоу | `form-testing` | Логин ок / неверный пароль / logout / повторный заход на `/dashboard` |
-| Проверка cookies | `network-request-auditing` | `Set-Cookie` на login, refresh, logout; нет утечки токена в JSON |
-| Конец | `auditing-security` | Refresh в БД только хеш; logout чистит три cookie |
-| Конец | `architecture-decision-records` + `saving-workspace-context` | Зафиксировать контракт `{ userId, email }` — больше не обсуждать |
+| Когда                         | Скил                                                         | Зачем                                                                                                 |
+| ----------------------------- | ------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
+| Старт                         | `parallel-exploring`                                         | Одновременно: `auth.service`, `auth.ts` middleware, `fastify.d.ts`, BFF `/api/auth/*`, `AuthProvider` |
+| Если refresh «почти работает» | `systematic-debugging`                                       | Воспроизвести: протухший access + живой refresh. Гипотеза: сырой токен vs `hashToken`                 |
+| После смены payload           | `auto-type-checking`                                         | Оба репо: `userId` vs `id`                                                                            |
+| Проверка флоу                 | `form-testing`                                               | Логин ок / неверный пароль / logout / повторный заход на `/dashboard`                                 |
+| Проверка cookies              | `network-request-auditing`                                   | `Set-Cookie` на login, refresh, logout; нет утечки токена в JSON                                      |
+| Конец                         | `auditing-security`                                          | Refresh в БД только хеш; logout чистит три cookie                                                     |
+| Конец                         | `architecture-decision-records` + `saving-workspace-context` | Зафиксировать контракт `{ userId, email }` — больше не обсуждать                                      |
 
 Не использовать `adding-auth` — не ставить Auth.js поверх своего JWT.
 
@@ -95,16 +98,16 @@
 
 ### Скилы
 
-| Когда | Скил | Зачем |
-|---|---|---|
-| Старт | `finding-dev-server-url` | Оба процесса живы: Next `:3000`, Fastify `:3001` |
-| Порт занят | `detecting-port-conflicts` | Не поднимать второй Next на другом порту «на глаз» |
-| После правок хендлеров | `api-smoke-testing` | Пройти все `app/api/*`; register не 500; `GET /api/cart/:id` не отдаёт product |
-| После smoke | `network-request-auditing` | Тело register — один JSON, не строка-в-строке; status проксируется |
-| Логин-форма | `form-testing` | Неверный пароль → ошибка, не «успех» ([F8](./BUGS.md)) |
-| Типы | `auto-type-checking` | `nodejsFetch` принимает object, не `string` дважды |
-| Если lint/build красные | `grinding-until-pass` | До зелёного, не оставлять «потом» |
-| 2–3 раза правите один шаблон BFF | `suggesting-cursor-rules` | Правило: не `Response.json(Response)`, форвардить `set-cookie` |
+| Когда                            | Скил                       | Зачем                                                                          |
+| -------------------------------- | -------------------------- | ------------------------------------------------------------------------------ |
+| Старт                            | `finding-dev-server-url`   | Оба процесса живы: Next `:3000`, Fastify `:3001`                               |
+| Порт занят                       | `detecting-port-conflicts` | Не поднимать второй Next на другом порту «на глаз»                             |
+| После правок хендлеров           | `api-smoke-testing`        | Пройти все `app/api/*`; register не 500; `GET /api/cart/:id` не отдаёт product |
+| После smoke                      | `network-request-auditing` | Тело register — один JSON, не строка-в-строке; status проксируется             |
+| Логин-форма                      | `form-testing`             | Неверный пароль → ошибка, не «успех» ([F8](./BUGS.md))                         |
+| Типы                             | `auto-type-checking`       | `nodejsFetch` принимает object, не `string` дважды                             |
+| Если lint/build красные          | `grinding-until-pass`      | До зелёного, не оставлять «потом»                                              |
+| 2–3 раза правите один шаблон BFF | `suggesting-cursor-rules`  | Правило: не `Response.json(Response)`, форвардить `set-cookie`                 |
 
 1. Один helper URL бэка: `process.env.API_URL ?? process.env.NEXT_PUBLIC_API_URL ?? 'http://127.0.0.1:3001'`. Подставить в `lib/nodejs/fetcher.ts` и `app/api/auth/logout/route.ts`. Серверному коду лучше `API_URL` без `NEXT_PUBLIC_`.
 2. Шаблон хендлера: `nodejsFetch` → если `!ok`, вернуть status и body как есть → иначе `json` + форвард `set-cookie` когда бэк его шлёт. Не делать `Response.json(Response)`.
@@ -125,15 +128,15 @@
 
 ### Скилы
 
-| Когда | Скил | Зачем |
-|---|---|---|
-| До кода, выбор A vs B | `architecture-decision-records` | Записать решение. По умолчанию **A** (только логин). Не кодить оба варианта |
-| Старт | `parallel-exploring` | `cart.controller` + `cartSlice` + `CartModal` + `ProductActions` + profile routes |
-| После JWT на `/cart` | `auditing-security` | IDOR: чужой `userId` в body игнорируется; DELETE чужой строки → 403/404 |
-| UI корзины | `visual-qa-testing` | Добавить / qty / удалить / кнопка на `/checkout` |
-| Гость и залогиненный | `form-testing` + `verifying-in-browser` | A: гость → логин. Залогиненный: 2× add → qty 2 на сервере |
-| Сеть | `network-request-auditing` | PATCH qty уходит; нет POST с `userId: ''` |
-| Конец | `saving-workspace-context` | Контракт CartItem: `priceAtAdding`, какой id для remove |
+| Когда                 | Скил                                    | Зачем                                                                             |
+| --------------------- | --------------------------------------- | --------------------------------------------------------------------------------- |
+| До кода, выбор A vs B | `architecture-decision-records`         | Записать решение. По умолчанию **A** (только логин). Не кодить оба варианта       |
+| Старт                 | `parallel-exploring`                    | `cart.controller` + `cartSlice` + `CartModal` + `ProductActions` + profile routes |
+| После JWT на `/cart`  | `auditing-security`                     | IDOR: чужой `userId` в body игнорируется; DELETE чужой строки → 403/404           |
+| UI корзины            | `visual-qa-testing`                     | Добавить / qty / удалить / кнопка на `/checkout`                                  |
+| Гость и залогиненный  | `form-testing` + `verifying-in-browser` | A: гость → логин. Залогиненный: 2× add → qty 2 на сервере                         |
+| Сеть                  | `network-request-auditing`              | PATCH qty уходит; нет POST с `userId: ''`                                         |
+| Конец                 | `saving-workspace-context`              | Контракт CartItem: `priceAtAdding`, какой id для remove                           |
 
 Не чинить гостя через пустой UUID. Не открывать `database-design` ради варианта B в этой фазе.
 
@@ -168,17 +171,17 @@
 
 ### Скилы
 
-| Когда | Скил | Зачем |
-|---|---|---|
-| До модуля | `database-design` | Использовать **существующие** Order / OrderItem / ShippingAddress / Payment. Не плодить таблицы |
-| Старт | `parallel-exploring` | Prisma schema + checkout page + BFF-шаблон фазы 2 |
-| После `POST /orders` | `api-smoke-testing` | 401 без cookie; 400 без города НП; 201 с корзиной |
-| Форма checkout | `form-testing` | Валидный НП / курьер / битый телефон / пустая корзина |
-| Сеть | `network-request-auditing` | Клиент не шлёт итоговую цену как истину; после 201 корзина пустая |
-| UI | `visual-qa-testing` + `responsive-testing` | Desktop и mobile: секции, тосты ошибок, редирект «дякуємо» |
-| Конец флоу | `verifying-in-browser` | 2 товара → заказ в БД → `/orders` снапшот; цена в админке не меняет чек |
-| Перед мержем | `reviewing-code` или `parallel-code-review` | Транзакция, снапшот, auth, нет membership в этом PR |
-| Если типы/lint | `grinding-until-pass` | |
+| Когда                | Скил                                        | Зачем                                                                                           |
+| -------------------- | ------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| До модуля            | `database-design`                           | Использовать **существующие** Order / OrderItem / ShippingAddress / Payment. Не плодить таблицы |
+| Старт                | `parallel-exploring`                        | Prisma schema + checkout page + BFF-шаблон фазы 2                                               |
+| После `POST /orders` | `api-smoke-testing`                         | 401 без cookie; 400 без города НП; 201 с корзиной                                               |
+| Форма checkout       | `form-testing`                              | Валидный НП / курьер / битый телефон / пустая корзина                                           |
+| Сеть                 | `network-request-auditing`                  | Клиент не шлёт итоговую цену как истину; после 201 корзина пустая                               |
+| UI                   | `visual-qa-testing` + `responsive-testing`  | Desktop и mobile: секции, тосты ошибок, редирект «дякуємо»                                      |
+| Конец флоу           | `verifying-in-browser`                      | 2 товара → заказ в БД → `/orders` снапшот; цена в админке не меняет чек                         |
+| Перед мержем         | `reviewing-code` или `parallel-code-review` | Транзакция, снапшот, auth, нет membership в этом PR                                             |
+| Если типы/lint       | `grinding-until-pass`                       |                                                                                                 |
 
 Не использовать `adding-stripe` — Payment.status = Pending, шлюза нет. `adding-api-docs` — после стабильного контракта, не в этом же PR.
 
@@ -219,13 +222,13 @@
 
 ### Скилы
 
-| Когда | Скил | Зачем |
-|---|---|---|
-| До миграции роли | `database-design` | `Customer` \| `Admin` на User vs отдельная таблица — один вариант, миграция |
+| Когда                   | Скил                | Зачем                                                                            |
+| ----------------------- | ------------------- | -------------------------------------------------------------------------------- |
+| До миграции роли        | `database-design`   | `Customer` \| `Admin` на User vs отдельная таблица — один вариант, миграция      |
 | После `adminMiddleware` | `auditing-security` | GET `/products` публичный; POST/PATCH/DELETE без Admin → 403. Не «скрыть кнопку» |
-| Проверка | `api-smoke-testing` | Два токена: customer и admin |
-| UI dashboard | `visual-qa-testing` | Customer не видит вкладку Products / форму create |
-| Перед мержем | `reviewing-code` | Middleware порядок: сначала auth, потом admin |
+| Проверка                | `api-smoke-testing` | Два токена: customer и admin                                                     |
+| UI dashboard            | `visual-qa-testing` | Customer не видит вкладку Products / форму create                                |
+| Перед мержем            | `reviewing-code`    | Middleware порядок: сначала auth, потом admin                                    |
 
 1. В Prisma: роль на `User` (`Customer` | `Admin`) или отдельная таблица. Миграция, одному email выдать Admin.
 2. `adminMiddleware` после `authMiddleware`: не Admin → 403.
@@ -242,14 +245,14 @@
 
 ### Скилы
 
-| Когда | Скил | Зачем |
-|---|---|---|
-| Старт | `parallel-exploring` | ProfileForm, OrdersList, типы `orders.types.ts` vs реальный API |
-| После замены моков | `verifying-in-browser` | `/profile`, `/orders`, dashboard цифры |
-| Форма профиля | `form-testing` | PATCH имени/телефона, релоад — данные с сервера |
-| Сеть | `network-request-auditing` | Больше нет хардкода «Oleksandr Developer» в ответе |
-| Адаптив кабинета | `responsive-testing` | |
-| Конец | `auto-type-checking` | `types/orders.types.ts` отвязан от мок-`Product` |
+| Когда              | Скил                       | Зачем                                                           |
+| ------------------ | -------------------------- | --------------------------------------------------------------- |
+| Старт              | `parallel-exploring`       | ProfileForm, OrdersList, типы `orders.types.ts` vs реальный API |
+| После замены моков | `verifying-in-browser`     | `/profile`, `/orders`, dashboard цифры                          |
+| Форма профиля      | `form-testing`             | PATCH имени/телефона, релоад — данные с сервера                 |
+| Сеть               | `network-request-auditing` | Больше нет хардкода «Oleksandr Developer» в ответе              |
+| Адаптив кабинета   | `responsive-testing`       |                                                                 |
+| Конец              | `auto-type-checking`       | `types/orders.types.ts` отвязан от мок-`Product`                |
 
 1. `/profile` — `GET/PATCH /api/profile/me` (на бэке сначала повесить middleware, см. фазу 3). Убрать «Oleksandr Developer».
 2. `/orders` — `GET /api/orders` вместо `MOCK_ORDERS`. Обновить `types/orders.types.ts` под API, не под мок-`Product`.
@@ -264,13 +267,13 @@
 
 ### Скилы
 
-| Когда | Скил | Зачем |
-|---|---|---|
-| После фильтров | `verifying-in-browser` + `visual-qa-testing` | Категории = Prisma enum; фильтр реально режет список |
-| Сетка карточек | `responsive-testing` | Mobile / tablet / desktop |
-| Ссылка в хедере | руками + browser | `/products` больше нет, `/shop` открывается |
-| Если правите токены/тайпографику | `using-ui-stack` | Не изобретать новую палитру |
-| Пустые состояния фильтра | `form-testing` | Нет результатов ≠ белый экран |
+| Когда                            | Скил                                         | Зачем                                                |
+| -------------------------------- | -------------------------------------------- | ---------------------------------------------------- |
+| После фильтров                   | `verifying-in-browser` + `visual-qa-testing` | Категории = Prisma enum; фильтр реально режет список |
+| Сетка карточек                   | `responsive-testing`                         | Mobile / tablet / desktop                            |
+| Ссылка в хедере                  | руками + browser                             | `/products` больше нет, `/shop` открывается          |
+| Если правите токены/тайпографику | `using-ui-stack`                             | Не изобретать новую палитру                          |
+| Пустые состояния фильтра         | `form-testing`                               | Нет результатов ≠ белый экран                        |
 
 1. Хедер: `/products` → `/shop`. Баг [F13](./BUGS.md).
 2. Включить фильтры/сорт в `components/shop/page.tsx`. Категории — Prisma enum из [FRONTEND.md](./FRONTEND.md), не `Beans/Instant` из моков.
@@ -284,14 +287,14 @@
 
 ### Скилы
 
-| Когда | Скил | Зачем |
-|---|---|---|
-| Старт | `parallel-exploring` | Найти все импорты supabase / tasks / tutorial до удаления |
-| После удаления | `auto-type-checking` + `grinding-until-pass` | Билд не должен ссылаться на удалённые файлы |
-| Конфликт `/` | `verifying-in-browser` | Главная — Coffeo, не starter |
-| Если оставляете forgot/reset | `form-testing` | Иначе удалить страницы, не оставлять мёртвые формы |
-| Документация | `verifying-markdown-formatting` | README, metadata, ссылки в `project-description/` |
-| Повторные конвенции | `suggesting-cursor-rules` | «не возвращать starter», «не звать Fastify из браузера» |
+| Когда                        | Скил                                         | Зачем                                                     |
+| ---------------------------- | -------------------------------------------- | --------------------------------------------------------- |
+| Старт                        | `parallel-exploring`                         | Найти все импорты supabase / tasks / tutorial до удаления |
+| После удаления               | `auto-type-checking` + `grinding-until-pass` | Билд не должен ссылаться на удалённые файлы               |
+| Конфликт `/`                 | `verifying-in-browser`                       | Главная — Coffeo, не starter                              |
+| Если оставляете forgot/reset | `form-testing`                               | Иначе удалить страницы, не оставлять мёртвые формы        |
+| Документация                 | `verifying-markdown-formatting`              | README, metadata, ссылки в `project-description/`         |
+| Повторные конвенции          | `suggesting-cursor-rules`                    | «не возвращать starter», «не звать Fastify из браузера»   |
 
 1. Удалить `app/(admin)/page.tsx` (конфликт `/`, [F18](./BUGS.md)).
 2. Удалить tutorial, supabase-компоненты, `/admin` starter, `/protected` demo, `/task-api`, `app/api/tasks`, `lib/supabase`, `lib/nodejs/proxy.ts` если так и не подключили.

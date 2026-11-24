@@ -1,3 +1,6 @@
+> **HISTORICAL — не поточний стан Coffeo (позначено 24.11.2026).**
+> Цей документ описує попередню версію. API вже має orders, auth/role guards і виправлення публічної реєстрації; наведені нижче твердження про їхню відсутність застаріли. Актуальні [аудит](../docs/PROJECT_AUDIT_UA.md), [план](../docs/IMPLEMENTATION_PLAN_UA.md) і [правила](../AGENTS.md) мають пріоритет. Старі списки фаз та інструкції скілів нижче не є поточним дорученням.
+
 # Бэкенд — fastify-todo-api
 
 API интернет-магазина. Репозиторий: [`/Users/leo/WebstormProjects/fastify-todo-api`](/Users/leo/WebstormProjects/fastify-todo-api).
@@ -8,16 +11,16 @@ API интернет-магазина. Репозиторий: [`/Users/leo/Webs
 
 ## Стек
 
-| Слой | Технология |
-|---|---|
-| HTTP | Fastify 5 |
-| БД | PostgreSQL, Prisma 7 (`@prisma/adapter-pg`) |
-| Валидация | Zod 4 |
-| Auth | `@fastify/jwt` + `jsonwebtoken` (два стека сразу), `@fastify/cookie`, bcrypt 12 |
-| Почта | nodemailer — файл `src/jobs/send-mail.job.ts` нигде не импортируется |
-| Nova Poshta | native `fetch` на `https://api.novaposhta.ua/v2.0/json/` |
-| Логи | pino-pretty |
-| Dev | `ts-node-dev` |
+| Слой        | Технология                                                                      |
+| ----------- | ------------------------------------------------------------------------------- |
+| HTTP        | Fastify 5                                                                       |
+| БД          | PostgreSQL, Prisma 7 (`@prisma/adapter-pg`)                                     |
+| Валидация   | Zod 4                                                                           |
+| Auth        | `@fastify/jwt` + `jsonwebtoken` (два стека сразу), `@fastify/cookie`, bcrypt 12 |
+| Почта       | nodemailer — файл `src/jobs/send-mail.job.ts` нигде не импортируется            |
+| Nova Poshta | native `fetch` на `https://api.novaposhta.ua/v2.0/json/`                        |
+| Логи        | pino-pretty                                                                     |
+| Dev         | `ts-node-dev`                                                                   |
 
 Имя пакета всё ещё `fastify-todo-api`. Тестов нет (`npm test` сразу exit 1).
 
@@ -39,14 +42,14 @@ src/types/fastify.d.ts         JWT payload типизирован как { id, e
 
 Префиксы из `app.ts`:
 
-| Prefix | Модуль |
-|---|---|
-| `/auth` | auth |
-| `/profile` | profile |
-| `/products` | product |
-| `/cart` | cart |
+| Prefix         | Модуль      |
+| -------------- | ----------- |
+| `/auth`        | auth        |
+| `/profile`     | profile     |
+| `/products`    | product     |
+| `/cart`        | cart        |
 | `/nova-poshta` | nova-poshta |
-| `/orders` | order |
+| `/orders`      | order       |
 
 Нет: `@fastify/cors`, CSRF, rate limit, глобальный error handler, ролей/admin-guard.
 
@@ -87,17 +90,17 @@ DI ручной: в `routes.ts` создаются repository → service → co
 
 ### Только схема, кода нет
 
-| Модель | Назначение |
-|---|---|
-| `CoffeeDetails` | Обжарка, происхождение, SCA, brewing methods, flavor notes |
-| `Brand`, `FlavorNote` | Справочники |
-| `Order` | Статусы Pending…Refunded, суммы, orderNumber |
-| `OrderItem` | Снапшот имени, slug, цены, quantity; `productId` nullable |
-| `ShippingAddress` | 1:1 к заказу |
-| `Payment` | Card / PayPal / Cash, статус, transactionId |
-| `MembershipPass` | passCode, stamps, memberDiscountPercent |
-| `NewsletterSubscriber` | email unique, opt-in/out |
-| `ActivityEvent` | LOGIN, LOGOUT, ORDER_CREATED, PRODUCT_VIEWED, CART_UPDATED |
+| Модель                 | Назначение                                                 |
+| ---------------------- | ---------------------------------------------------------- |
+| `CoffeeDetails`        | Обжарка, происхождение, SCA, brewing methods, flavor notes |
+| `Brand`, `FlavorNote`  | Справочники                                                |
+| `Order`                | Статусы Pending…Refunded, суммы, orderNumber               |
+| `OrderItem`            | Снапшот имени, slug, цены, quantity; `productId` nullable  |
+| `ShippingAddress`      | 1:1 к заказу                                               |
+| `Payment`              | Card / PayPal / Cash, статус, transactionId                |
+| `MembershipPass`       | passCode, stamps, memberDiscountPercent                    |
+| `NewsletterSubscriber` | email unique, opt-in/out                                   |
+| `ActivityEvent`        | LOGIN, LOGOUT, ORDER_CREATED, PRODUCT_VIEWED, CART_UPDATED |
 
 Миграция checkout-моделей уже есть: `prisma/migrations/20260607210912_checkout_models/`.
 
@@ -107,13 +110,13 @@ DI ручной: в `routes.ts` создаются repository → service → co
 
 Файлы: `src/modules/auth/*`, `src/shared/plugins/auth.ts`, `src/utils/hash-token.ts`.
 
-| Метод | Auth | Поведение |
-|---|---|---|
-| `POST /auth/register` | нет | Zod, bcrypt, юзер + профиль. **Не логинит**, токенов нет |
-| `POST /auth/log-in` | нет | Ставит `accessToken`, `refreshToken`, `userId` |
-| `POST /auth/logout` | нет | Удаляет сессию по refresh cookie |
-| `GET /auth/me` | `authMiddleware` | `{ id, email }` (читается `request.user.userId`) |
-| `POST /auth/refresh` | **закомментирован** | `AuthService.refresh()` есть, контроллера нет |
+| Метод                 | Auth                | Поведение                                                |
+| --------------------- | ------------------- | -------------------------------------------------------- |
+| `POST /auth/register` | нет                 | Zod, bcrypt, юзер + профиль. **Не логинит**, токенов нет |
+| `POST /auth/log-in`   | нет                 | Ставит `accessToken`, `refreshToken`, `userId`           |
+| `POST /auth/logout`   | нет                 | Удаляет сессию по refresh cookie                         |
+| `GET /auth/me`        | `authMiddleware`    | `{ id, email }` (читается `request.user.userId`)         |
+| `POST /auth/refresh`  | **закомментирован** | `AuthService.refresh()` есть, контроллера нет            |
 
 Cookies при логине: `httpOnly`, `sameSite: 'lax'`, `secure` если `NODE_ENV === 'production'`, `path: '/'`, без `domain`. Logout чистит access/refresh, **`userId` не чистит**.
 
@@ -137,14 +140,14 @@ Refresh: 7 дней, payload **только `{ userId }`**, в БД — `hashTok
 
 `src/modules/product/*`
 
-| Метод | Auth | |
-|---|---|---|
-| `GET /products/` | публичный | список |
-| `GET /products/:id` | публичный | UUID |
-| `GET /products/slug/:slug` | публичный | |
-| `POST /products/` | **публичный** | create |
-| `PATCH /products/:id` | **публичный** | update |
-| `DELETE /products/:id` | **публичный** | delete |
+| Метод                      | Auth          |        |
+| -------------------------- | ------------- | ------ |
+| `GET /products/`           | публичный     | список |
+| `GET /products/:id`        | публичный     | UUID   |
+| `GET /products/slug/:slug` | публичный     |        |
+| `POST /products/`          | **публичный** | create |
+| `PATCH /products/:id`      | **публичный** | update |
+| `DELETE /products/:id`     | **публичный** | delete |
 
 Роли нет. Админка фронта работает, но любой клиент может то же самое.
 
@@ -156,13 +159,13 @@ Slug: транслитерация + slugify, при коллизии суффи
 
 `src/modules/cart/*`
 
-| Метод | Auth | Идентификация |
-|---|---|---|
-| `GET /cart/` | нет | `req.cookies.userId` |
-| `GET /cart/:id` | нет | любая строка по id |
-| `POST /cart/` | нет | `userId` **в body** |
-| `PATCH /cart/:id` | нет | без проверки владельца |
-| `DELETE /cart/:id` | нет | без проверки владельца |
+| Метод              | Auth | Идентификация          |
+| ------------------ | ---- | ---------------------- |
+| `GET /cart/`       | нет  | `req.cookies.userId`   |
+| `GET /cart/:id`    | нет  | любая строка по id     |
+| `POST /cart/`      | нет  | `userId` **в body**    |
+| `PATCH /cart/:id`  | нет  | без проверки владельца |
+| `DELETE /cart/:id` | нет  | без проверки владельца |
 
 Пустой `userId` → 404 `userId is empty`. Не-UUID → 400. Unique `(userId, productId)` не обрабатывается как upsert: повторный POST того же товара → Prisma unique violation → 500.
 
@@ -174,12 +177,12 @@ Slug: транслитерация + slugify, при коллизии суффи
 
 `src/modules/profile/*`
 
-| Метод | Middleware | |
-|---|---|---|
-| `GET /profile/me` | да | ок |
-| `POST /` | **нет** | контроллер ждёт `request.user.userId` |
-| `PATCH /` | **нет** | то же |
-| `DELETE /` | **нет** | то же |
+| Метод             | Middleware |                                       |
+| ----------------- | ---------- | ------------------------------------- |
+| `GET /profile/me` | да         | ок                                    |
+| `POST /`          | **нет**    | контроллер ждёт `request.user.userId` |
+| `PATCH /`         | **нет**    | то же                                 |
+| `DELETE /`        | **нет**    | то же                                 |
 
 Zod-схемы в `profile.schema.ts` контроллер не вызывает — сырой `request.body`.
 
@@ -191,11 +194,11 @@ Zod-схемы в `profile.schema.ts` контроллер не вызывает
 
 Ключ: `process.env.NOVA_POSHTA_API_KEY` в момент регистрации роутера. Если пустой — в NP уйдёт `undefined`, старт не падает.
 
-| Метод | |
-|---|---|
-| `GET /nova-poshta/cities?query=` | поиск населённых пунктов |
-| `GET /nova-poshta/settlements?query=` | дубль `getCities()` |
-| `GET /nova-poshta/warehouses?cityRef=&query=` | отделения города |
+| Метод                                         |                          |
+| --------------------------------------------- | ------------------------ |
+| `GET /nova-poshta/cities?query=`              | поиск населённых пунктов |
+| `GET /nova-poshta/settlements?query=`         | дубль `getCities()`      |
+| `GET /nova-poshta/warehouses?cityRef=&query=` | отделения города         |
 
 Кэша нет. Каждый запрос с фронта (через BFF) идёт во внешний API. В service оставлены `console.log`. В repository неиспользуемые импорты Prisma.
 
@@ -211,17 +214,17 @@ Zod-схемы в `profile.schema.ts` контроллер не вызывает
 
 Из `.env.example`:
 
-| Переменная | Обязательна | |
-|---|---|---|
-| `JWT_ACCESS_SECRET` | да, throw в `app.ts` | |
-| `COOKIE_SECRET` | да, throw в `app.ts` | |
-| `JWT_REFRESH_SECRET` | фактически да, без проверки на старте | |
-| `DATABASE_URL` | да для Prisma | |
-| `PORT` | нет, default 3001 | |
-| `NODE_ENV` | нет, влияет на `secure` cookie | |
-| `NOVA_POSHTA_API_KEY` | для доставки | |
-| `NODEMAILER_*` | нет, job мёртвый | |
-| `MONGO_URI` | нет, наследие | |
+| Переменная            | Обязательна                           |     |
+| --------------------- | ------------------------------------- | --- |
+| `JWT_ACCESS_SECRET`   | да, throw в `app.ts`                  |     |
+| `COOKIE_SECRET`       | да, throw в `app.ts`                  |     |
+| `JWT_REFRESH_SECRET`  | фактически да, без проверки на старте |     |
+| `DATABASE_URL`        | да для Prisma                         |     |
+| `PORT`                | нет, default 3001                     |     |
+| `NODE_ENV`            | нет, влияет на `secure` cookie        |     |
+| `NOVA_POSHTA_API_KEY` | для доставки                          |     |
+| `NODEMAILER_*`        | нет, job мёртвый                      |     |
+| `MONGO_URI`           | нет, наследие                         |     |
 
 Типизированного env-схемы (zod/envalid) нет: везде `process.env`.
 

@@ -1,51 +1,38 @@
 # Coffeo
 
-Online coffee shop: catalog, cart, checkout (Nova Poshta), orders, and an admin product dashboard.
+Next.js UI та BFF магазину Coffeo. Робоча гілка — `dev`; legacy `main` містить Supabase starter. Магазин має основу каталогу, кошика, замовлень і dashboard, але приймання повного сценарію продажу ще триває.
 
-The browser talks only to this Next.js app. Fastify lives behind the BFF at `/api/*` so JWT cookies stay on the same origin.
+## Поточні документи
 
-## Stack
+- [Аудит реалізованого та прогалин](docs/PROJECT_AUDIT_UA.md)
+- [План завершення](docs/IMPLEMENTATION_PLAN_UA.md) та [детальні технічні рішення](docs/TECHNICAL_IMPLEMENTATION_UA.md)
+- [Правила Codex](AGENTS.md), [розгортання](DEPLOYMENT.md), [ADR](docs/decisions/)
+- [Стан історичних доступів API](https://github.com/LeoFom/fastify-prisma-app/blob/dev/docs/security/C0_3_STATUS_UA.md)
 
-- **Frontend:** Next.js App Router, React 19, Redux Toolkit, Tailwind, shadcn/ui
-- **BFF:** Next.js Route Handlers in `app/api/*`
-- **Backend:** `fastify-todo-api` (Fastify 5, Prisma, PostgreSQL) on port `3001`
+`project-description/*` збережені як історичні документи; вони не є поточним переліком невиконаних робіт.
 
-## Local setup
+## Локальний запуск
 
-Need both processes.
+Потрібні Node.js 24 та окремо запущений [Fastify API](https://github.com/LeoFom/fastify-prisma-app/tree/dev). Секрети й параметри його PostgreSQL налаштовуються в API, не у фронтенді.
 
-### Backend
-
-```bash
-cd /Users/leo/WebstormProjects/fastify-todo-api
-# .env: DATABASE_URL, JWT_ACCESS_SECRET, JWT_REFRESH_SECRET, COOKIE_SECRET
-# Optional: NOVA_POSHTA_API_KEY, ADMIN_EMAIL
-npm run dev
+```sh
+npm ci
+cp .env.example .env.local
 ```
 
-### Frontend
+У `.env.local` задати `API_URL=http://127.0.0.1:3001` та `INTERNAL_API_KEY`, що збігається з локальним API. Потім виконати `npm run dev` і відкрити [localhost:3000](http://localhost:3000).
 
-```bash
-cp .env.example .env
-# NEXT_PUBLIC_URL=http://localhost:3000
-# NEXT_PUBLIC_API_URL=http://127.0.0.1:3001
-# API_URL=http://127.0.0.1:3001
-npm install
-npm run dev
-```
+Браузер звертається до same-origin `/api/*`; BFF пересилає запити до Fastify. Auth працює через JWT та HttpOnly cookies. Не потрібні Supabase або публічний URL/ключ API. Реєстрація створює Customer; кошик і замовлення потребують входу.
 
-Open [http://localhost:3000](http://localhost:3000).
+## Перевірки
 
-## Auth
-
-JWT via Fastify, not Supabase. Login sets HttpOnly cookies (`accessToken`, `refreshToken`, `userId`) through the BFF. Protected pages use `getUser()` → `GET /api/auth/me`.
-
-Do not call Fastify from the browser. Cookies would not attach to `:3000`.
-
-## Scripts
-
-```bash
-npm run dev
-npm run build
+```sh
 npm run lint
+npm run format:check
+npm run test:tooling
+npm run typecheck
+npm run build
+npm audit --audit-level=high
 ```
+
+Форматування працює поступово: нові та змінені файли проходять Prettier; незмінений борг має baseline за хешем вмісту. `test:tooling` перевіряє цей механізм, а не весь магазин. Порядок і межі перевірок описані у [C0.4](docs/C0_4_RULES_AND_CI_UA.md).
