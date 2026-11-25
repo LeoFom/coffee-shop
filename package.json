@@ -8,7 +8,7 @@
     "typecheck": "next typegen && tsc --noEmit",
     "format:check": "node scripts/check-format.mjs",
     "test:tooling": "node --test tests/tooling-format.test.mjs",
-    "test:contracts": "node --test tests/contracts.test.cjs",
+    "test:contracts": "node --test tests/contracts.test.cjs tests/c1-2-errors.test.cjs",
     "contract:check": "node scripts/check-contract.mjs"
   },
   "dependencies": {

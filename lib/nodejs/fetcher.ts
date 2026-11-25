@@ -1,43 +1,91 @@
-import 'server-only';
-import { cookies } from 'next/headers';
-export function getBackendUrl() {
-  const value = process.env.API_URL || (process.env.NODE_ENV === 'production' ? '' : 'http://127.0.0.1:3001');
-  if (!value) return null;
-  const url = new URL(value);
-  if (process.env.NODE_ENV === 'production' && url.protocol !== 'https:') throw new Error('API_URL must use HTTPS');
-  return url.origin;
-}
+import 'server-only'
+import { randomUUID } from 'node:crypto'
+import { cookies } from 'next/headers'
+import { backendConfig } from './runtime-config'
+import { parseJsonResult, type FetchResult } from './result'
+import { forwardBackendResponse } from './proxy-response'
+
 type FetchOptions = {
-  method?: 'GET' | 'POST' | 'PATCH' | 'DELETE';
-  body?: object;
-  headers?: Record<string, string>;
-  cache?: RequestCache;
-  next?: { revalidate?: number };
-};
-export async function nodejsFetch(path: string, options: FetchOptions = {}) {
-  const { method = 'GET', headers: extra, body } = options;
-  const cookieStore = await cookies();
-  const cookieHeader = ['accessToken', 'refreshToken', 'userId'].map(name => cookieStore.get(name)).filter(Boolean).map(cookie => cookie!.name + '=' + cookie!.value).join('; ');
-  if (!cookieHeader && /^\/(auth\/me|profile|cart|orders)(\/|$)/.test(path)) return Response.json({ message: 'Unauthorized' }, { status: 401 });
-  try {
-    const base = getBackendUrl();
-    if (!base || (process.env.NODE_ENV === 'production' && !process.env.INTERNAL_API_KEY)) return Response.json({ message: 'API is not configured' }, { status: 503 });
-    return await fetch(new URL(path, base), {
-      method,
-      headers: { Cookie: cookieHeader, ...extra,
-        ...(body === undefined ? {} : { 'content-type': 'application/json' }),
-        ...(process.env.INTERNAL_API_KEY ? { 'x-coffeo-api-key': process.env.INTERNAL_API_KEY } : {}),
-      },
-      ...(body === undefined || method === 'GET' || method === 'DELETE' ? {} : { body: JSON.stringify(body) }),
-      cache: 'no-store', redirect: 'error', signal: AbortSignal.timeout(65000),
-    });
-  } catch { return Response.json({ message: 'API is starting or temporarily unavailable. Please try again.' }, { status: 503 }); }
+  method?: 'GET' | 'POST' | 'PATCH' | 'DELETE'
+  body?: object
+  headers?: Record<string, string>
 }
+
+function unavailable(requestId: string) {
+  return Response.json(
+    { message: 'Service temporarily unavailable' },
+    {
+      status: 503,
+      headers: { 'cache-control': 'no-store', 'retry-after': '5', 'x-request-id': requestId },
+    },
+  )
+}
+
+export function getBackendUrl() {
+  const config = backendConfig(process.env)
+  return config.ok ? config.origin : null
+}
+
+export async function nodejsFetch(path: string, options: FetchOptions = {}) {
+  const requestId = randomUUID()
+  const { method = 'GET', body, headers: extra } = options
+  const cookieStore = await cookies()
+  const cookieHeader = ['accessToken', 'refreshToken', 'userId']
+    .map((name) => cookieStore.get(name))
+    .filter((cookie) => cookie !== undefined)
+    .map((cookie) => `${cookie.name}=${cookie.value}`)
+    .join('; ')
+  const hasCredential = cookieStore.has('accessToken') || cookieStore.has('refreshToken')
+  if (!hasCredential && /^\/(auth\/me|profile|cart|orders)(\/|$)/.test(path)) {
+    return Response.json(
+      { message: 'Unauthorized' },
+      { status: 401, headers: { 'cache-control': 'no-store', 'x-request-id': requestId } },
+    )
+  }
+  const config = backendConfig(process.env)
+  if (!config.ok) return unavailable(requestId)
+  if (!path.startsWith('/') || path.startsWith('//') || path.includes('\\'))
+    return Response.json(
+      { message: 'Invalid backend path' },
+      { status: 400, headers: { 'cache-control': 'no-store', 'x-request-id': requestId } },
+    )
+  const url = new URL(path, config.origin)
+  if (url.origin !== config.origin)
+    return Response.json(
+      { message: 'Invalid backend path' },
+      { status: 400, headers: { 'cache-control': 'no-store', 'x-request-id': requestId } },
+    )
+  const headers = new Headers({ 'x-request-id': requestId })
+  if (cookieHeader) headers.set('cookie', cookieHeader)
+  if (body !== undefined) headers.set('content-type', 'application/json')
+  if (config.internalKey) headers.set('x-coffeo-api-key', config.internalKey)
+  const idempotencyKey = extra?.['idempotency-key'] ?? extra?.['Idempotency-Key']
+  if (idempotencyKey && /^[A-Za-z0-9._-]{8,128}$/.test(idempotencyKey))
+    headers.set('idempotency-key', idempotencyKey)
+  try {
+    return await fetch(url, {
+      method,
+      headers,
+      ...(body === undefined || method === 'GET' || method === 'DELETE'
+        ? {}
+        : { body: JSON.stringify(body) }),
+      cache: 'no-store',
+      redirect: 'error',
+      signal: AbortSignal.timeout(65000),
+    })
+  } catch {
+    return unavailable(requestId)
+  }
+}
+
+export async function nodejsFetchResult<T>(
+  path: string,
+  decode: (data: unknown) => T,
+  options: FetchOptions = {},
+): Promise<FetchResult<T>> {
+  return parseJsonResult(await nodejsFetch(path, options), decode)
+}
+
 export async function proxyToBackend(path: string, options: FetchOptions = {}) {
-  const response = await nodejsFetch(path, options);
-  const headers = new Headers({ 'cache-control': 'no-store', 'x-content-type-options': 'nosniff' });
-  const type = response.headers.get('content-type');
-  if (type) headers.set('content-type', type);
-  for (const cookie of response.headers.getSetCookie()) headers.append('set-cookie', cookie);
-  return new Response(response.status === 204 ? null : await response.text(), { status: response.status, headers });
+  return forwardBackendResponse(await nodejsFetch(path, options))
 }

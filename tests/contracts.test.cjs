@@ -118,12 +118,13 @@ test('v1 BFF preserves structured API errors and cookie rotation', async () => {
   const backend = async () =>
     Response.json(errorBody, {
       status: 401,
-      headers: { 'set-cookie': 'accessToken=new; HttpOnly; Path=/' },
+      headers: { 'set-cookie': 'accessToken=new; HttpOnly; Path=/', 'retry-after': '7' },
     })
   const response = await handleV1(request, ['profile', 'me'], backend)
   assert.equal(response.status, 401)
   assert.deepEqual(await response.json(), errorBody)
   assert.match(response.headers.get('set-cookie'), /accessToken=new/)
+  assert.equal(response.headers.get('retry-after'), '7')
   const unavailable = await handleV1(request, ['profile', 'me'], async () => {
     throw Error('offline')
   })

@@ -1,15 +1,17 @@
-import DashboardPage from "@/dashboard/page/DashboardPage";
-import { getProducts } from "@/lib/features/api/products/getProducts";
-import { getOrders } from "@/lib/features/api/orders/getOrders";
-import { getCartCount } from "@/lib/features/api/cart/getCartCount";
+import DashboardPage from '@/dashboard/page/DashboardPage'
+import { getProducts } from '@/lib/features/api/products/getProducts'
+import { getOrders } from '@/lib/features/api/orders/getOrders'
+import { getCartCount } from '@/lib/features/api/cart/getCartCount'
+import { requireData } from '@/lib/nodejs/result'
 
 export default async function AdminProductsPage() {
-  const [productsData, orders, cartItemCount] = await Promise.all([
+  const [productsResult, orders, cartItemCount] = await Promise.all([
     getProducts(),
     getOrders(),
     getCartCount(),
-  ]);
-  const totalSpent = orders.reduce((sum, order) => sum + order.totalAmount, 0);
+  ])
+  const productsData = requireData(productsResult)
+  const totalSpent = orders.reduce((sum, order) => sum + order.totalAmount, 0)
 
   return (
     <DashboardPage
@@ -24,5 +26,5 @@ export default async function AdminProductsPage() {
         recentOrders: orders.slice(0, 4),
       }}
     />
-  );
+  )
 }

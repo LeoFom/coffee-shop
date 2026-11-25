@@ -1,18 +1,19 @@
-import ProductActions from './ProductActions';
-import ProductInfo from './ProductInfo';
-import {getProductsBySlug} from "@/lib/features/api/products/getProductsBySlug";
-import Image from "next/image";
-import MyContainer from "@/ui/MyContainer";
+import ProductActions from './ProductActions'
+import ProductInfo from './ProductInfo'
+import { getProductsBySlug } from '@/lib/features/api/products/getProductsBySlug'
+import Image from 'next/image'
+import MyContainer from '@/ui/MyContainer'
+import { notFound } from 'next/navigation'
 
 interface Props {
-  slug: string;
+  slug: string
 }
 
 export default async function ProductDetails({ slug }: Props) {
   const product = await getProductsBySlug(slug)
 
   if (!product) {
-    return <div className="p-10">{`Product not found ${slug}`}</div>;
+    notFound()
   }
 
   return (
@@ -20,14 +21,14 @@ export default async function ProductDetails({ slug }: Props) {
       <MyContainer className="flex items-center justify-between gap-20">
         <div className="relative bg-card-sand rounded-3xl h-[450px] w-[500px] flex items-center justify-center">
           <span className="text-brand-brown/40 font-serif text-xl">
-            {product?.imageUrl &&
+            {product?.imageUrl && (
               <Image
                 src={product?.imageUrl ?? '/'}
-                alt={product?.name ??  ""}
+                alt={product?.name ?? ''}
                 fill
                 objectFit={'cover'}
               />
-            }
+            )}
           </span>
 
           {product.discount && (
@@ -43,5 +44,5 @@ export default async function ProductDetails({ slug }: Props) {
         </div>
       </MyContainer>
     </div>
-  );
+  )
 }

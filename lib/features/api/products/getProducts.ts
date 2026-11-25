@@ -1,5 +1,9 @@
-import { nodejsFetch } from '@/lib/nodejs/fetcher';
+import { nodejsFetchResult } from '@/lib/nodejs/fetcher'
+import type { ProductsType } from '@/types/products.types'
+
 export async function getProducts() {
-  const response = await nodejsFetch('/products');
-  return response.ok ? response.json() : [];
+  return nodejsFetchResult('/products', (body) => {
+    if (!Array.isArray(body)) throw new Error('Invalid catalog response')
+    return body as ProductsType[]
+  })
 }

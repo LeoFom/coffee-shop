@@ -1,20 +1,13 @@
-import { nodejsFetch } from '@/lib/nodejs/fetcher';
+import { nodejsFetchResult } from '@/lib/nodejs/fetcher'
+import { requireData } from '@/lib/nodejs/result'
 
 export async function getCartCount(): Promise<number> {
-  const response = await nodejsFetch('/cart');
-
-  if (!response.ok) {
-    return 0;
-  }
-
-  const data = await response.json();
-
-  if (!Array.isArray(data)) {
-    return 0;
-  }
-
-  return data.reduce((sum: number, item: { quantity?: unknown }) => {
-    const quantity = typeof item?.quantity === 'number' ? item.quantity : 0;
-    return sum + quantity;
-  }, 0);
+  const result = await nodejsFetchResult('/cart', (body) => {
+    if (!Array.isArray(body)) throw new Error('Invalid cart response')
+    return body as Array<{ quantity?: unknown }>
+  })
+  return requireData(result).reduce(
+    (sum, item) => sum + (typeof item.quantity === 'number' ? item.quantity : 0),
+    0,
+  )
 }

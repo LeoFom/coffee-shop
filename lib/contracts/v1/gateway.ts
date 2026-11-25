@@ -21,10 +21,21 @@ function error(
   code: string,
   message: string,
   fieldErrors: Record<string, string[]> = {},
+  upstreamHeaders?: Headers,
 ) {
+  const headers = new Headers({ 'cache-control': 'no-store' })
+  if (upstreamHeaders) {
+    for (const name of ['retry-after', 'x-request-id']) {
+      const value = upstreamHeaders.get(name)
+      if (value) headers.set(name, value)
+    }
+    for (const cookie of upstreamHeaders.getSetCookie()) headers.append('set-cookie', cookie)
+  }
   return Response.json(
-    { error: { code, message, fieldErrors, requestId: randomUUID() } },
-    { status, headers: { 'cache-control': 'no-store' } },
+    {
+      error: { code, message, fieldErrors, requestId: headers.get('x-request-id') ?? randomUUID() },
+    },
+    { status, headers },
   )
 }
 
@@ -144,15 +155,21 @@ export async function handleV1(
   for (const cookie of upstream.headers.getSetCookie()) headers.append('set-cookie', cookie)
   const requestId = upstream.headers.get('x-request-id')
   if (requestId) headers.set('x-request-id', requestId)
+  for (const name of ['retry-after', 'idempotency-replayed']) {
+    const value = upstream.headers.get(name)
+    if (value) headers.set(name, value)
+  }
   let payload: unknown
   try {
     payload = await upstream.json()
   } catch {
-    return error(502, 'BAD_GATEWAY', 'Invalid API response')
+    return upstream.status === 503
+      ? error(503, 'API_UNAVAILABLE', 'API is temporarily unavailable', {}, headers)
+      : error(502, 'BAD_GATEWAY', 'Invalid API response', {}, headers)
   }
   if (upstream.ok && responseSchema) {
     const parsed = responseSchema.safeParse(payload)
-    if (!parsed.success) return error(502, 'BAD_GATEWAY', 'Invalid API response')
+    if (!parsed.success) return error(502, 'BAD_GATEWAY', 'Invalid API response', {}, headers)
     return Response.json(parsed.data, { status: upstream.status, headers })
   }
   if (!upstream.ok) {
@@ -162,6 +179,8 @@ export async function handleV1(
         upstream.status === 503 ? 503 : 502,
         upstream.status === 503 ? 'API_UNAVAILABLE' : 'BAD_GATEWAY',
         upstream.status === 503 ? 'API is temporarily unavailable' : 'Invalid API error',
+        {},
+        headers,
       )
     return Response.json(parsed.data, { status: upstream.status, headers })
   }

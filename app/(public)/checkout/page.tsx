@@ -1,63 +1,60 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/navigation';
-import MyContainer from '@/components/ui/MyContainer';
-import ContactDetailsSection from '@/components/checkout/ContactDetailsSection';
-import DeliverySection from '@/components/checkout/DeliverySection';
-import PaymentSection from '@/components/checkout/PaymentSection';
-import CommentSection from '@/components/checkout/CommentSection';
-import OrderSummary from '@/components/checkout/OrderSummary';
-import { CheckoutFormState, initialCheckoutState } from '@/types/checkout.types';
-import { RootState } from '@/store/store';
-import { setCartItems } from '@/store/cart/cartSlice';
-import { handleRequestNotification } from '@/lib/handler/handleRequestNotification';
-import { toast } from 'sonner';
+import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useRouter } from 'next/navigation'
+import MyContainer from '@/components/ui/MyContainer'
+import ContactDetailsSection from '@/components/checkout/ContactDetailsSection'
+import DeliverySection from '@/components/checkout/DeliverySection'
+import PaymentSection from '@/components/checkout/PaymentSection'
+import CommentSection from '@/components/checkout/CommentSection'
+import OrderSummary from '@/components/checkout/OrderSummary'
+import { CheckoutFormState, initialCheckoutState } from '@/types/checkout.types'
+import { RootState } from '@/store/store'
+import { setCartItems } from '@/store/cart/cartSlice'
+import { handleRequestNotification } from '@/lib/handler/handleRequestNotification'
+import { toast } from 'sonner'
 
 export default function CheckoutPage() {
-  const [form, setForm] = useState<CheckoutFormState>(initialCheckoutState);
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const cartItems = useSelector((state: RootState) => state.cart.items);
-  const dispatch = useDispatch();
-  const router = useRouter();
+  const [form, setForm] = useState<CheckoutFormState>(initialCheckoutState)
+  const [errors, setErrors] = useState<Record<string, string>>({})
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const cartItems = useSelector((state: RootState) => state.cart.items)
+  const dispatch = useDispatch()
+  const router = useRouter()
 
   const validate = (): boolean => {
-    const newErrors: Record<string, string> = {};
+    const newErrors: Record<string, string> = {}
 
-    if (!form.contact.firstName) newErrors.firstName = "Вкажіть ім'я";
-    if (!form.contact.lastName) newErrors.lastName = 'Вкажіть прізвище';
+    if (!form.contact.firstName) newErrors.firstName = "Вкажіть ім'я"
+    if (!form.contact.lastName) newErrors.lastName = 'Вкажіть прізвище'
     if (!/^\+?380\d{9}$/.test(form.contact.phone.replace(/\s/g, ''))) {
-      newErrors.phone = 'Невірний формат телефону';
+      newErrors.phone = 'Невірний формат телефону'
     }
-    if (
-      form.contact.email &&
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.contact.email)
-    ) {
-      newErrors.email = 'Невірний формат email';
+    if (form.contact.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.contact.email)) {
+      newErrors.email = 'Невірний формат email'
     }
 
     if (form.delivery.method !== 'courier') {
-      if (!form.delivery.city) newErrors.city = 'Оберіть місто';
-      if (!form.delivery.warehouse) newErrors.warehouse = 'Оберіть відділення';
+      if (!form.delivery.city) newErrors.city = 'Оберіть місто'
+      if (!form.delivery.warehouse) newErrors.warehouse = 'Оберіть відділення'
     } else if (!form.delivery.address) {
-      newErrors.address = 'Вкажіть адресу';
+      newErrors.address = 'Вкажіть адресу'
     }
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
 
   const handleSubmit = async () => {
-    if (!validate()) return;
+    if (!validate()) return
 
     if (cartItems.length === 0) {
-      toast.warning('Кошик порожній');
-      return;
+      toast.warning('Кошик порожній')
+      return
     }
 
-    setIsSubmitting(true);
+    setIsSubmitting(true)
     try {
       const res = await fetch('/api/orders', {
         method: 'POST',
@@ -69,34 +66,43 @@ export default function CheckoutPage() {
           payment: form.payment,
           comment: form.comment,
         }),
-      });
+      })
 
-      let data: unknown = null;
+      let data: unknown = null
       try {
-        data = await res.json();
+        data = await res.json()
       } catch {
-        data = { message: 'Не вдалося оформити замовлення' };
+        data = { message: 'Не вдалося оформити замовлення' }
+      }
+
+      if ([502, 503, 504].includes(res.status)) {
+        toast.error(
+          'Статус замовлення невідомий. Перевірте історію замовлень перед повтором. Дані форми збережено.',
+        )
+        return
       }
 
       handleRequestNotification(res, data, {
         successMessage: 'Замовлення оформлено',
-      });
+      })
 
       if (!res.ok) {
         if (res.status === 401) {
-          router.push('/auth/login');
+          router.push('/auth/login')
         }
-        return;
+        return
       }
 
-      dispatch(setCartItems([]));
-      router.push('/orders');
+      dispatch(setCartItems([]))
+      router.push('/orders')
     } catch {
-      toast.error('Не вдалося оформити замовлення');
+      toast.error(
+        'Статус замовлення невідомий. Перевірте історію замовлень перед повтором. Дані форми збережено.',
+      )
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     }
-  };
+  }
 
   return (
     <div className="min-h-screen bg-brand-bg pt-32 pb-24">
@@ -159,5 +165,5 @@ export default function CheckoutPage() {
         </div>
       </MyContainer>
     </div>
-  );
+  )
 }
