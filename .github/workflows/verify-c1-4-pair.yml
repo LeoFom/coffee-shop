@@ -1,0 +1,61 @@
+name: Verify C1.4 API pair
+on:
+  push:
+    branches: [codex/c1-4-browser-auth]
+permissions:
+  contents: read
+jobs:
+  pair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      NODE_ENV: test
+      DATABASE_URL: postgresql://coffeo:ci-only@localhost:5432/coffeo_c14
+      DIRECT_URL: postgresql://coffeo:ci-only@localhost:5432/coffeo_c14
+      JWT_ACCESS_SECRET: ci-only-access-secret-000000000000000000000
+      JWT_REFRESH_SECRET: ci-only-refresh-secret-00000000000000000000
+      COOKIE_SECRET: ci-only-cookie-secret-000000000000000000000
+      INTERNAL_API_KEY: ci-only-internal-key-0000000000000000000000
+      API_URL: http://127.0.0.1:3001
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: coffeo_c14
+          POSTGRES_USER: coffeo
+          POSTGRES_PASSWORD: ci-only
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U coffeo -d coffeo_c14"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: web
+      - uses: actions/checkout@v4
+        with:
+          repository: LeoFom/fastify-prisma-app
+          ref: 3f6153be62cdbaa6a3298b169e2808842be0ecf9
+          path: api
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm ci --include=dev
+        working-directory: api
+      - run: npm run build && npm run db:deploy
+        working-directory: api
+      - run: npm ci
+        working-directory: web
+      - run: npm run build
+        working-directory: web
+      - run: nohup npm start > /tmp/coffeo-api.log 2>&1 &
+        working-directory: api
+      - run: nohup npm start -- -p 3000 > /tmp/coffeo-web.log 2>&1 &
+        working-directory: web
+      - run: |
+          for i in {1..30}; do
+            if curl --fail --silent http://localhost:3001/health/ready > /dev/null && curl --fail --silent http://localhost:3000/auth/login > /dev/null; then exit 0; fi
+            sleep 1
+          done
+          exit 1
+      - run: node web/tests/c1-4-stack.test.cjs
