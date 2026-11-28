@@ -8,6 +8,7 @@ import CartModal from '@/cart/CartModal'
 import { useContext, useState } from 'react'
 import { cartSelectors } from '@/store/cart/cartSelectors'
 import { AuthContext } from '@/components/providers/AuthProvider'
+import { LogoutButton } from '@/components/logout-button'
 
 export default function Header() {
   const [isCartOpen, setIsCartOpen] = useState(false)
@@ -92,6 +93,7 @@ export default function Header() {
             >
               {auth?.user ? 'My account' : 'Log in / Sign up'}
             </Button>
+            {auth?.user && <LogoutButton />}
           </div>
         </MyContainer>
       </header>
