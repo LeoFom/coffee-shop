@@ -3,8 +3,12 @@ import { getProducts } from '@/lib/features/api/products/getProducts'
 import { getOrders } from '@/lib/features/api/orders/getOrders'
 import { getCartCount } from '@/lib/features/api/cart/getCartCount'
 import { requireData } from '@/lib/nodejs/result'
+import { requireUser } from '@/lib/auth/requireUser'
+import { redirect } from 'next/navigation'
 
 export default async function AdminProductsPage() {
+  const user = await requireUser('/dashboard/products')
+  if (user.role !== 'Admin') redirect('/dashboard')
   const [productsResult, orders, cartItemCount] = await Promise.all([
     getProducts(),
     getOrders(),

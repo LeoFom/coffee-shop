@@ -3,14 +3,12 @@
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import { useContext, useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { AuthContext } from '@/components/providers/AuthProvider'
-import { setIsAuthenticated } from '@/store/auth/authSlice'
+import { invalidateAuthFlight } from '@/lib/auth/fetchWithAuth'
 
 export function LogoutButton() {
   const router = useRouter()
   const auth = useContext(AuthContext)
-  const dispatch = useDispatch()
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const logout = async () => {
@@ -26,7 +24,7 @@ export function LogoutButton() {
       }
 
       auth?.setUser(null)
-      dispatch(setIsAuthenticated(false))
+      invalidateAuthFlight()
       router.push('/auth/login')
       router.refresh()
     } catch {

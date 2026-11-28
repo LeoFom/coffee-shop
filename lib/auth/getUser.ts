@@ -1,9 +1,15 @@
+import { cache } from 'react'
 import { nodejsFetchResult } from '@/lib/nodejs/fetcher'
-import { requireData } from '@/lib/nodejs/result'
 import type { User } from '@/lib/auth/user'
 import { parseUserRole } from '@/lib/auth/user'
 
-export async function getUser(): Promise<User | null> {
+export type AuthState =
+  | { kind: 'authenticated'; user: User }
+  | { kind: 'needsRefresh' }
+  | { kind: 'anonymous' }
+  | { kind: 'unavailable' }
+
+export const getUser = cache(async (): Promise<AuthState> => {
   const result = await nodejsFetchResult('/auth/me', (data) => {
     if (
       !data ||
@@ -20,6 +26,8 @@ export async function getUser(): Promise<User | null> {
       role: parseUserRole('role' in data ? data.role : undefined),
     }
   })
-  if (!result.ok && result.status === 401) return null
-  return requireData(result)
-}
+  if (result.ok) return { kind: 'authenticated', user: result.data }
+  if (result.error.code === 'ACCESS_EXPIRED') return { kind: 'needsRefresh' }
+  if (result.status === 401) return { kind: 'anonymous' }
+  return { kind: 'unavailable' }
+})

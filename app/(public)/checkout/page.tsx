@@ -14,6 +14,7 @@ import { RootState } from '@/store/store'
 import { setCartItems } from '@/store/cart/cartSlice'
 import { handleRequestNotification } from '@/lib/handler/handleRequestNotification'
 import { toast } from 'sonner'
+import { fetchWithAuth } from '@/lib/auth/fetchWithAuth'
 
 export default function CheckoutPage() {
   const [form, setForm] = useState<CheckoutFormState>(initialCheckoutState)
@@ -56,7 +57,7 @@ export default function CheckoutPage() {
 
     setIsSubmitting(true)
     try {
-      const res = await fetch('/api/orders', {
+      const res = await fetchWithAuth('/api/orders', {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },

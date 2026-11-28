@@ -1,13 +1,13 @@
 import DashboardPage from '@/dashboard/page/DashboardPage'
 import { getProducts } from '@/lib/features/api/products/getProducts'
-import { getUser } from '@/lib/auth/getUser'
+import { requireUser } from '@/lib/auth/requireUser'
 import { getOrders } from '@/lib/features/api/orders/getOrders'
 import { getCartCount } from '@/lib/features/api/cart/getCartCount'
 import { requireData } from '@/lib/nodejs/result'
 
 async function Dashboard() {
-  const user = await getUser()
-  const isAdmin = user?.role === 'Admin'
+  const user = await requireUser('/dashboard')
+  const isAdmin = user.role === 'Admin'
   const [productsResult, orders, cartItemCount] = await Promise.all([
     isAdmin ? getProducts() : Promise.resolve(null),
     getOrders(),
