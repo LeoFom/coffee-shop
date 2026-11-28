@@ -30,7 +30,9 @@ function failure(
   retryAfter: string | null,
   body?: unknown,
 ): Failure {
-  const structured = apiError.safeParse(body)
+  const candidate =
+    body && typeof body === 'object' && 'error' in body ? { error: body.error } : body
+  const structured = apiError.safeParse(candidate)
   const [code, message] = statusCodes[status] ?? ['REQUEST_FAILED', 'Request failed']
   return {
     ok: false,

@@ -80,6 +80,22 @@ test('typed result keeps empty, missing, unauthorized and unavailable separate',
     decodeArray,
   )
   assert.equal(unauth.status, 401)
+  const expired = await parseJsonResult(
+    Response.json(
+      {
+        message: 'Access expired',
+        error: {
+          code: 'ACCESS_EXPIRED',
+          message: 'Access expired',
+          fieldErrors: {},
+          requestId: 'synthetic-request',
+        },
+      },
+      { status: 401 },
+    ),
+    decodeArray,
+  )
+  assert.equal(expired.error.code, 'ACCESS_EXPIRED')
   const malformed = await parseJsonResult(Response.json({ data: [] }), decodeArray)
   assert.equal(malformed.status, 502)
   assert.equal(malformed.ok, false)
